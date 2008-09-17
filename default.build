@@ -1,0 +1,323 @@
+﻿<?xml version="1.0"?>
+<project name="NAnt-Extensions"
+		 default="all"
+		 xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd">
+
+	<!-- Tasks that run on every build.
+	________________________________________________________________________________________________________________ -->
+	<!-- Load developer-specific configuration. -->
+	<if test="${file::exists('local.properties')}">
+		<echo message="Loading local.properties" />
+		<include buildfile="local.properties" />
+	</if>
+
+	<!-- Load default configuration. -->
+	<if test="${file::exists('default.properties')}">
+		<echo message="Loading default.properties" />
+		<include buildfile="default.properties" />
+	</if>
+
+
+	<echo message="Build configuration:" />
+	<script language="C#">
+		<code>
+			<![CDATA[
+				public static void ScriptMain(Project project)
+				{
+					System.Collections.Generic.SortedDictionary<string, string> sortedByKey = new System.Collections.Generic.SortedDictionary<string, string>();
+					foreach(DictionaryEntry de in project.Properties)
+					{
+						sortedByKey.Add(de.Key.ToString(), de.Value.ToString());
+					}
+
+					NAnt.Core.Tasks.EchoTask echo = new NAnt.Core.Tasks.EchoTask();
+					echo.Project = project;
+					foreach(System.Collections.Generic.KeyValuePair<string, string> kvp in sortedByKey)
+					{
+						if(kvp.Key.StartsWith("nant."))
+						{
+							continue;
+						}
+
+						string value = kvp.Value;
+						if (value.Length > 100)
+						{
+							value = String.Format("{0}...", value.Substring(0, 100));
+						}
+
+						echo.Message = String.Format("{0}: {1}", kvp.Key, value);
+						echo.Execute();
+					}
+				}
+			]]>
+		</code>
+	</script>
+
+	<target name="all"
+			depends="build-setup"
+			description="Compiles the theme and creates deployment packages.">
+	</target>
+
+	<!-- Build number retrieval.
+	________________________________________________________________________________________________________________ -->
+	<target name="get-build-number-from-file"
+			description="Reads the version number from VersionInfo.cs.">
+		<script language="C#">
+			<code>
+				<![CDATA[
+					public static void ScriptMain(Project project)
+					{
+						string file = String.Empty;
+						using (StreamReader sr = new StreamReader(Path.Combine(project.Properties["basedir.source"], "VersionInfo.cs")))
+						{
+							file = sr.ReadToEnd();
+						}
+
+						project.Properties["build.number.fromfile"] = Regex.Match(file, "(?<=\\[assembly:\\s*AssemblyVersion(?:Attribute)?\\(\")\\d+\\.\\d+\\.\\d+\\.\\d+").Value;
+					}
+				]]>
+			</code>
+		</script>
+	</target>
+
+	<!-- Cleanup.
+	________________________________________________________________________________________________________________ -->
+	<target name="clean"
+			description="Removes build artifacts.">
+		<tc-progress message="Cleaning up"
+					 type="Start" />
+
+		<delete dir="${basedir.deployment.artifacts}"
+				failonerror="false" />
+		<delete dir="${basedir.temp}"
+				failonerror="false" />
+		<delete dir="${basedir.test.results}"
+				failonerror="false" />
+		<foreach item="Folder"
+				 property="folder">
+			<in>
+				<items>
+					<include name="${basedir.source}\**" />
+				</items>
+			</in>
+			<do>
+				<delete dir="${folder}\bin"
+						failonerror="false" />
+				<delete dir="${folder}\obj"
+						failonerror="false" />
+			</do>
+		</foreach>
+
+		<tc-progress message="Cleaning up"
+					 type="End" />
+	</target>
+
+	<!-- Plugins/Macros.
+	________________________________________________________________________________________________________________ -->
+	<target name="init-build-app"
+			depends="clean"
+			description="Creates VersionInfo.cs from the specified build number or leaves the file as-is.">
+		<asminfo language="CSharp"
+				 output="${basedir.source}\VersionInfo.cs"
+				 if="${version::parse(build.number) != version::parse(build.number.fromfile)}">
+			<imports>
+				<import namespace="System" />
+				<import namespace="System.Reflection" />
+			</imports>
+			<attributes>
+				<attribute type="AssemblyFileVersionAttribute"
+						   value="${build.number}" />
+				<attribute type="AssemblyVersionAttribute"
+						   value="${build.number}" />
+			</attributes>
+		</asminfo>
+	</target>
+
+	<target name="build-app"
+			depends="init-build-app"
+			description="Builds macros and plugins.">
+		<tc-progress message="Building application"
+					 type="Start" />
+
+		<!--<msbuild project="${basedir.app}\Synexus.WebSite.BusinessLogic\Synexus.WebSite.BusinessLogic.csproj"
+				 target="${build.msbuild.target}"
+				 verbosity="${build.msbuild.verbosity}">
+			<arg value="/p:Configuration=${build.msbuild.configuration}" />
+			<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
+			<arg value="/p:BuildRunner=${build.runner}" />
+			<arg value="/maxcpucount" />
+		</msbuild>-->
+
+		<tc-progress message="Building application"
+					 type="End" />
+	</target>
+
+	<!-- Unit tests.
+	________________________________________________________________________________________________________________ -->
+	<fileset id="test-projects">
+		<include name="${basedir.test}\**\*.csproj" />
+	</fileset>
+
+	<fileset id="coverage-assemblies"
+			 basedir="${basedir.app}">
+		<include name="${basedir.app}\**\bin\${build.msbuild.configuration}\NAntExtensions.*.dll" />
+	</fileset>
+
+	<target name="init-run-tests"
+			depends="clean, build-app">
+		<foreach item="File"
+				 property="testproject">
+			<in>
+				<items refid="test-projects" />
+			</in>
+			<do>
+				<msbuild project="${testproject}"
+						 target="${build.msbuild.target}"
+						 verbosity="${build.msbuild.verbosity}">
+					<arg value="/p:Configuration=${build.msbuild.configuration}" />
+					<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
+					<arg value="/p:BuildRunner=${build.runner}" />
+					<arg value="/maxcpucount" />
+				</msbuild>
+			</do>
+		</foreach>
+
+		<mkdir dir="${basedir.test.results}"/>
+	</target>
+
+	<target name="run-tests"
+			depends="init-run-tests"
+			description="Runs the application's unit tests.">
+		<tc-progress message="Running tests"
+					 type="Start" />
+
+		<foreach item="File"
+				 property="testproject">
+			<in>
+				<items refid="test-projects" />
+			</in>
+			<do>
+				<mspec report-directory="${basedir.test.results}"
+					   report-filename="${path::get-file-name-without-extension(testproject)}.html"
+					   verbose="true">
+					<assemblies>
+						<include name="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}\${path::get-file-name-without-extension(testproject)}.dll" />
+					</assemblies>
+				</mspec>
+			</do>
+		</foreach>
+
+		<if test="${environment::variable-exists('TEAMCITY_PROJECT_NAME')}">
+			<tc-addstatistic key="MSpecContexts"
+							 value="${mspec.contexts}"/>
+			<tc-addstatistic key="MSpecSpecs"
+							 value="${mspec.specs}"/>
+			<tc-addstatistic key="MSpecFailedSpecs"
+							 value="${mspec.failedspecs}"/>
+		</if>
+
+		<tc-progress message="Running tests"
+					 type="End" />
+	</target>
+
+	<target name="run-coverage"
+			depends="init-run-tests"
+			description="Runs the applications' unit tests with code coverage enabled.">
+		<tc-progress message="Running code coverage"
+					 type="Start" />
+
+		<foreach item="File"
+				 property="testproject">
+			<in>
+				<items refid="test-projects" />
+			</in>
+			<do>
+				<ncover program="${tools.ncover}\NCover.Console.exe"
+						commandLineExe="${tools.mspec}\mspec-runner.exe"
+						commandLineArgs='"${path::get-file-name-without-extension(testproject)}.dll"'
+						workingDirectory="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}"
+						coverageFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.xml"
+						logLevel="Normal"
+						logFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.log"
+						excludeAttributes="CoverageExcludeAttribute">
+					<assemblies refid="coverage-assemblies" />
+				</ncover>
+			</do>
+		</foreach>
+
+		<ncoverexplorer program="${tools.ncoverexplorer}\NCoverExplorer.Console.exe"
+						satisfactoryCoverage="${tools.ncoverexplorer.satisfactorycoverage}"
+						reportType="ModuleClassFunctionSummary"
+						outputDir="${basedir.test.results}"
+						htmlReportName="Coverage.html"
+						xmlReportName="Coverage.xml"
+						projectName="${project::get-name()}"
+						showExcluded="false" >
+			<fileset>
+				<include name="${basedir.test.results}\*-Coverage.xml" />
+			</fileset>
+		</ncoverexplorer>
+
+		<if test="${environment::variable-exists('TEAMCITY_PROJECT_NAME')}">
+			<xmlpeek file="${basedir.test.results}\Coverage.xml"
+					 property="codecoverage"
+					 xpath="/coverageReport/project/@functionCoverage"/>
+			<tc-addstatistic key="NCoverCodeCoverage"
+							 value="${codecoverage}"/>
+			<tc-buildstatus message="{build.status.text}, Code coverage: ${math::round(double::parse(codecoverage))}%"/>
+		</if>
+
+		<tc-progress message="Running code coverage"
+					 type="End" />
+	</target>
+
+
+	<!-- Setup.
+	________________________________________________________________________________________________________________ -->
+	<target name="init-build-setup"
+			depends="clean">
+		<mkdir dir="${basedir.deployment.artifacts}" />
+	</target>
+
+	<target name="build-setup"
+			depends="build-app, run-tests, init-build-setup"
+			description="Creates the applications' deployment package.">
+		<tc-progress message="Building setup"
+					 type="Start" />
+
+		<!--<zip zipfile="${basedir.deployment.artifacts}\${project::get-name()}-${build.artifacts.suffix}.zip"
+			 ziplevel="9"
+			 duplicate="Preserve">
+			<fileset basedir="${basedir.app}\Synexus.WebSite.Extensions\bin\${build.msbuild.configuration}"
+					 prefix="bin">
+				<include name="Synexus.*.dll" />
+				<include name="Synexus.*.pdb" />
+			</fileset>
+		</zip>-->
+
+		<tc-progress message="Building setup"
+					 type="End" />
+	</target>
+
+	<!-- Deployment/Upload to Google Code.
+	________________________________________________________________________________________________________________ -->
+	<target name="upload-setup"
+			depends="build-setup"
+			description="Upload the deployment package to Google Code.">
+		<fail message="Cannot upload deployment package to Google Code, property 'googlecode.username' and/or property 'googlecode.password' does not exist."
+			  if="${not property::exists('googlecode.username') or not property::exists('googlecode.password')}" />
+
+		<tc-progress message="Uploading to Google Code"
+					 type="Start" />
+
+		<gcupload username="${googlecode.username}"
+				  password="${googlecode.password}"
+				  filename="${basedir.deployment.artifacts}\${project::get-name()}-${build.number}.zip"
+				  targetfilename="${project::get-name()}-${build.number}.zip"
+				  summary="${project::get-name()}-${build.number}"
+				  projectname="${project::get-name()}"/>
+
+		<tc-progress message="Uploading to Google Code"
+					 type="End" />
+	</target>
+</project>
