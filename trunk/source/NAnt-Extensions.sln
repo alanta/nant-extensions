@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scri
 		..\default.properties = ..\default.properties
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base", "Base", "{749810EE-33C1-4ED8-A164-8DE5F4DFEB4A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Functionality", "Common Functionality", "{749810EE-33C1-4ED8-A164-8DE5F4DFEB4A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MbUnit", "MbUnit", "{E007CB9C-73AF-4CBD-A76E-7731EE4F807B}"
 EndProject
@@ -15,9 +15,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine.Specifications", "M
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{8DA668B3-DFCF-4A92-A140-B1D75DCC60E4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TeamCity Messaging", "TeamCity Messaging", "{AB9D5295-D86A-4B81-AFFC-8639D425383D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TeamCity", "TeamCity", "{AB9D5295-D86A-4B81-AFFC-8639D425383D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.MbUnit", "app\NAntExtensions.MbUnit\NAntExtensions.MbUnit.csproj", "{3275BAF0-0A16-465B-89E1-E60D66565B24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.TeamCity.Common", "app\NAntExtensions.TeamCity.Common\NAntExtensions.TeamCity.Common.csproj", "{F123CB57-9979-4558-BB1E-38CF9F20B3AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.Machine.Specifications", "app\NAntExtensions.Machine.Specifications\NAntExtensions.Machine.Specifications.csproj", "{352A3C1B-1372-45A4-8B0C-FA7D536AA5B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.TeamCity", "app\NAntExtensions.TeamCity\NAntExtensions.TeamCity.csproj", "{786FF017-E7B4-47D7-AC97-273A00C46AB0}"
 EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3275BAF0-0A16-465B-89E1-E60D66565B24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3275BAF0-0A16-465B-89E1-E60D66565B24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3275BAF0-0A16-465B-89E1-E60D66565B24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3275BAF0-0A16-465B-89E1-E60D66565B24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F123CB57-9979-4558-BB1E-38CF9F20B3AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F123CB57-9979-4558-BB1E-38CF9F20B3AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F123CB57-9979-4558-BB1E-38CF9F20B3AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F123CB57-9979-4558-BB1E-38CF9F20B3AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{352A3C1B-1372-45A4-8B0C-FA7D536AA5B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{352A3C1B-1372-45A4-8B0C-FA7D536AA5B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{352A3C1B-1372-45A4-8B0C-FA7D536AA5B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{352A3C1B-1372-45A4-8B0C-FA7D536AA5B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{786FF017-E7B4-47D7-AC97-273A00C46AB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{786FF017-E7B4-47D7-AC97-273A00C46AB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{786FF017-E7B4-47D7-AC97-273A00C46AB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{786FF017-E7B4-47D7-AC97-273A00C46AB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
@@ -26,5 +56,9 @@ Global
 		{47952520-803B-40E0-94E4-D395B829FB8D} = {8DA668B3-DFCF-4A92-A140-B1D75DCC60E4}
 		{749810EE-33C1-4ED8-A164-8DE5F4DFEB4A} = {8DA668B3-DFCF-4A92-A140-B1D75DCC60E4}
 		{AB9D5295-D86A-4B81-AFFC-8639D425383D} = {8DA668B3-DFCF-4A92-A140-B1D75DCC60E4}
+		{3275BAF0-0A16-465B-89E1-E60D66565B24} = {E007CB9C-73AF-4CBD-A76E-7731EE4F807B}
+		{352A3C1B-1372-45A4-8B0C-FA7D536AA5B4} = {47952520-803B-40E0-94E4-D395B829FB8D}
+		{F123CB57-9979-4558-BB1E-38CF9F20B3AD} = {749810EE-33C1-4ED8-A164-8DE5F4DFEB4A}
+		{786FF017-E7B4-47D7-AC97-273A00C46AB0} = {AB9D5295-D86A-4B81-AFFC-8639D425383D}
 	EndGlobalSection
 EndGlobal
