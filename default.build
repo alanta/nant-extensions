@@ -159,7 +159,7 @@
 			<arg value="/maxcpucount" />
 		</msbuild>
 
-		<!-- Machine.Specifications. -->
+		<!-- TeamCity. -->
 		<msbuild project="${basedir.app}\NAntExtensions.TeamCity\NAntExtensions.TeamCity.csproj"
 				 target="${build.msbuild.target}"
 				 verbosity="${build.msbuild.verbosity}">
@@ -308,15 +308,49 @@
 		<tc-progress message="Building setup"
 					 type="Start" />
 
-		<!--<zip zipfile="${basedir.deployment.artifacts}\${project::get-name()}-${build.artifacts.suffix}.zip"
+		<!-- MbUnit. -->
+		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-MbUnit-${build.artifacts.suffix}.zip"
 			 ziplevel="9"
 			 duplicate="Preserve">
-			<fileset basedir="${basedir.app}\Synexus.WebSite.Extensions\bin\${build.msbuild.configuration}"
-					 prefix="bin">
-				<include name="Synexus.*.dll" />
-				<include name="Synexus.*.pdb" />
+			<fileset basedir="${basedir.app}\NAntExtensions.MbUnit\bin\${build.msbuild.configuration}"
+					 prefix="extensions\common\neutral\MbUnit">
+				<include name="NAntExtensions*.dll" />
+				<include name="NAntExtensions*.pdb" />
 			</fileset>
-		</zip>-->
+			<fileset basedir="${basedir.app}\NAntExtensions.MbUnit\bin\${build.msbuild.configuration}"
+					 prefix="lib\common\neutral\MbUnit">
+				<include name="MbUnit.Framework*.dll" />
+				<include name="QuickGraph*.dll" />
+				<include name="Refly*.dll" />
+				<include name="TestFu*.dll" />
+			</fileset>
+		</zip>
+
+		<!-- Machine.Specifications. -->
+		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-Machine.Specifications-${build.artifacts.suffix}.zip"
+			 ziplevel="9"
+			 duplicate="Preserve">
+			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
+					 prefix="extensions\common\2.0\Machine.Specifications">
+				<include name="NAntExtensions*.dll" />
+				<include name="NAntExtensions*.pdb" />
+			</fileset>
+			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
+					 prefix="lib\common\2.0\Machine.Specifications">
+				<include name="Machine.Specifications*.dll" />
+			</fileset>
+		</zip>
+
+		<!-- TeamCity. -->
+		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-TeamCity-${build.artifacts.suffix}.zip"
+			 ziplevel="9"
+			 duplicate="Preserve">
+			<fileset basedir="${basedir.app}\NAntExtensions.TeamCity\bin\${build.msbuild.configuration}"
+					 prefix="extensions\common\2.0\TeamCity">
+				<include name="NAntExtensions*.dll" />
+				<include name="NAntExtensions*.pdb" />
+			</fileset>
+		</zip>
 
 		<tc-progress message="Building setup"
 					 type="End" />
