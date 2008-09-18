@@ -20,14 +20,11 @@ using System;
 using System.IO;
 using System.Xml;
 
-using NAnt.Core;
 using NAnt.Core.Attributes;
-
-using NAntExtensions.TeamCity.Common;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
-	public abstract class TeamCityBuildLogTaskBase : Task
+	public abstract class TeamCityBuildLogTask : TeamCityTask
 	{
 		string _teamCityInfoPath;
 
@@ -43,34 +40,6 @@ namespace NAntExtensions.TeamCity.Tasks
 				return _teamCityInfoPath;
 			}
 			set { _teamCityInfoPath = value; }
-		}
-
-		[TaskAttribute("force")]
-		[BooleanValidator]
-		public bool ForceTaskExecution
-		{
-			get;
-			set;
-		}
-
-		protected bool ShouldSkipTaskExecution
-		{
-			get
-			{
-				if (ForceTaskExecution)
-				{
-					Log(Level.Verbose, "Not running as part of a TeamCity build. Forced task execution.");
-					return false;
-				}
-
-				if (!BuildEnvironment.IsTeamCityBuild)
-				{
-					Log(Level.Verbose,
-					    "Not running as part of a TeamCity build. Skipping task execution. Force task execution by setting the 'force' attribute to 'true'.");
-				}
-
-				return !BuildEnvironment.IsTeamCityBuild;
-			}
 		}
 
 		protected static XmlElement CreateStatisticValueNode(XmlDocument doc, string key, string value)
@@ -98,7 +67,7 @@ namespace NAntExtensions.TeamCity.Tasks
 			{
 				return "teamcity-info.xml";
 			}
-			
+
 			string checkoutDir = Properties["teamcity.build.checkoutDir"];
 			return Path.Combine(checkoutDir, "teamcity-info.xml");
 		}

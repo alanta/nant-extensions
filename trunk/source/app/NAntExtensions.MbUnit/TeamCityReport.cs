@@ -8,7 +8,7 @@ using MbUnit.Core.Reports.Serialization;
 
 using NAnt.Core;
 
-using LogWriter=Alanta.MbUnit.Tasks.TeamCity.LogWriter;
+using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.MbUnit
 {
@@ -144,9 +144,9 @@ namespace NAntExtensions.MbUnit
 			{
 				throw new ArgumentNullException("task");
 			}
-			
+
 			TeamCityReport tcReport = new TeamCityReport();
-			using (TextWriter writer = new LogWriter(task, task.Properties.Contains("agent.name")))
+			using (TextWriter writer = new TeamCityLogWriter(task, task.Properties.Contains("agent.name")))
 			{
 				tcReport.Render(result, writer);
 			}

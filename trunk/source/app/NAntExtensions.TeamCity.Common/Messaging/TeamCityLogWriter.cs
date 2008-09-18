@@ -5,17 +5,17 @@ using System.Text;
 
 using NAnt.Core;
 
-namespace Alanta.MbUnit.Tasks.TeamCity
+namespace NAntExtensions.TeamCity.Common.Messaging
 {
-	public class LogWriter : TextWriter
+	public class TeamCityLogWriter : TextWriter
 	{
-		static UnicodeEncoding _encoding;
-		readonly StringBuilder _sb = new StringBuilder();
+		static UnicodeEncoding UnicodeEncoding;
+		readonly StringBuilder _builder = new StringBuilder();
 		readonly Task _task;
 		readonly bool _useTaskLogger;
 		bool _isOpen;
 
-		public LogWriter(Task task, bool useTaskLogger) : base(CultureInfo.InvariantCulture)
+		public TeamCityLogWriter(Task task, bool useTaskLogger) : base(CultureInfo.InvariantCulture)
 		{
 			if (null == task)
 			{
@@ -31,11 +31,11 @@ namespace Alanta.MbUnit.Tasks.TeamCity
 		{
 			get
 			{
-				if (_encoding == null)
+				if (UnicodeEncoding == null)
 				{
-					_encoding = new UnicodeEncoding(false, false);
+					UnicodeEncoding = new UnicodeEncoding(false, false);
 				}
-				return _encoding;
+				return UnicodeEncoding;
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace Alanta.MbUnit.Tasks.TeamCity
 			{
 				throw new ObjectDisposedException(null, "Writer is closed.");
 			}
-			_sb.Append(value);
+			_builder.Append(value);
 		}
 
 		public override void Write(string value)
@@ -82,7 +82,7 @@ namespace Alanta.MbUnit.Tasks.TeamCity
 			}
 			if (value != null)
 			{
-				_sb.Append(value);
+				_builder.Append(value);
 			}
 		}
 
@@ -108,7 +108,7 @@ namespace Alanta.MbUnit.Tasks.TeamCity
 			{
 				throw new ArgumentException("Invalid combination of offset and length.");
 			}
-			_sb.Append(buffer, index, count);
+			_builder.Append(buffer, index, count);
 		}
 
 		public override void Flush()
@@ -118,18 +118,18 @@ namespace Alanta.MbUnit.Tasks.TeamCity
 				throw new ObjectDisposedException(null, "Writer is closed.");
 			}
 
-			if (_sb.Length > 0)
+			if (_builder.Length > 0)
 			{
 				if (_useTaskLogger)
 				{
-					_task.Log(Level.Info, _sb.ToString());
+					_task.Log(Level.Info, _builder.ToString());
 				}
 				else
 				{
-					Console.WriteLine(_sb.ToString());
+					Console.WriteLine(_builder.ToString());
 				}
 
-				_sb.Length = 0;
+				_builder.Length = 0;
 			}
 		}
 	}

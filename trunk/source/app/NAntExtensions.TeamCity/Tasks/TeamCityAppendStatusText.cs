@@ -24,7 +24,7 @@ using NAnt.Core.Attributes;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-appendstatustext")]
-	public class TeamCityAppendStatusText : TeamCityBuildLogTaskBase
+	public class TeamCityAppendStatusText : TeamCityBuildLogTask
 	{
 		[TaskAttribute("value")]
 		public string Value
