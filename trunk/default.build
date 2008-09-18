@@ -226,9 +226,9 @@
 						report-filename-format="${path::get-file-name-without-extension(testproject)}"
 						report-output-directory="${basedir.test.results}"
 						verbose="true"
-						workingdir="${path::get-directory-name(testproject)}\bin\${build.configuration}">
+						workingdir="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}">
 					<assemblies>
-						<include name="${path::get-directory-name(testproject)}\bin\${build.configuration}\${path::get-file-name-without-extension(testproject)}.dll" />
+						<include name="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}\${path::get-file-name-without-extension(testproject)}.dll" />
 					</assemblies>
 				</mbunit>
 			</do>
@@ -266,7 +266,7 @@
 				<ncover program="${tools.ncover}\NCover.Console.exe"
 						commandLineExe="${tools.mbunit}\MbUnit.Cons.exe"
 						commandLineArgs='/verbose+ /report-folder:"${basedir.test.results}" /report-name-format:"${path::get-file-name-without-extension(testproject)}" /report-type:html "${path::get-file-name-without-extension(testproject)}.dll"'
-						workingDirectory="${path::get-directory-name(testproject)}\bin\${build.configuration}"
+						workingDirectory="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}"
 						coverageFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.xml"
 						logLevel="Normal"
 						logFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.log"
