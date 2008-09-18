@@ -11,19 +11,24 @@ namespace NAntExtensions.TeamCity.Tasks
 		[TaskAttribute("type", Required = false)]
 		public StatusType StatusType
 		{
-			private get;
+			get;
 			set;
 		}
 
 		[TaskAttribute("message", Required = false)]
 		public string Message
 		{
-			private get;
+			get;
 			set;
 		}
 
 		protected override void ExecuteTask()
 		{
+			if (!ShouldSkipTaskExecution)
+			{
+				return;
+			}
+
 			Log(Level.Verbose, "Reporting build status. Type={0}, Message={1}", StatusType, Message);
 			// TODO
 			//TeamCityReporter.RenderToLog(this,

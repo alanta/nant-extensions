@@ -11,19 +11,24 @@ namespace NAntExtensions.TeamCity.Tasks
 		[TaskAttribute("type", Required = false)]
 		public ProgressType ProgressType
 		{
-			private get;
+			get;
 			set;
 		}
 
 		[TaskAttribute("message", Required = false)]
 		public string Message
 		{
-			private get;
+			get;
 			set;
 		}
 
 		protected override void ExecuteTask()
 		{
+			if (!ShouldSkipTaskExecution)
+			{
+				return;
+			}
+
 			Log(Level.Verbose, "Reporting progress. Type={0}, Message={1}", ProgressType, Message);
 			// TODO
 			//switch (ProgressType)

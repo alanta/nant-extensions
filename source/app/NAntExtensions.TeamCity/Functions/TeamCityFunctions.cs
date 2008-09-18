@@ -5,7 +5,7 @@ using NAntExtensions.TeamCity.Common;
 
 namespace NAntExtensions.TeamCity.Functions
 {
-	[FunctionSet("teamcity", "Assembly")]
+	[FunctionSet("teamcity", "TeamCity")]
 	public class TeamCityFunctions : FunctionSetBase
 	{
 		public TeamCityFunctions(Project project, PropertyDictionary properties) : base(project, properties)

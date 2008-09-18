@@ -42,14 +42,19 @@ namespace NAntExtensions.TeamCity.Tasks
 
 		protected override void ExecuteTask()
 		{
-			Log(Level.Info, "Writing '{0}={1}' to '{2}'", new object[] { Key, Value, TeamCityInfoPath });
+			if (!ShouldSkipTaskExecution)
+			{
+				return;
+			}
 
-			XmlDocument teamCityLogXml = GetTeamCityLogXml();
-			XmlElement buildNode = GetBuildNode(teamCityLogXml);
-			XmlElement newChild = CreateStatisticValueNode(teamCityLogXml, Key, Value);
+			Log(Level.Info, "Writing '{0}={1}' to '{2}'", Key, Value, TeamCityInfoPath);
+
+			XmlDocument teamCityInfo = LoadTeamCityInfo();
+			XmlElement buildNode = GetBuildNode(teamCityInfo);
+			XmlElement newChild = CreateStatisticValueNode(teamCityInfo, Key, Value);
 
 			buildNode.AppendChild(newChild);
-			SaveTeamCityLogXml(teamCityLogXml);
+			SaveTeamCityInfo(teamCityInfo);
 		}
 	}
 }
