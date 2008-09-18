@@ -21,6 +21,8 @@ namespace NAntExtensions.Machine.Specifications
 	[TaskName("mspec")]
 	public class MachineSpecificationsTask : Task
 	{
+		DirectoryInfo _workingDirectory;
+
 		[BuildElementArray("assemblies", Required = true, ElementType = typeof(FileSet))]
 		public FileSet[] Assemblies
 		{
@@ -42,42 +44,66 @@ namespace NAntExtensions.Machine.Specifications
 			set;
 		}
 
+		[TaskAttribute("workingdir")]
+		public DirectoryInfo WorkingDirectory
+		{
+			get
+			{
+				if (_workingDirectory == null)
+				{
+					return new DirectoryInfo(Environment.CurrentDirectory);
+				}
+				return _workingDirectory;
+			}
+			set { _workingDirectory = value; }
+		}
+
 		protected override void ExecuteTask()
 		{
-			NAntRunListener nantRunListener = new NAntRunListener(this);
-
+			string originalWorkingDirectory = Environment.CurrentDirectory;
 			try
 			{
-				List<ISpecificationRunListener> listeners = SetUpListeners();
-				listeners.Add(nantRunListener);
+				Environment.CurrentDirectory = WorkingDirectory.FullName;
 
-				AggregateRunListener rootListener = new AggregateRunListener(listeners);
-				SpecificationRunner runner = new SpecificationRunner(rootListener);
+				NAntRunListener nantRunListener = new NAntRunListener(this);
 
-				foreach (FileSet assemblySet in Assemblies)
+				try
 				{
-					Log(Level.Info, "Loading {0} assemblies", assemblySet.FileNames.Count);
+					List<ISpecificationRunListener> listeners = SetUpListeners();
+					listeners.Add(nantRunListener);
 
-					foreach (string assemblyName in assemblySet.FileNames)
+					AggregateRunListener rootListener = new AggregateRunListener(listeners);
+					SpecificationRunner runner = new SpecificationRunner(rootListener);
+
+					foreach (FileSet assemblySet in Assemblies)
 					{
-						Log(Level.Info, "\tAssemblyName: {0}", assemblyName);
+						Log(Level.Info, "Loading {0} assemblies", assemblySet.FileNames.Count);
 
-						Assembly assembly = Assembly.LoadFrom(assemblyName);
-						runner.RunAssembly(assembly);
+						foreach (string assemblyName in assemblySet.FileNames)
+						{
+							Log(Level.Info, "\tAssemblyName: {0}", assemblyName);
+
+							Assembly assembly = Assembly.LoadFrom(assemblyName);
+							runner.RunAssembly(assembly);
+						}
 					}
+
+					Log(Level.Info, "Finished running specs");
+				}
+				catch (Exception exception)
+				{
+					Log(Level.Error, exception.ToString());
+					throw new BuildException("Specification run failed", exception);
 				}
 
-				Log(Level.Info, "Finished running specs");
+				if (nantRunListener.FailureOccured)
+				{
+					throw new BuildException("Specification run failed");
+				}
 			}
-			catch (Exception exception)
+			finally
 			{
-				Log(Level.Error, exception.ToString());
-				throw new BuildException("Specification run failed", exception);
-			}
-
-			if (nantRunListener.FailureOccured)
-			{
-				throw new BuildException("Specification run failed");
+				Environment.CurrentDirectory = originalWorkingDirectory;
 			}
 		}
 
