@@ -47,7 +47,8 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="BuildEnvironment.cs" />
-    <Compile Include="LogWriter.cs" />
+    <Compile Include="Messaging\Formatter.cs" />
+    <Compile Include="Messaging\TeamCityLogWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyDictionaryHelper.cs" />
     <Compile Include="Messaging\TeamCityMessaging.cs" />

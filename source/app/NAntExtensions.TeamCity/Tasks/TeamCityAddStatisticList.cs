@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 // Copyright (c) 2008, Bluewire Technologies Ltd.
 // All rights reserved.
 // 
@@ -24,7 +24,7 @@ using NAnt.Core.Attributes;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-addstatisticlist")]
-	public class TeamCityAddStatisticList : TeamCityBuildLogTaskBase
+	public class TeamCityAddStatisticList : TeamCityBuildLogTask
 	{
 		[TaskAttribute("keyValuePairs")]
 		public string KeyValuePairs
@@ -48,7 +48,7 @@ namespace NAntExtensions.TeamCity.Tasks
 
 		protected override void ExecuteTask()
 		{
-			if (!ShouldSkipTaskExecution)
+			if (ShouldSkipTaskExecution)
 			{
 				return;
 			}

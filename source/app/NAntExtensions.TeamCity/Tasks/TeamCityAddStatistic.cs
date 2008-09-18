@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 // Copyright (c) 2008, Bluewire Technologies Ltd.
 // All rights reserved.
 // 
@@ -24,7 +24,7 @@ using NAnt.Core.Attributes;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-addstatistic")]
-	public class TeamCityAddStatistic : TeamCityBuildLogTaskBase
+	public class TeamCityAddStatistic : TeamCityBuildLogTask
 	{
 		[TaskAttribute("key", Required = true)]
 		public string Key

@@ -14,8 +14,6 @@ using NAntExtensions.Machine.Specifications.RunListeners;
 using NAntExtensions.TeamCity.Common;
 using NAntExtensions.TeamCity.Common.Messaging;
 
-using LogWriter=Alanta.MbUnit.Tasks.TeamCity.LogWriter;
-
 namespace NAntExtensions.Machine.Specifications
 {
 	[TaskName("mspec")]
@@ -122,7 +120,7 @@ namespace NAntExtensions.Machine.Specifications
 			{
 				TeamCityRunListener teamCity =
 					new TeamCityRunListener(
-						new TeamCityMessaging(new LogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this))));
+						new TeamCityMessaging(new TeamCityLogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this))));
 				result.Add(teamCity);
 			}
 

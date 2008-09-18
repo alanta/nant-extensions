@@ -6,7 +6,7 @@ using NAntExtensions.TeamCity.Types;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-buildstatus")]
-	public class TeamCityBuildStatus : TeamCityBuildLogTaskBase
+	public class TeamCityBuildStatus : TeamCityBuildLogTask
 	{
 		[TaskAttribute("type", Required = false)]
 		public StatusType StatusType
@@ -30,11 +30,8 @@ namespace NAntExtensions.TeamCity.Tasks
 			}
 
 			Log(Level.Verbose, "Reporting build status. Type={0}, Message={1}", StatusType, Message);
-			// TODO
-			//TeamCityReporter.RenderToLog(this,
-			//                             "##teamcity[buildStatus status='{0}' text='{1}']",
-			//                             StatusType.ToString().ToUpper(),
-			//                             Message);
+
+			Messaging.Message("##teamcity[buildStatus status='{0}' text='{1}']", StatusType.ToString().ToUpperInvariant(), Message);
 		}
 	}
 }

@@ -1,3 +1,5 @@
+using System;
+
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
@@ -6,7 +8,7 @@ using NAntExtensions.TeamCity.Types;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-progress")]
-	public class TeamCityProgress : TeamCityBuildLogTaskBase
+	public class TeamCityProgress : TeamCityTask
 	{
 		[TaskAttribute("type", Required = false)]
 		public ProgressType ProgressType
@@ -30,19 +32,21 @@ namespace NAntExtensions.TeamCity.Tasks
 			}
 
 			Log(Level.Verbose, "Reporting progress. Type={0}, Message={1}", ProgressType, Message);
-			// TODO
-			//switch (ProgressType)
-			//{
-			//    case ProgressType.Message:
-			//        TeamCityReporter.RenderToLog(this, "##teamcity[progressMessage '{0}']", Message);
-			//        break;
-			//    case ProgressType.Start:
-			//        TeamCityReporter.RenderToLog(this, "##teamcity[progressStart '{0}']", Message);
-			//        break;
-			//    case ProgressType.End:
-			//        TeamCityReporter.RenderToLog(this, "##teamcity[progressFinish '{0}']", Message);
-			//        break;
-			//}
+			
+			switch (ProgressType)
+			{
+				case ProgressType.Message:
+					Messaging.Message("##teamcity[progressMessage '{0}']", Message);
+					break;
+				case ProgressType.Start:
+					Messaging.Message("##teamcity[progressStart '{0}']", Message);
+					break;
+				case ProgressType.End:
+					Messaging.Message("##teamcity[progressFinish '{0}']", Message);
+					break;
+				default:
+					throw new BuildException(String.Format("Unknown progress type: '{0}'", ProgressType));
+			}
 		}
 	}
 }
