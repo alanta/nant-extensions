@@ -139,14 +139,35 @@
 		<tc-progress message="Building application"
 					 type="Start" />
 
-		<!--<msbuild project="${basedir.app}\Synexus.WebSite.BusinessLogic\Synexus.WebSite.BusinessLogic.csproj"
+		<!-- MbUnit. -->
+		<msbuild project="${basedir.app}\NAntExtensions.MbUnit\NAntExtensions.MbUnit.csproj"
 				 target="${build.msbuild.target}"
 				 verbosity="${build.msbuild.verbosity}">
 			<arg value="/p:Configuration=${build.msbuild.configuration}" />
 			<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
 			<arg value="/p:BuildRunner=${build.runner}" />
 			<arg value="/maxcpucount" />
-		</msbuild>-->
+		</msbuild>
+
+		<!-- Machine.Specifications. -->
+		<msbuild project="${basedir.app}\NAntExtensions.Machine.Specifications\NAntExtensions.Machine.Specifications.csproj"
+				 target="${build.msbuild.target}"
+				 verbosity="${build.msbuild.verbosity}">
+			<arg value="/p:Configuration=${build.msbuild.configuration}" />
+			<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
+			<arg value="/p:BuildRunner=${build.runner}" />
+			<arg value="/maxcpucount" />
+		</msbuild>
+
+		<!-- Machine.Specifications. -->
+		<msbuild project="${basedir.app}\NAntExtensions.TeamCity\NAntExtensions.TeamCity.csproj"
+				 target="${build.msbuild.target}"
+				 verbosity="${build.msbuild.verbosity}">
+			<arg value="/p:Configuration=${build.msbuild.configuration}" />
+			<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
+			<arg value="/p:BuildRunner=${build.runner}" />
+			<arg value="/maxcpucount" />
+		</msbuild>
 
 		<tc-progress message="Building application"
 					 type="End" />
@@ -197,13 +218,15 @@
 				<items refid="test-projects" />
 			</in>
 			<do>
-				<mspec report-directory="${basedir.test.results}"
-					   report-filename="${path::get-file-name-without-extension(testproject)}.html"
-					   verbose="true">
+				<mbunit report-types="html"
+						report-filename-format="${path::get-file-name-without-extension(testproject)}"
+						report-output-directory="${basedir.test.results}"
+						verbose="true"
+						workingdir="${path::get-directory-name(testproject)}\bin\${build.configuration}">
 					<assemblies>
-						<include name="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}\${path::get-file-name-without-extension(testproject)}.dll" />
+						<include name="${path::get-directory-name(testproject)}\bin\${build.configuration}\${path::get-file-name-without-extension(testproject)}.dll" />
 					</assemblies>
-				</mspec>
+				</mbunit>
 			</do>
 		</foreach>
 
@@ -233,9 +256,9 @@
 			</in>
 			<do>
 				<ncover program="${tools.ncover}\NCover.Console.exe"
-						commandLineExe="${tools.mspec}\mspec-runner.exe"
-						commandLineArgs='"${path::get-file-name-without-extension(testproject)}.dll"'
-						workingDirectory="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}"
+						commandLineExe="${tools.mbunit}\MbUnit.Cons.exe"
+						commandLineArgs='/verbose+ /report-folder:"${basedir.test.results}" /report-name-format:"${path::get-file-name-without-extension(testproject)}" /report-type:html "${path::get-file-name-without-extension(testproject)}.dll"'
+						workingDirectory="${path::get-directory-name(testproject)}\bin\${build.configuration}"
 						coverageFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.xml"
 						logLevel="Normal"
 						logFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.log"
@@ -312,7 +335,7 @@
 
 		<gcupload username="${googlecode.username}"
 				  password="${googlecode.password}"
-				  filename="${basedir.deployment.artifacts}\${project::get-name()}-${build.number}.zip"
+				  filename="${basedir.deployment.artifacts}\${project::get-name()}-${build.artifacts.suffix}.zip"
 				  targetfilename="${project::get-name()}-${build.number}.zip"
 				  summary="${project::get-name()}-${build.number}"
 				  projectname="${project::get-name()}"/>
