@@ -6,7 +6,7 @@ namespace NAntExtensions.TeamCity.Common
 {
 	public class BuildEnvironment
 	{
-		public static bool IsRunningInsideTeamCity
+		public static bool IsTeamCityBuild
 		{
 			get { return Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null; }
 		}

@@ -92,7 +92,7 @@ namespace NAntExtensions.Machine.Specifications
 				result.Add(htmlReport);
 			}
 
-			if (BuildEnvironment.IsRunningInsideTeamCity)
+			if (BuildEnvironment.IsTeamCityBuild)
 			{
 				TeamCityRunListener teamCity =
 					new TeamCityRunListener(

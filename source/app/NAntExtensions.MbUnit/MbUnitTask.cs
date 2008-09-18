@@ -191,7 +191,7 @@ namespace NAntExtensions.MbUnit
 						break;
 				}
 
-				if (BuildEnvironment.IsRunningInsideTeamCity)
+				if (BuildEnvironment.IsTeamCityBuild)
 				{
 					TeamCityReport.RenderToLog(_result, this);
 				}
