@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("NAntExtensions.Machine.Specifications")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("NAnt tasks for Machine.Specifications")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

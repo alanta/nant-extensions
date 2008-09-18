@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("NAntExtensions.MbUnit")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("NAnt tasks for MbUnit")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

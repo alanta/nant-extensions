@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("NAntExtensions.TeamCity.Common")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Common base functionality for TeamCity NAnt tasks")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
