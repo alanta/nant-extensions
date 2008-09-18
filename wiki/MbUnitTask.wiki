@@ -1,0 +1,35 @@
+#summary NAnt task for MbUnit with TeamCity support.
+
+= Introduction =
+
+TeamCity currently does not support the MbUnit test framework out of the box. This task integrates MbUnit test results into the TeamCity build results.
+The task is based on the NAnt task that comes with MbUnit, but extended to check if it is running within a TeamCity build. If so, the task will output test results to TeamCity. The test results will show up in the project statistics. Detailed test results will also be available.
+
+= Using the task in a build =
+ * Copy the NAnt-Extensions assemblies to your preferred location.
+
+ * Load the MbUnit task in your NAnt build script:
+  {{{
+  <loadtasks assembly="path-to-custom-tasks/NAntExtensions.MbUnit.dll">
+  }}}
+
+ * Run your tests with the MbUnit task. For example:
+{{{
+  <property name="mbunit-report-type" value="Html" overwrite="false" /> 
+  ...
+  <target name="test">
+    ...
+    <mbunit types="${mbunit-report-type}"
+       report-output-directory="TestResults"
+       halt-on-failure="false">
+       <assemblies>
+         <include name="MyProject.*.dll" />
+       </assemblies>
+    </mbunit>
+  </target>
+}}}
+
+Note that the task will automatically detect if it is running inside TeamCity. If not, the task will behave exactly the same as the NAnt task that comes with MbUnit. This means you can also use this task when building on your development system.
+
+= Known issues =
+Due to the way MbUnit logs it's test results the timing information for the tests shown by TeamCity is not valid.
