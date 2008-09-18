@@ -87,6 +87,8 @@
 		<tc-progress message="Cleaning up"
 					 type="Start" />
 
+		<delete file="teamcity-info.xml"
+				failonerror="false" />
 		<delete dir="${basedir.deployment.artifacts}"
 				failonerror="false" />
 		<delete dir="${basedir.temp}"
@@ -204,6 +206,7 @@
 		</foreach>
 
 		<mkdir dir="${basedir.test.results}"/>
+		<mbunit-initcounters />
 	</target>
 
 	<target name="run-tests"
@@ -230,14 +233,18 @@
 			</do>
 		</foreach>
 
-		<if test="${environment::variable-exists('TEAMCITY_PROJECT_NAME')}">
-			<tc-addstatistic key="MSpecContexts"
-							 value="${mspec.contexts}"/>
-			<tc-addstatistic key="MSpecSpecs"
-							 value="${mspec.specs}"/>
-			<tc-addstatistic key="MSpecFailedSpecs"
-							 value="${mspec.failedspecs}"/>
-		</if>
+		<tc-addstatistic key="MbUnitAsserts"
+						 value="${mbunit.asserts}"/>
+		<tc-addstatistic key="MbUnitFailedTests"
+						 value="${mbunit.failures}"/>
+		<tc-addstatistic key="MbUnitIgnoredTests"
+						 value="${mbunit.ignored}"/>
+		<tc-addstatistic key="MbUnitRunTests"
+						 value="${mbunit.run}"/>
+		<tc-addstatistic key="MbUnitSkippedTests"
+						 value="${mbunit.skipped}"/>
+		<tc-addstatistic key="MbUnitPassedTests"
+						 value="${mbunit.successes}"/>
 
 		<tc-progress message="Running tests"
 					 type="End" />

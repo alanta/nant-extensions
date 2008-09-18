@@ -24,7 +24,7 @@ namespace NAntExtensions.TeamCity.Tasks
 
 		protected override void ExecuteTask()
 		{
-			if (!ShouldSkipTaskExecution)
+			if (ShouldSkipTaskExecution)
 			{
 				return;
 			}
