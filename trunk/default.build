@@ -179,6 +179,7 @@
 	________________________________________________________________________________________________________________ -->
 	<fileset id="test-projects">
 		<include name="${basedir.test}\**\*.csproj" />
+		<exclude name="${basedir.test}\**\*ForTesting.csproj"/>
 	</fileset>
 
 	<fileset id="coverage-assemblies"
