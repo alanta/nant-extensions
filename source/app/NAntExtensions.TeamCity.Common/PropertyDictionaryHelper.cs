@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Globalization;
+
 using NAnt.Core;
 
 namespace NAntExtensions.TeamCity.Common
@@ -13,7 +16,19 @@ namespace NAntExtensions.TeamCity.Common
 			}
 
 			parsedValue += value;
-			instance[key] = parsedValue.ToString();
+			instance[key] = parsedValue.ToString(CultureInfo.InvariantCulture);
+		}
+		
+		public static void SetInt(PropertyDictionary instance, string key, int value)
+		{
+			if (instance.Contains(key))
+			{
+				instance[key] = value.ToString();
+			}
+			else
+			{
+				instance.Add(key, value.ToString(CultureInfo.InvariantCulture));
+			}
 		}
 	}
 }
