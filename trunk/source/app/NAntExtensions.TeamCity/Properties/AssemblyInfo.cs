@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("NAntExtensions.TeamCity")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("NAnt tasks for TeamCity integration")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
