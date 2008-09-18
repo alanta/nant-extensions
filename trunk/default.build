@@ -308,10 +308,15 @@
 		<tc-progress message="Building setup"
 					 type="Start" />
 
+		<zipfileset id="license">
+			<include name="License.txt" />
+		</zipfileset>
+
 		<!-- MbUnit. -->
 		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-MbUnit-${build.artifacts.suffix}.zip"
 			 ziplevel="9"
 			 duplicate="Preserve">
+			<fileset refid="license" />
 			<fileset basedir="${basedir.app}\NAntExtensions.MbUnit\bin\${build.msbuild.configuration}"
 					 prefix="extensions\common\neutral\MbUnit">
 				<include name="NAntExtensions*.dll" />
@@ -330,6 +335,7 @@
 		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-Machine.Specifications-${build.artifacts.suffix}.zip"
 			 ziplevel="9"
 			 duplicate="Preserve">
+			<fileset refid="license" />
 			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
 					 prefix="extensions\common\2.0\Machine.Specifications">
 				<include name="NAntExtensions*.dll" />
@@ -345,6 +351,10 @@
 		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-TeamCity-${build.artifacts.suffix}.zip"
 			 ziplevel="9"
 			 duplicate="Preserve">
+			<fileset refid="license" />
+			<fileset basedir="${basedir.app}\NAntExtensions.TeamCity" >
+				<include name="License-BlueWireTechnologies.txt" />
+			</fileset>
 			<fileset basedir="${basedir.app}\NAntExtensions.TeamCity\bin\${build.msbuild.configuration}"
 					 prefix="extensions\common\2.0\TeamCity">
 				<include name="NAntExtensions*.dll" />

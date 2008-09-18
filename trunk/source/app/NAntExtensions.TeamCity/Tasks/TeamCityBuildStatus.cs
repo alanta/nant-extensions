@@ -1,7 +1,6 @@
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
-using NAntExtensions.TeamCity.Tasks;
 using NAntExtensions.TeamCity.Types;
 
 namespace NAntExtensions.TeamCity.Tasks
