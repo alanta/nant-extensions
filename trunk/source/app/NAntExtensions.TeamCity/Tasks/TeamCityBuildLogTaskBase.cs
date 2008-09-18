@@ -16,11 +16,14 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
+using System;
 using System.IO;
 using System.Xml;
 
 using NAnt.Core;
 using NAnt.Core.Attributes;
+
+using NAntExtensions.TeamCity.Common;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
@@ -31,15 +34,43 @@ namespace NAntExtensions.TeamCity.Tasks
 		[TaskAttribute("teamCityInfoPath")]
 		public string TeamCityInfoPath
 		{
-			protected get
+			get
 			{
-				if (string.IsNullOrEmpty(_teamCityInfoPath))
+				if (String.IsNullOrEmpty(_teamCityInfoPath))
 				{
 					_teamCityInfoPath = GetDefaultTeamCityInfoPath();
 				}
 				return _teamCityInfoPath;
 			}
 			set { _teamCityInfoPath = value; }
+		}
+
+		[TaskAttribute("force")]
+		[BooleanValidator]
+		public bool ForceTaskExecution
+		{
+			get;
+			set;
+		}
+
+		protected bool ShouldSkipTaskExecution
+		{
+			get
+			{
+				if (ForceTaskExecution)
+				{
+					Log(Level.Verbose, "Not running as part of a TeamCity build. Forced task execution.");
+					return false;
+				}
+
+				if (!BuildEnvironment.IsTeamCityBuild)
+				{
+					Log(Level.Verbose,
+					    "Not running as part of a TeamCity build. Skipping task execution. Force task execution by setting the 'force' attribute to 'true'.");
+				}
+
+				return !BuildEnvironment.IsTeamCityBuild;
+			}
 		}
 
 		protected static XmlElement CreateStatisticValueNode(XmlDocument doc, string key, string value)
@@ -63,18 +94,16 @@ namespace NAntExtensions.TeamCity.Tasks
 
 		protected string GetDefaultTeamCityInfoPath()
 		{
-			string checkoutDir = Properties["teamcity.build.checkoutDir"];
-
-			if (string.IsNullOrEmpty(checkoutDir))
+			if (!Properties.Contains("teamcity.build.checkoutDir"))
 			{
 				return "teamcity-info.xml";
-				//throw new BuildException(
-				//    "Could not find the teamcity.build.checkoutDir property which must be specified if you don't explicitly set the 'teamCityInfoPath' attribute - is this a TeamCity build?");
 			}
+			
+			string checkoutDir = Properties["teamcity.build.checkoutDir"];
 			return Path.Combine(checkoutDir, "teamcity-info.xml");
 		}
 
-		protected XmlDocument GetTeamCityLogXml()
+		protected XmlDocument LoadTeamCityInfo()
 		{
 			XmlDocument document = new XmlDocument();
 			if (File.Exists(TeamCityInfoPath))
@@ -84,7 +113,7 @@ namespace NAntExtensions.TeamCity.Tasks
 			return document;
 		}
 
-		protected void SaveTeamCityLogXml(XmlDocument teamCityInfoXml)
+		protected void SaveTeamCityInfo(XmlDocument teamCityInfoXml)
 		{
 			teamCityInfoXml.Save(TeamCityInfoPath);
 		}
