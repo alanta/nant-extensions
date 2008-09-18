@@ -22,10 +22,10 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		{
 			return String.Format("{0} {1}", context.FullName, specification.Name);
 		}
-		
+
 		internal static string GetContextSpecNameWithFormat(Context context, Specification specification)
 		{
-			return String.Format("{0}\n    \x00bb {1}", context.FullName, specification.Name);
+			return String.Format("{0}{1}    \x00bb {2}", context.FullName, Environment.NewLine, specification.Name);
 		}
 	}
 }

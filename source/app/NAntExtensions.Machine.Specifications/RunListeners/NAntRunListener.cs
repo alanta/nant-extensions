@@ -41,7 +41,10 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 
 		public void OnRunEnd()
 		{
-			string summary = String.Format("\nContexts: {0}, Specifications: {1}", _contextCount, _specificationCount);
+			string summary = String.Format("{0}Contexts: {1}, Specifications: {2}",
+			                               Environment.NewLine,
+			                               _contextCount,
+			                               _specificationCount);
 			if (_failedSpecificationCount > 0)
 			{
 				summary = summary + String.Format(" ({0} failed)", _failedSpecificationCount);
@@ -54,7 +57,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 
 		public void OnAssemblyStart(Assembly assembly)
 		{
-			_task.Log(Level.Info, String.Format("\nSpecs in {0}:", assembly.GetName().Name));
+			_task.Log(Level.Info, String.Format("{0}Specs in {1}:", Environment.NewLine, assembly.GetName().Name));
 		}
 
 		public void OnAssemblyEnd(Assembly assembly)
@@ -65,7 +68,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		{
 			base.OnContextStart(context);
 
-			_task.Log(Level.Verbose, String.Format("\n{0}", context.FullName));
+			_task.Log(Level.Verbose, String.Format("{0}{1}", Environment.NewLine, context.FullName));
 		}
 
 		public override void OnContextEnd(Context context)
@@ -91,7 +94,10 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 				string line = result.Exception.ToString();
 				if (!_task.Verbose)
 				{
-					line = String.Format("{0}\n{1}", GetContextSpecNameWithFormat(_currentContext, specification), line);
+					line = String.Format("{0}{1}{2}",
+					                     GetContextSpecNameWithFormat(_currentContext, specification),
+					                     Environment.NewLine,
+					                     line);
 				}
 
 				_task.Log(Level.Error, line);
