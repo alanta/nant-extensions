@@ -16,12 +16,12 @@ namespace NAntExtensions.Machine.Specifications.Tests
 {
 	public class When_tests_that_write_to_the_console_are_run : Spec
 	{
-		const string ConsoleOutMessage = "Console.Out: foo bar baz";
 		const string ConsoleErrorMessage = "Console.Error: foo bar baz";
+		const string ConsoleOutMessage = "Console.Out: foo bar baz";
 		FieldInfo _fieldInfo;
 		TeamCityRunListener _listener;
-		ITeamCityMessaging _teamCityMessaging;
 		Specification _specification;
+		ITeamCityMessaging _teamCityMessaging;
 
 		protected override void Before_each_spec()
 		{
@@ -37,7 +37,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		}
 
 		[Test]
-		public void Should_log_the_Console_Out_stream_to_TeamCity()
+		public void Should_report_the_Console_Out_stream_to_TeamCity()
 		{
 			using (Mocks.Record())
 			{
@@ -54,12 +54,30 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult());
 			}
 		}
+
 		[Test]
-		public void Should_log_the_Console_Error_stream_to_TeamCity()
+		public void Should_not_report_the_Console_Out_stream_to_TeamCity_if_the_stream_is_empty()
 		{
 			using (Mocks.Record())
 			{
 				_teamCityMessaging.TestOutputStream(null, null);
+				LastCall.IgnoreArguments().Repeat.Never();
+			}
+
+			_listener.OnSpecificationStart(_specification);
+
+			using (Mocks.Playback())
+			{
+				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult());
+			}
+		}
+
+		[Test]
+		public void Should_report_the_Console_Error_stream_to_TeamCity()
+		{
+			using (Mocks.Record())
+			{
+				_teamCityMessaging.TestErrorStream(null, null);
 				LastCall.Constraints(Is.Anything(), Is.Equal(ConsoleErrorMessage));
 			}
 
@@ -69,6 +87,23 @@ namespace NAntExtensions.Machine.Specifications.Tests
 			{
 				Console.Error.Write(ConsoleErrorMessage);
 
+				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult());
+			}
+		}
+
+		[Test]
+		public void Should_not_report_the_Console_Error_stream_to_TeamCity_if_the_stream_is_empty()
+		{
+			using (Mocks.Record())
+			{
+				_teamCityMessaging.TestErrorStream(null, null);
+				LastCall.IgnoreArguments().Repeat.Never();
+			}
+
+			_listener.OnSpecificationStart(_specification);
+
+			using (Mocks.Playback())
+			{
 				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult());
 			}
 		}

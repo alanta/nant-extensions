@@ -64,6 +64,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="When_TeamCity_monitors_the_test_progress.cs" />
     <Compile Include="When_tests_that_write_to_the_console_are_run.cs" />
   </ItemGroup>
   <ItemGroup>
