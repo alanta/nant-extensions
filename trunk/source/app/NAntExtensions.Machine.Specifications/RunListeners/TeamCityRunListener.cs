@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Reflection;
 
 using Machine.Specifications.Model;
@@ -10,9 +11,13 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 {
 	internal class TeamCityRunListener : RunListener, ISpecificationRunListener
 	{
-		readonly TeamCityMessaging _messaging;
+		readonly ITeamCityMessaging _messaging;
+		TextWriter _consoleOut;
+		StringWriter _testConsoleOut;
+		TextWriter _consoleError;
+		StringWriter _testConsoleError;
 
-		public TeamCityRunListener(TeamCityMessaging messaging)
+		public TeamCityRunListener(ITeamCityMessaging messaging)
 		{
 			if (messaging == null)
 			{
@@ -44,10 +49,24 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		public void OnSpecificationStart(Specification specification)
 		{
 			_messaging.TestStarted(GetContextSpecName(_currentContext, specification));
+
+			_consoleOut = Console.Out;
+			_testConsoleOut = new StringWriter();
+			Console.SetOut(_testConsoleOut);
+
+
+			_consoleError = Console.Error;
+			_testConsoleError= new StringWriter();
+			Console.SetError(_testConsoleError);
 		}
 
 		public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
 		{
+			Console.SetOut(_consoleOut);
+			Console.SetError(_consoleError);
+			_testConsoleOut.Flush();
+			_testConsoleError.Flush();
+			
 			string specName = GetContextSpecName(_currentContext, specification);
 
 			if (!result.Passed)
@@ -55,7 +74,8 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 				_messaging.TestFailed(specName, result.Exception);
 			}
 
-			// TODO: Read contents of stdout and stderr and report to TeamCity.
+			_messaging.TestOutputStream(specName, _testConsoleOut.ToString());
+			_messaging.TestOutputStream(specName, _testConsoleError.ToString());
 
 			_messaging.TestFinished(specName);
 		}
