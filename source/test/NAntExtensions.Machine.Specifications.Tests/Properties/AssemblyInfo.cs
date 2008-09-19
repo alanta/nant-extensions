@@ -1,13 +1,12 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("NAntExtensions.Machine.Specifications")]
-[assembly: AssemblyDescription("NAnt tasks for Machine.Specifications")]
+[assembly: AssemblyTitle("NAntExtensions.Machine.Specifications.Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,6 +19,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("8edaa7ed-82ec-4358-95f6-636809fd9c64")]
-
-[assembly: InternalsVisibleTo("NAntExtensions.Machine.Specifications.Tests")]
+[assembly: Guid("6fc6120c-91c8-453c-a172-968e71c21fe3")]

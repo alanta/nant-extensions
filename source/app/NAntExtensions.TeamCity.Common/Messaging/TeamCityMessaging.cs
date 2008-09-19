@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
-	public class TeamCityMessaging
+	public class TeamCityMessaging : ITeamCityMessaging
 	{
 		readonly TextWriter _writer;
 
