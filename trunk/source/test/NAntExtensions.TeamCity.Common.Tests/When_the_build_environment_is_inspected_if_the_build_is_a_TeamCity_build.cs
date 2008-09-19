@@ -16,6 +16,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		}
 
 		[Test]
+		[Explicit("Won't pass in a TeamCity build.")]
 		public void Should_report_a_normal_build_if_TeamCity_environment_variable_does_not_exist()
 		{
 			Assert.IsFalse(BuildEnvironment.IsTeamCityBuild);
