@@ -13,7 +13,12 @@ namespace NAntExtensions.TeamCity.Common
 
 		public static bool IsRunningWithTeamCityNAntRunner(Task task)
 		{
-			return task.Properties.Contains("agent.name");
+			if (task == null)
+			{
+				throw new ArgumentNullException("task");
+			}
+
+			return task.Properties != null && task.Properties.Contains("agent.name");
 		}
 	}
 }

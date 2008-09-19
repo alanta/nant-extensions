@@ -8,11 +8,6 @@ namespace NAntExtensions.TeamCity.Tasks
 {
 	public abstract class TeamCityTask : Task
 	{
-		protected TeamCityTask()
-		{
-			Messaging = new TeamCityMessaging(new TeamCityLogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this)));
-		}
-
 		[TaskAttribute("force")]
 		[BooleanValidator]
 		public bool ForceTaskExecution
@@ -43,8 +38,7 @@ namespace NAntExtensions.TeamCity.Tasks
 
 		protected TeamCityMessaging Messaging
 		{
-			get;
-			private set;
+			get { return new TeamCityMessaging(new TeamCityLogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this))); }
 		}
 	}
 }
