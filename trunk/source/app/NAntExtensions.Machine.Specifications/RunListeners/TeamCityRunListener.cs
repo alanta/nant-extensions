@@ -12,10 +12,10 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 	internal class TeamCityRunListener : RunListener, ISpecificationRunListener
 	{
 		readonly ITeamCityMessaging _messaging;
-		TextWriter _consoleOut;
-		StringWriter _testConsoleOut;
 		TextWriter _consoleError;
+		TextWriter _consoleOut;
 		StringWriter _testConsoleError;
+		StringWriter _testConsoleOut;
 
 		public TeamCityRunListener(ITeamCityMessaging messaging)
 		{
@@ -54,30 +54,53 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 			_testConsoleOut = new StringWriter();
 			Console.SetOut(_testConsoleOut);
 
-
 			_consoleError = Console.Error;
-			_testConsoleError= new StringWriter();
+			_testConsoleError = new StringWriter();
 			Console.SetError(_testConsoleError);
 		}
 
 		public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
 		{
-			Console.SetOut(_consoleOut);
-			Console.SetError(_consoleError);
-			_testConsoleOut.Flush();
-			_testConsoleError.Flush();
-			
-			string specName = GetContextSpecName(_currentContext, specification);
-
-			if (!result.Passed)
+			try
 			{
-				_messaging.TestFailed(specName, result.Exception);
+				Console.SetOut(_consoleOut);
+				Console.SetError(_consoleError);
+				_testConsoleOut.Flush();
+				_testConsoleError.Flush();
+
+				string specName = GetContextSpecName(_currentContext, specification);
+
+				if (!result.Passed)
+				{
+					_messaging.TestFailed(specName, result.Exception);
+				}
+
+				string stdStream = _testConsoleOut.ToString();
+				if (!String.IsNullOrEmpty(stdStream))
+				{
+					_messaging.TestOutputStream(specName, stdStream);
+				}
+
+				string errorStream = _testConsoleError.ToString();
+				if (!String.IsNullOrEmpty(errorStream))
+				{
+					_messaging.TestErrorStream(specName, errorStream);
+				}
+
+				_messaging.TestFinished(specName);
 			}
+			finally
+			{
+				if (_testConsoleOut != null)
+				{
+					_testConsoleOut.Dispose();
+				}
 
-			_messaging.TestOutputStream(specName, _testConsoleOut.ToString());
-			_messaging.TestOutputStream(specName, _testConsoleError.ToString());
-
-			_messaging.TestFinished(specName);
+				if (_testConsoleError != null)
+				{
+					_testConsoleError.Dispose();
+				}
+			}
 		}
 		#endregion
 	}

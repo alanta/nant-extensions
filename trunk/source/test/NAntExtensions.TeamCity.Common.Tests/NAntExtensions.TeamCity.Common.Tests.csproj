@@ -55,7 +55,10 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyDictionarySpec.cs" />
     <Compile Include="When_a_message_is_formatted.cs" />
+    <Compile Include="When_properties_are_added_or_updated.cs" />
+    <Compile Include="When_properties_are_set.cs" />
     <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_a_TeamCity_build.cs" />
     <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_run_with_the_TeamCity_NAnt_runner.cs" />
   </ItemGroup>
