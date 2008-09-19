@@ -352,6 +352,11 @@
 			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
 					 prefix="lib\common\2.0\Machine.Specifications">
 				<include name="Machine.Specifications*.dll" />
+				<include name="nunit.framework.dll" />
+			</fileset>
+			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
+					 prefix="lib\net\2.0">
+				<include name="nunit.framework.dll" />
 			</fileset>
 		</zip>
 

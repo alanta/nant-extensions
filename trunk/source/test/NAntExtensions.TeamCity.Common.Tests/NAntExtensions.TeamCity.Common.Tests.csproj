@@ -32,6 +32,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MbUnit.Framework, Version=2.4.2.130, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5" />
+    <Reference Include="NAnt.Core, Version=0.86.2898.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\NAnt\NAnt.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.5.0.2, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\tools\Rhino Mocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -48,6 +56,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="When_a_message_is_formatted.cs" />
+    <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_a_TeamCity_build.cs" />
+    <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_run_with_the_TeamCity_NAnt_runner.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\NAntExtensions.TeamCity.Common\NAntExtensions.TeamCity.Common.csproj">
