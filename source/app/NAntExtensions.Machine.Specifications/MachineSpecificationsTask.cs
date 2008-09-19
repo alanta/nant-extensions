@@ -94,7 +94,7 @@ namespace NAntExtensions.Machine.Specifications
 					throw new BuildException("Specification run failed", exception);
 				}
 
-				if (nantRunListener.FailureOccured)
+				if (nantRunListener.FailureOccurred)
 				{
 					throw new BuildException("Specification run failed");
 				}

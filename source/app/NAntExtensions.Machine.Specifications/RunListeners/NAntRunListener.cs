@@ -24,7 +24,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 			UpdateNAntProperties(_task.Properties, 0, 0, 0);
 		}
 
-		public bool FailureOccured
+		public bool FailureOccurred
 		{
 			get { return _failedSpecificationCount > 0; }
 		}
