@@ -154,18 +154,6 @@
 			<arg value="/maxcpucount" />
 		</msbuild>
 
-		<!--<exec program="${tools.ilmerge}/ILMerge.exe"
-			  workingdir="${basedir.build}"
-			  verbose="true">
-			<arg path="${path::get-full-path('NAntExtensions.MbUnit.Partial.dll')}" />
-			<arg path="${path::get-full-path('NAntExtensions.TeamCity.Common.dll')}" />
-			<arg value='/out:"NAntExtensions.MbUnit.dll"' />
-			<arg value="/t:library" />
-			--><!--<arg value="/internalize:../ilmerge.exclude" />--><!--
-			--><!--<arg value="/ndebug"
-				 unless="'${build.msbuild.configuration}' == 'Debug'" />--><!--
-		</exec>-->
-
 		<!-- Machine.Specifications. -->
 		<msbuild project="${basedir.app}\NAntExtensions.Machine.Specifications\NAntExtensions.Machine.Specifications.csproj"
 				 target="${build.msbuild.target}"
@@ -336,6 +324,18 @@
 		<tc-progress message="Building setup"
 					 type="Start" />
 
+		<property name="merge"
+				  value="${basedir.build}/NAntExtensions.MbUnit.dll"/>
+		<call target="ilmerge"/>
+
+		<property name="merge"
+				  value="${basedir.build}/NAntExtensions.Machine.Specifications.dll"/>
+		<call target="ilmerge"/>
+
+		<property name="merge"
+				  value="${basedir.build}/NAntExtensions.TeamCity.dll"/>
+		<call target="ilmerge"/>
+		
 		<zipfileset id="license">
 			<include name="License.txt" />
 		</zipfileset>
@@ -348,8 +348,8 @@
 			<fileset basedir="${basedir.build}"
 					 prefix="extensions\common\neutral\MbUnit">
 				<include name="NAntExtensions.MbUnit*.*" />
-				<include name="NAntExtensions.TeamCity.Common.*" />
 				<exclude name="*.Tests.*" />
+				<exclude name="*.Partial.*" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="lib\common\neutral\MbUnit">
@@ -366,10 +366,10 @@
 			 duplicate="Preserve">
 			<fileset refid="license" />
 			<fileset basedir="${basedir.build}"
-					 prefix="extensions\common\2.0\Machine.Specifications">
-				<include name="NAntExtensions.Machine.Specifications*.*" />
-				<include name="NAntExtensions.TeamCity.Common.*" />
+					 prefix="extensions\common\2.0">
+				<include name="NAntExtensions.Machine.Specifications.*" />
 				<exclude name="*.Tests.*" />
+				<exclude name="*.Partial.*" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="lib\common\2.0\Machine.Specifications">
@@ -390,14 +390,42 @@
 				<include name="License-BlueWireTechnologies.txt" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
-					 prefix="extensions\common\2.0\TeamCity">
-				<include name="NAntExtensions.TeamCity*.*" />
+					 prefix="extensions\common\2.0">
+				<include name="NAntExtensions.TeamCity.*" />
+				<exclude name="NAntExtensions.TeamCity.Common.*" />
+				<exclude name="*.Partial.*" />
 				<exclude name="*.Tests.*" />
 			</fileset>
 		</zip>
 
 		<tc-progress message="Building setup"
 					 type="End" />
+	</target>
+
+	<target name="ilmerge"
+			description="Merges assemblies using ILMerge.">
+		<fail message="Cannot merge assemblies, property 'merge' is empty or does not exist. (The property is reset after each call to the 'ilmerge' task."
+			  if="${not property::exists('merge') or string::get-length(property::get-value('merge')) == 0}" />
+
+		<move file="${merge}"
+			  tofile="${merge}.Partial.dll"
+			  overwrite="true" />
+
+		<exec program="${tools.ilmerge}/ILMerge.exe"
+			  workingdir="${basedir.build}">
+			<arg path="${merge}.Partial.dll" />
+			<arg path="${path::get-full-path(basedir.build + '/NAntExtensions.TeamCity.Common.dll')}" />
+			<arg value='/out:"${merge}"' />
+			<arg line='/attr:"${merge}.Partial.dll"' />
+			<arg value="/t:library" />
+			<!--<arg value="/log:ilmerge.log" />-->
+			<arg value="/internalize:../ilmerge.exclude" />
+			<arg value="/ndebug"
+				 unless="${build.msbuild.configuration == 'Debug'}" />
+		</exec>
+
+		<property name="merge"
+				  value="" />
 	</target>
 
 	<!-- Deployment/Upload to Google Code.
