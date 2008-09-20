@@ -2,7 +2,7 @@ using System;
 
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
-	public interface ITeamCityMessaging
+	public interface ITeamCityMessageProvider
 	{
 		void TestSuiteStarted(string assemblyName);
 		void TestSuiteFinished(string assemblyName);

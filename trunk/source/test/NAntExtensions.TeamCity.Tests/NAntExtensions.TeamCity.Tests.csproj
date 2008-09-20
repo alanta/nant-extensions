@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E570B3F8-5A2C-4595-A11A-383D93D2D555}</ProjectGuid>
+    <ProjectGuid>{D2C9F2D6-81CA-49E9-AF25-F59F82FD3419}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NAntExtensions.TeamCity.Common.Tests</RootNamespace>
-    <AssemblyName>NAntExtensions.TeamCity.Common.Tests</AssemblyName>
+    <RootNamespace>NAntExtensions.TeamCity.Tests</RootNamespace>
+    <AssemblyName>NAntExtensions.TeamCity.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MbUnit.Framework, Version=2.4.2.130, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5" />
+    <Reference Include="MbUnit.Framework, Version=2.4.2.130, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\MbUnit\MbUnit.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit.Framework.2.0, Version=2.4.2.130, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\tools\MbUnit\MbUnit.Framework.2.0.dll</HintPath>
+    </Reference>
     <Reference Include="NAnt.Core, Version=0.86.2898.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NAnt\NAnt.Core.dll</HintPath>
@@ -44,6 +51,12 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -54,19 +67,17 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="When_build_progress_is_reported.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyDictionarySpec.cs" />
-    <Compile Include="When_a_message_is_formatted_for_TeamCity.cs" />
-    <Compile Include="When_a_message_is_logged_to_TeamCity.cs" />
-    <Compile Include="When_properties_are_added_or_updated.cs" />
-    <Compile Include="When_properties_are_set.cs" />
-    <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_a_TeamCity_build.cs" />
-    <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_run_with_the_TeamCity_NAnt_runner.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\NAntExtensions.TeamCity.Common\NAntExtensions.TeamCity.Common.csproj">
       <Project>{F123CB57-9979-4558-BB1E-38CF9F20B3AD}</Project>
       <Name>NAntExtensions.TeamCity.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\app\NAntExtensions.TeamCity\NAntExtensions.TeamCity.csproj">
+      <Project>{786FF017-E7B4-47D7-AC97-273A00C46AB0}</Project>
+      <Name>NAntExtensions.TeamCity</Name>
     </ProjectReference>
     <ProjectReference Include="..\NAntExtensions.ForTesting\NAntExtensions.ForTesting.csproj">
       <Project>{5D9B5A98-E50A-4C91-9B99-91512720E985}</Project>

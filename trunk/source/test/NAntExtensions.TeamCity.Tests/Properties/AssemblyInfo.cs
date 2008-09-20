@@ -1,13 +1,12 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("NAntExtensions.TeamCity")]
-[assembly: AssemblyDescription("NAnt tasks for TeamCity integration")]
+[assembly: AssemblyTitle("NAntExtensions.TeamCity.Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,6 +19,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("3e4d163d-0c3a-4578-9615-7bce25a9b1c9")]
-[assembly: InternalsVisibleTo("NAntExtensions.TeamCity.Tests")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+[assembly: Guid("5252542c-501f-412f-9f55-06af51f3a02b")]
