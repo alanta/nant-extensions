@@ -19,6 +19,7 @@ teamcity-info.xml
 local.properties
 
 # /
+/build
 /deploy
 /temp
 /test-results
