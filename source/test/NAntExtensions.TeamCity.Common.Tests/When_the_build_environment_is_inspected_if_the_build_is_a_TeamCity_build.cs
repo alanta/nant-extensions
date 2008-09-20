@@ -8,7 +8,19 @@ namespace NAntExtensions.TeamCity.Common.Tests
 {
 	public class When_the_build_environment_is_inspected_if_the_build_is_a_TeamCity_build : Spec
 	{
+		string _savedEnvironment;
 		const string TeamCityEnvironmentVariable = "TEAMCITY_PROJECT_NAME";
+
+		// TODO: Refactor to make and make use of IoC and IEnvironment.
+		protected override void Before_all_specs()
+		{
+			_savedEnvironment = Environment.GetEnvironmentVariable(TeamCityEnvironmentVariable, EnvironmentVariableTarget.Process);
+		}
+
+		protected override void After_all_specs()
+		{
+			Environment.SetEnvironmentVariable(TeamCityEnvironmentVariable, _savedEnvironment, EnvironmentVariableTarget.Process);
+		}
 
 		protected override void After_each_spec()
 		{
