@@ -4,7 +4,7 @@ using Machine.Specifications.Model;
 
 namespace NAntExtensions.Machine.Specifications.RunListeners
 {
-	public abstract class RunListener
+	internal abstract class RunListener
 	{
 		protected Context _currentContext;
 

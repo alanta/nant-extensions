@@ -11,7 +11,7 @@ using NAnt.Core.Attributes;
 using NAnt.Core.Types;
 
 using NAntExtensions.Machine.Specifications.RunListeners;
-using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
 using NAntExtensions.TeamCity.Common.Messaging;
 
@@ -143,7 +143,7 @@ namespace NAntExtensions.Machine.Specifications
 			if (BuildEnvironment.IsTeamCityBuild)
 			{
 				TeamCityRunListener teamCity =
-					new TeamCityRunListener(IoC.Resolve<ITeamCityMessageProvider>(new object[] { new TeamCityLogWriter(this) }));
+					new TeamCityRunListener(IoC.Resolve<ITeamCityMessageProvider>());
 				result.Add(teamCity);
 			}
 

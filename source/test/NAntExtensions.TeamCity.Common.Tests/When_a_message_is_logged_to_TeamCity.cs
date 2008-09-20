@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 
 using MbUnit.Framework;
 
@@ -13,11 +12,11 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		const string Message = "foo";
 		const string MessageWithParameters = "foo{0}{1}{2}";
 		ITeamCityMessageProvider _messageProvider;
-		TextWriter _writer;
+		ITeamCityLogWriter _writer;
 
 		protected override void Before_each_spec()
 		{
-			_writer = Mocks.StrictMock<TextWriter>();
+			_writer = Mocks.StrictMock<ITeamCityLogWriter>();
 			_messageProvider = new TeamCityMessageProvider(_writer);
 		}
 
@@ -32,7 +31,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Playback())
 			{
-				_messageProvider.Message(message);
+				_messageProvider.SendMessage(message);
 			}
 		}
 
@@ -46,7 +45,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Playback())
 			{
-				_messageProvider.Message(Message);
+				_messageProvider.SendMessage(Message);
 			}
 		}
 
@@ -60,7 +59,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Playback())
 			{
-				_messageProvider.Message(MessageWithParameters, 1, 2, 3);
+				_messageProvider.SendMessage(MessageWithParameters, 1, 2, 3);
 			}
 		}
 	}

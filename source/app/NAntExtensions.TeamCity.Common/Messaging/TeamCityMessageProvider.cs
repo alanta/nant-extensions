@@ -1,15 +1,16 @@
 using System;
 using System.Globalization;
-using System.IO;
 using System.Text;
+
+using NAnt.Core;
 
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
-	public class TeamCityMessageProvider : ITeamCityMessageProvider
+	internal class TeamCityMessageProvider : ITeamCityMessageProvider
 	{
-		readonly TextWriter _writer;
+		readonly ITeamCityLogWriter _writer;
 
-		public TeamCityMessageProvider(TextWriter writer)
+		public TeamCityMessageProvider(ITeamCityLogWriter writer)
 		{
 			if (writer == null)
 			{
@@ -19,7 +20,20 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			_writer = writer;
 		}
 
-		#region Unit Test-related messages
+		#region ITeamCityMessageProvider Members
+		public Task Task
+		{
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+
+				_writer.Task = value;
+			}
+		}
+
 		public void TestSuiteStarted(string assemblyName)
 		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
@@ -85,10 +99,8 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			                                "##teamcity[testFinished name='{0}']",
 			                                Formatter.FormatValue(testName)));
 		}
-		#endregion
 
-		#region ITeamCityMessageProvider Members
-		public void Message(string message, params object[] parameters)
+		public void SendMessage(string message, params object[] parameters)
 		{
 			if (String.IsNullOrEmpty(message))
 			{

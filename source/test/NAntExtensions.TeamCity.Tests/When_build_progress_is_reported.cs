@@ -1,10 +1,10 @@
-﻿using MbUnit.Framework;
+using MbUnit.Framework;
 using MbUnit.Framework.Reflection;
 
 using NAnt.Core;
 
 using NAntExtensions.ForTesting;
-using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Messaging;
 using NAntExtensions.TeamCity.Tasks;
 using NAntExtensions.TeamCity.Types;
@@ -29,6 +29,9 @@ namespace NAntExtensions.TeamCity.Tests
 			_task = Mocks.PartialMock<TeamCityProgress>(_buildEnvironment, _messageProvider);
 			_task.ForceTaskExecution = true;
 
+			// Setting the task on the message provider by TeamCityMessageTask.set_MessageProvider() is not an expectation.
+			Mocks.BackToRecord(_messageProvider);
+			
 			// We're executing the task by calling ExecuteTask (which is abstract) via reflection, so we have to
 			// set up an expectation.
 			Reflector.InvokeMethod(_task, "ExecuteTask");
@@ -46,7 +49,7 @@ namespace NAntExtensions.TeamCity.Tests
 		public void Throws_exception_if_progress_type_if_unknown()
 		{
 			Reflector.SetProperty(_task, "ProgressType", int.MinValue);
-
+			
 			using (Mocks.Playback())
 			{
 				Reflector.InvokeMethod(_task, "ExecuteTask");
@@ -61,7 +64,7 @@ namespace NAntExtensions.TeamCity.Tests
 
 			using (Mocks.Record())
 			{
-				_messageProvider.Message("##teamcity[progressStart '{0}']", Message);
+				_messageProvider.SendMessage("##teamcity[progressStart '{0}']", Message);
 				LastCall.Repeat.Once();
 			}
 
@@ -79,7 +82,7 @@ namespace NAntExtensions.TeamCity.Tests
 
 			using (Mocks.Record())
 			{
-				_messageProvider.Message("##teamcity[progressFinish '{0}']", Message);
+				_messageProvider.SendMessage("##teamcity[progressFinish '{0}']", Message);
 				LastCall.Repeat.Once();
 			}
 
@@ -97,7 +100,7 @@ namespace NAntExtensions.TeamCity.Tests
 
 			using (Mocks.Record())
 			{
-				_messageProvider.Message("##teamcity[progressMessage '{0}']", Message);
+				_messageProvider.SendMessage("##teamcity[progressMessage '{0}']", Message);
 				LastCall.Repeat.Once();
 			}
 

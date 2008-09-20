@@ -5,28 +5,41 @@ using System.Text;
 
 using NAnt.Core;
 
-using NAntExtensions.TeamCity.Common.Container;
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
 
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
-	public class TeamCityLogWriter : TextWriter
+	internal class TeamCityLogWriter : TextWriter, ITeamCityLogWriter
 	{
 		static UnicodeEncoding UnicodeEncoding;
 		readonly StringBuilder _builder = new StringBuilder();
-		readonly Task _task;
-		readonly bool _useTaskLogger;
+		IBuildEnvironment _buildEnvironment;
 		bool _isOpen;
+		Task _task;
 
-		public TeamCityLogWriter(Task task) : base(CultureInfo.InvariantCulture)
+		public TeamCityLogWriter(IBuildEnvironment buildEnvironment) : base(CultureInfo.InvariantCulture)
 		{
-			if (task == null)
-			{
-				throw new ArgumentNullException("task");
-			}
-			
+			BuildEnvironment = buildEnvironment;
+
 			_isOpen = true;
-			_task = task;
-			_useTaskLogger = IoC.Resolve<IBuildEnvironment>().IsRunningWithTeamCityNAntRunner(task);
+		}
+
+		public Task Task
+		{
+			get { return _task; }
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+				_task = value;
+			}
+		}
+
+		bool UseTaskLogger
+		{
+			get { return BuildEnvironment.IsRunningWithTeamCityNAntRunner(Task); }
 		}
 
 		public override Encoding Encoding
@@ -38,6 +51,19 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 					UnicodeEncoding = new UnicodeEncoding(false, false);
 				}
 				return UnicodeEncoding;
+			}
+		}
+
+		IBuildEnvironment BuildEnvironment
+		{
+			get { return _buildEnvironment; }
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+				_buildEnvironment = value;
 			}
 		}
 
@@ -122,9 +148,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 			if (_builder.Length > 0)
 			{
-				if (_useTaskLogger)
+				if (UseTaskLogger)
 				{
-					_task.Log(Level.Info, _builder.ToString());
+					Task.Log(Level.Info, _builder.ToString());
 				}
 				else
 				{

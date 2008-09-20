@@ -5,6 +5,7 @@ using MbUnit.Framework;
 using NAnt.Core;
 
 using NAntExtensions.ForTesting;
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
 
 using Rhino.Mocks;
 
@@ -12,11 +13,18 @@ namespace NAntExtensions.TeamCity.Common.Tests
 {
 	public class When_the_build_environment_is_inspected_if_the_build_is_run_with_the_TeamCity_NAnt_runner : Spec
 	{
+		TeamCityBuildEnvironment _sut;
+
+		protected override void Before_each_spec()
+		{
+			_sut = new TeamCityBuildEnvironment(Mocks.StrictMock<IEnvironment>());
+		}
+
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void Should_throw_an_exception_if_the_passed_task_is_null()
 		{
-			BuildEnvironment.IsRunningWithTeamCityNAntRunner(null);
+			_sut.IsRunningWithTeamCityNAntRunner(null);
 		}
 
 		[Test]
@@ -31,7 +39,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Playback())
 			{
-				Assert.IsFalse(BuildEnvironment.IsRunningWithTeamCityNAntRunner(task));
+				Assert.IsFalse(_sut.IsRunningWithTeamCityNAntRunner(task));
 			}
 		}
 
@@ -47,7 +55,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Playback())
 			{
-				Assert.IsFalse(BuildEnvironment.IsRunningWithTeamCityNAntRunner(task));
+				Assert.IsFalse(_sut.IsRunningWithTeamCityNAntRunner(task));
 			}
 		}
 
@@ -65,7 +73,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Playback())
 			{
-				Assert.IsTrue(BuildEnvironment.IsRunningWithTeamCityNAntRunner(task));
+				Assert.IsTrue(_sut.IsRunningWithTeamCityNAntRunner(task));
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -21,5 +21,4 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("5ca0744b-f869-41af-b442-db418ca6ce42")]
-
 [assembly: InternalsVisibleTo("NAntExtensions.TeamCity.Common.Tests")]

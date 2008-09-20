@@ -35,12 +35,12 @@ namespace NAntExtensions.TeamCity.Common.Helper
 			{
 				throw new ArgumentNullException("instance");
 			}
-			
+
 			if (String.IsNullOrEmpty(key))
 			{
 				throw new ArgumentOutOfRangeException("key");
 			}
-			
+
 			string valueToSet = value.ToString(CultureInfo.InvariantCulture);
 			if (instance.Contains(key))
 			{
