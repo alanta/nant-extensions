@@ -7,7 +7,7 @@ using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.TeamCity.Common.Tests
 {
-	public class When_a_message_is_formatted : Spec
+	public class When_a_message_is_formatted_for_TeamCity : Spec
 	{
 		StringBuilder _builder;
 

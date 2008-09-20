@@ -21,7 +21,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		FieldInfo _fieldInfo;
 		TeamCityRunListener _listener;
 		Specification _specification;
-		ITeamCityMessaging _teamCityMessaging;
+		ITeamCityMessageProvider _messageProvider;
 
 		protected override void Before_each_spec()
 		{
@@ -31,8 +31,8 @@ namespace NAntExtensions.Machine.Specifications.Tests
 
 			_specification = Mocks.PartialMock<Specification>(_fieldInfo, _fieldInfo);
 
-			_teamCityMessaging = Mocks.DynamicMock<ITeamCityMessaging>();
-			_listener = new TeamCityRunListener(_teamCityMessaging);
+			_messageProvider = Mocks.DynamicMock<ITeamCityMessageProvider>();
+			_listener = new TeamCityRunListener(_messageProvider);
 			_listener.OnContextStart(new Context(GetType(), null, null, null, null, null, null));
 		}
 
@@ -41,7 +41,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		{
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestOutputStream(null, null);
+				_messageProvider.TestOutputStream(null, null);
 				LastCall.Constraints(Is.Anything(), Is.Equal(ConsoleOutMessage));
 			}
 
@@ -60,7 +60,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		{
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestOutputStream(null, null);
+				_messageProvider.TestOutputStream(null, null);
 				LastCall.IgnoreArguments().Repeat.Never();
 			}
 
@@ -77,7 +77,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		{
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestErrorStream(null, null);
+				_messageProvider.TestErrorStream(null, null);
 				LastCall.Constraints(Is.Anything(), Is.Equal(ConsoleErrorMessage));
 			}
 
@@ -96,7 +96,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		{
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestErrorStream(null, null);
+				_messageProvider.TestErrorStream(null, null);
 				LastCall.IgnoreArguments().Repeat.Never();
 			}
 

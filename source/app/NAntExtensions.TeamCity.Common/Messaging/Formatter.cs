@@ -38,24 +38,28 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		internal static string FormatValue(string value)
 		{
-			StringBuilder sb = new StringBuilder(value);
-			FormatValue(sb);
+			StringBuilder builder = new StringBuilder(value);
+			FormatValue(builder);
 
-			return sb.ToString();
+			return builder.ToString();
 		}
 		
-		internal static IEnumerable<string> FormatValues(object[] value)
+		internal static object[] FormatValues(object[] values)
 		{
-			StringBuilder sb = new StringBuilder();
+			List<object> result = new List<object>();
+			
+			StringBuilder builder = new StringBuilder();
 
-			foreach (object v in value)
+			foreach (object value in values)
 			{
-				sb.Length = 0;
-				sb.Append(v);
-				FormatValue(sb);
+				builder.Length = 0;
+				builder.Append(value);
+				FormatValue(builder);
 
-				yield return sb.ToString();	
+				result.Add(builder.ToString());
 			}
+			
+			return result.ToArray();
 		}
 
 		internal static void FormatValue(StringBuilder builder)

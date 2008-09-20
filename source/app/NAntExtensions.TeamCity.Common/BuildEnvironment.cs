@@ -17,7 +17,7 @@ namespace NAntExtensions.TeamCity.Common
 			{
 				throw new ArgumentNullException("task");
 			}
-
+			
 			return task.Properties != null && task.Properties.Contains("agent.name");
 		}
 	}

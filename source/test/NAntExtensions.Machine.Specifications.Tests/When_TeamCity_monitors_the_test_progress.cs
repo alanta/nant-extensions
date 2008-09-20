@@ -20,7 +20,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		FieldInfo _fieldInfo;
 		TeamCityRunListener _listener;
 		Specification _specification;
-		ITeamCityMessaging _teamCityMessaging;
+		ITeamCityMessageProvider _messageProvider;
 
 		protected override void Before_each_spec()
 		{
@@ -30,8 +30,8 @@ namespace NAntExtensions.Machine.Specifications.Tests
 
 			_specification = Mocks.PartialMock<Specification>(_fieldInfo, _fieldInfo);
 
-			_teamCityMessaging = Mocks.StrictMock<ITeamCityMessaging>();
-			_listener = new TeamCityRunListener(_teamCityMessaging);
+			_messageProvider = Mocks.StrictMock<ITeamCityMessageProvider>();
+			_listener = new TeamCityRunListener(_messageProvider);
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		{
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestSuiteStarted(null);
+				_messageProvider.TestSuiteStarted(null);
 				LastCall.IgnoreArguments();
 			}
 
@@ -61,7 +61,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		{
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestSuiteFinished(null);
+				_messageProvider.TestSuiteFinished(null);
 				LastCall.IgnoreArguments();
 			}
 
@@ -128,7 +128,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		{
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestStarted(null);
+				_messageProvider.TestStarted(null);
 				LastCall.IgnoreArguments();
 			}
 
@@ -145,10 +145,10 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		{
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestStarted(null);
+				_messageProvider.TestStarted(null);
 				LastCall.IgnoreArguments();
 
-				_teamCityMessaging.TestFinished(null);
+				_messageProvider.TestFinished(null);
 				LastCall.IgnoreArguments();
 			}
 
@@ -166,13 +166,13 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		{
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestStarted(null);
+				_messageProvider.TestStarted(null);
 				LastCall.IgnoreArguments();
 
-				_teamCityMessaging.TestFailed(null, null);
+				_messageProvider.TestFailed(null, null);
 				LastCall.IgnoreArguments();
 
-				_teamCityMessaging.TestFinished(null);
+				_messageProvider.TestFinished(null);
 				LastCall.IgnoreArguments();
 			}
 
@@ -192,13 +192,13 @@ namespace NAntExtensions.Machine.Specifications.Tests
 
 			using (Mocks.Record())
 			{
-				_teamCityMessaging.TestStarted(null);
+				_messageProvider.TestStarted(null);
 				LastCall.IgnoreArguments();
 
-				_teamCityMessaging.TestFailed(null, null);
+				_messageProvider.TestFailed(null, null);
 				LastCall.Constraints(Is.Anything(), Is.Equal(exception));
 
-				_teamCityMessaging.TestFinished(null);
+				_messageProvider.TestFinished(null);
 				LastCall.IgnoreArguments();
 			}
 

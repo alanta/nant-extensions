@@ -31,7 +31,7 @@ namespace NAntExtensions.TeamCity.Tasks
 
 			Log(Level.Verbose, "Reporting build status. Type={0}, Message={1}", StatusType, Message);
 
-			Messaging.Message("##teamcity[buildStatus status='{0}' text='{1}']", StatusType.ToString().ToUpperInvariant(), Message);
+			MessageProvider.Message("##teamcity[buildStatus status='{0}' text='{1}']", StatusType.ToString().ToUpperInvariant(), Message);
 		}
 	}
 }

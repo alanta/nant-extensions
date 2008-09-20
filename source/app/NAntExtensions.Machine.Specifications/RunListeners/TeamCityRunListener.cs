@@ -11,31 +11,31 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 {
 	internal class TeamCityRunListener : RunListener, ISpecificationRunListener
 	{
-		readonly ITeamCityMessaging _messaging;
+		readonly ITeamCityMessageProvider _messageProvider;
 		TextWriter _consoleError;
 		TextWriter _consoleOut;
 		StringWriter _testConsoleError;
 		StringWriter _testConsoleOut;
 
-		public TeamCityRunListener(ITeamCityMessaging messaging)
+		public TeamCityRunListener(ITeamCityMessageProvider messageProvider)
 		{
-			if (messaging == null)
+			if (messageProvider == null)
 			{
-				throw new ArgumentNullException("messaging");
+				throw new ArgumentNullException("messageProvider");
 			}
 
-			_messaging = messaging;
+			_messageProvider = messageProvider;
 		}
 
 		#region ISpecificationRunListener Members
 		public void OnAssemblyStart(Assembly assembly)
 		{
-			_messaging.TestSuiteStarted(assembly.GetName().Name);
+			_messageProvider.TestSuiteStarted(assembly.GetName().Name);
 		}
 
 		public void OnAssemblyEnd(Assembly assembly)
 		{
-			_messaging.TestSuiteFinished(assembly.GetName().Name);
+			_messageProvider.TestSuiteFinished(assembly.GetName().Name);
 		}
 
 		public void OnRunStart()
@@ -48,7 +48,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 
 		public void OnSpecificationStart(Specification specification)
 		{
-			_messaging.TestStarted(GetContextSpecName(_currentContext, specification));
+			_messageProvider.TestStarted(GetContextSpecName(_currentContext, specification));
 
 			_consoleOut = Console.Out;
 			_testConsoleOut = new StringWriter();
@@ -72,22 +72,22 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 
 				if (!result.Passed)
 				{
-					_messaging.TestFailed(specName, result.Exception);
+					_messageProvider.TestFailed(specName, result.Exception);
 				}
 
 				string stdStream = _testConsoleOut.ToString();
 				if (!String.IsNullOrEmpty(stdStream))
 				{
-					_messaging.TestOutputStream(specName, stdStream);
+					_messageProvider.TestOutputStream(specName, stdStream);
 				}
 
 				string errorStream = _testConsoleError.ToString();
 				if (!String.IsNullOrEmpty(errorStream))
 				{
-					_messaging.TestErrorStream(specName, errorStream);
+					_messageProvider.TestErrorStream(specName, errorStream);
 				}
 
-				_messaging.TestFinished(specName);
+				_messageProvider.TestFinished(specName);
 			}
 			finally
 			{

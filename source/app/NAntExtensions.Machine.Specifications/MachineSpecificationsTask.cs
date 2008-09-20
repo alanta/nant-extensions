@@ -120,7 +120,7 @@ namespace NAntExtensions.Machine.Specifications
 			{
 				TeamCityRunListener teamCity =
 					new TeamCityRunListener(
-						new TeamCityMessaging(new TeamCityLogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this))));
+						new TeamCityMessageProvider(new TeamCityLogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this))));
 				result.Add(teamCity);
 			}
 

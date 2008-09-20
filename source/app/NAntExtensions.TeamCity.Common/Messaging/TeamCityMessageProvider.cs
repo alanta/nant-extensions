@@ -5,11 +5,11 @@ using System.Text;
 
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
-	public class TeamCityMessaging : ITeamCityMessaging
+	public class TeamCityMessageProvider : ITeamCityMessageProvider
 	{
 		readonly TextWriter _writer;
 
-		public TeamCityMessaging(TextWriter writer)
+		public TeamCityMessageProvider(TextWriter writer)
 		{
 			if (writer == null)
 			{
@@ -19,7 +19,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			_writer = writer;
 		}
 
-		#region Test messages
+		#region Unit Test-related messages
 		public void TestSuiteStarted(string assemblyName)
 		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
@@ -87,6 +87,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		}
 		#endregion
 
+		#region ITeamCityMessageProvider Members
 		public void Message(string message, params object[] parameters)
 		{
 			if (String.IsNullOrEmpty(message))
@@ -94,8 +95,8 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				return;
 			}
 
-			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-											String.Format(CultureInfo.InvariantCulture, message, Formatter.FormatValues(parameters))));
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture, message, Formatter.FormatValues(parameters)));
 		}
+		#endregion
 	}
 }

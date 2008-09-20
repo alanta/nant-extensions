@@ -1,3 +1,5 @@
+using System;
+
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
@@ -8,6 +10,17 @@ namespace NAntExtensions.TeamCity.Tasks
 {
 	public abstract class TeamCityTask : Task
 	{
+		ITeamCityMessageProvider _messageProvider;
+
+		protected TeamCityTask()
+		{
+		}
+
+		protected TeamCityTask(ITeamCityMessageProvider messageProvider)
+		{
+			MessageProvider = messageProvider;
+		}
+
 		[TaskAttribute("force")]
 		[BooleanValidator]
 		public bool ForceTaskExecution
@@ -36,9 +49,25 @@ namespace NAntExtensions.TeamCity.Tasks
 			}
 		}
 
-		protected TeamCityMessaging Messaging
+		protected ITeamCityMessageProvider MessageProvider
 		{
-			get { return new TeamCityMessaging(new TeamCityLogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this))); }
+			get
+			{
+				if (_messageProvider == null)
+				{
+					MessageProvider =
+						new TeamCityMessageProvider(new TeamCityLogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this)));
+				}
+				return _messageProvider;
+			}
+			private set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+				_messageProvider = value;
+			}
 		}
 	}
 }
