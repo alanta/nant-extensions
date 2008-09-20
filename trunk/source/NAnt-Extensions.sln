@@ -5,6 +5,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scri
 	ProjectSection(SolutionItems) = preProject
 		..\default.build = ..\default.build
 		..\default.properties = ..\default.properties
+		..\ilmerge.internalize = ..\ilmerge.internalize
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common Functionality", "Common Functionality", "{749810EE-33C1-4ED8-A164-8DE5F4DFEB4A}"

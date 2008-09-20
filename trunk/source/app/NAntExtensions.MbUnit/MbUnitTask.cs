@@ -12,17 +12,41 @@ using NAnt.Core.Attributes;
 using NAnt.Core.Types;
 
 using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.Container;
 
 namespace NAntExtensions.MbUnit
 {
 	[TaskName("mbunit")]
 	public class MbUnitTask : Task
 	{
+		IBuildEnvironment _buildEnvironment;
 		string _reportFileNameFormat = "mbunit-result-{0}{1}";
 		string _reportTypes = "Html";
 		ReportResult _result;
 		string _transformReportFileNameFormat;
 		DirectoryInfo _workingDirectory;
+
+		public MbUnitTask() : this(IoC.Resolve<IBuildEnvironment>())
+		{
+		}
+
+		public MbUnitTask(IBuildEnvironment buildEnvironment)
+		{
+			BuildEnvironment = buildEnvironment;
+		}
+
+		protected IBuildEnvironment BuildEnvironment
+		{
+			get { return _buildEnvironment; }
+			private set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+				_buildEnvironment = value;
+			}
+		}
 
 		[TaskAttribute("report-types")]
 		public string ReportTypes

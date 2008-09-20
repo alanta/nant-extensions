@@ -33,6 +33,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Castle\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MicroKernel, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Castle\Castle.MicroKernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Castle\Castle.Windsor.dll</HintPath>
+    </Reference>
     <Reference Include="NAnt.Core, Version=0.86.2898.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\NAnt\NAnt.Core.dll</HintPath>
@@ -47,12 +59,17 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="BuildEnvironment.cs" />
+    <Compile Include="Container\IoC.cs" />
+    <Compile Include="Container\Registrations.cs" />
+    <Compile Include="IBuildEnvironment.cs" />
+    <Compile Include="IEnvironment.cs" />
     <Compile Include="Messaging\Formatter.cs" />
     <Compile Include="Messaging\ITeamCityMessageProvider.cs" />
     <Compile Include="Messaging\TeamCityLogWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyDictionaryHelper.cs" />
+    <Compile Include="Helper\PropertyDictionaryHelper.cs" />
     <Compile Include="Messaging\TeamCityMessageProvider.cs" />
+    <Compile Include="SystemEnvironment.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

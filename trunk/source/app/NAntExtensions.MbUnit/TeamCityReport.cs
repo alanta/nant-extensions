@@ -146,7 +146,7 @@ namespace NAntExtensions.MbUnit
 			}
 
 			TeamCityReport tcReport = new TeamCityReport();
-			using (TextWriter writer = new TeamCityLogWriter(task, task.Properties.Contains("agent.name")))
+			using (TextWriter writer = new TeamCityLogWriter(task))
 			{
 				tcReport.Render(result, writer);
 			}

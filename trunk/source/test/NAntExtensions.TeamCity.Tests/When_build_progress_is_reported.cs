@@ -4,6 +4,7 @@ using MbUnit.Framework.Reflection;
 using NAnt.Core;
 
 using NAntExtensions.ForTesting;
+using NAntExtensions.TeamCity.Common;
 using NAntExtensions.TeamCity.Common.Messaging;
 using NAntExtensions.TeamCity.Tasks;
 using NAntExtensions.TeamCity.Types;
@@ -18,14 +19,18 @@ namespace NAntExtensions.TeamCity.Tests
 		const string Message = "foo";
 		ITeamCityMessageProvider _messageProvider;
 		TeamCityProgress _task;
+		IBuildEnvironment _buildEnvironment;
 
 		protected override void Before_each_spec()
 		{
 			_messageProvider = Mocks.StrictMock<ITeamCityMessageProvider>();
+			_buildEnvironment = Mocks.StrictMock<IBuildEnvironment>();
 
-			_task = Mocks.PartialMock<TeamCityProgress>(_messageProvider);
+			_task = Mocks.PartialMock<TeamCityProgress>(_buildEnvironment, _messageProvider);
 			_task.ForceTaskExecution = true;
 
+			// We're executing the task by calling ExecuteTask (which is abstract) via reflection, so we have to
+			// set up an expectation.
 			Reflector.InvokeMethod(_task, "ExecuteTask");
 			LastCall.CallOriginalMethod(OriginalCallOptions.NoExpectation);
 

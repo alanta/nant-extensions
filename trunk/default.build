@@ -414,12 +414,14 @@
 		<exec program="${tools.ilmerge}/ILMerge.exe"
 			  workingdir="${basedir.build}">
 			<arg path="${merge}.Partial.dll" />
-			<arg path="${path::get-full-path(basedir.build + '/NAntExtensions.TeamCity.Common.dll')}" />
+			<arg path="${basedir.build}/NAntExtensions.TeamCity.Common.dll" />
+			<arg path="${basedir.build}/Castle*.dll" />
 			<arg value='/out:"${merge}"' />
 			<arg line='/attr:"${merge}.Partial.dll"' />
 			<arg value="/t:library" />
-			<!--<arg value="/log:ilmerge.log" />-->
-			<arg value="/internalize:../ilmerge.exclude" />
+			<arg value="/wildcards" />
+			<arg value="/log:ilmerge.log" />
+			<arg value="/internalize:../ilmerge.internalize" />
 			<arg value="/ndebug"
 				 unless="${build.msbuild.configuration == 'Debug'}" />
 		</exec>

@@ -2,6 +2,7 @@ using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.Container;
 
 namespace NAntExtensions.TeamCity.Functions
 {
@@ -15,7 +16,7 @@ namespace NAntExtensions.TeamCity.Functions
 		[Function("is-teamcity-build")]
 		public static bool IsTeamCityBuild()
 		{
-			return BuildEnvironment.IsTeamCityBuild;
+			return IoC.Resolve<IBuildEnvironment>().IsTeamCityBuild;
 		}
 	}
 }

@@ -12,6 +12,7 @@ using NAnt.Core.Types;
 
 using NAntExtensions.Machine.Specifications.RunListeners;
 using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.Container;
 using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.Machine.Specifications
@@ -19,7 +20,30 @@ namespace NAntExtensions.Machine.Specifications
 	[TaskName("mspec")]
 	public class MachineSpecificationsTask : Task
 	{
+		IBuildEnvironment _buildEnvironment;
 		DirectoryInfo _workingDirectory;
+
+		public MachineSpecificationsTask() : this(IoC.Resolve<IBuildEnvironment>())
+		{
+		}
+
+		public MachineSpecificationsTask(IBuildEnvironment buildEnvironment)
+		{
+			BuildEnvironment = buildEnvironment;
+		}
+
+		protected IBuildEnvironment BuildEnvironment
+		{
+			get { return _buildEnvironment; }
+			private set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+				_buildEnvironment = value;
+			}
+		}
 
 		[BuildElementArray("assemblies", Required = true, ElementType = typeof(FileSet))]
 		public FileSet[] Assemblies
@@ -119,8 +143,7 @@ namespace NAntExtensions.Machine.Specifications
 			if (BuildEnvironment.IsTeamCityBuild)
 			{
 				TeamCityRunListener teamCity =
-					new TeamCityRunListener(
-						new TeamCityMessageProvider(new TeamCityLogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this))));
+					new TeamCityRunListener(IoC.Resolve<ITeamCityMessageProvider>(new object[] { new TeamCityLogWriter(this) }));
 				result.Add(teamCity);
 			}
 

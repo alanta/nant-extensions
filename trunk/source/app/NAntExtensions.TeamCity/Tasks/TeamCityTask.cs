@@ -4,21 +4,16 @@ using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common;
-using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
 	public abstract class TeamCityTask : Task
 	{
-		ITeamCityMessageProvider _messageProvider;
+		protected IBuildEnvironment _buildEnvironment;
 
-		protected TeamCityTask()
+		protected TeamCityTask(IBuildEnvironment buildEnvironment)
 		{
-		}
-
-		protected TeamCityTask(ITeamCityMessageProvider messageProvider)
-		{
-			MessageProvider = messageProvider;
+			BuildEnvironment = buildEnvironment;
 		}
 
 		[TaskAttribute("force")]
@@ -27,6 +22,20 @@ namespace NAntExtensions.TeamCity.Tasks
 		{
 			get;
 			set;
+		}
+
+		public IBuildEnvironment BuildEnvironment
+		{
+			get { return _buildEnvironment; }
+			private set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+
+				_buildEnvironment = value;
+			}
 		}
 
 		protected bool ShouldSkipTaskExecution
@@ -46,27 +55,6 @@ namespace NAntExtensions.TeamCity.Tasks
 				}
 
 				return !BuildEnvironment.IsTeamCityBuild;
-			}
-		}
-
-		protected ITeamCityMessageProvider MessageProvider
-		{
-			get
-			{
-				if (_messageProvider == null)
-				{
-					MessageProvider =
-						new TeamCityMessageProvider(new TeamCityLogWriter(this, BuildEnvironment.IsRunningWithTeamCityNAntRunner(this)));
-				}
-				return _messageProvider;
-			}
-			private set
-			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-				_messageProvider = value;
 			}
 		}
 	}

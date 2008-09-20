@@ -3,7 +3,7 @@ using System.Globalization;
 
 using NAnt.Core;
 
-namespace NAntExtensions.TeamCity.Common
+namespace NAntExtensions.TeamCity.Common.Helper
 {
 	public static class PropertyDictionaryHelper
 	{
@@ -41,7 +41,7 @@ namespace NAntExtensions.TeamCity.Common
 				throw new ArgumentOutOfRangeException("key");
 			}
 			
-            string valueToSet = value.ToString(CultureInfo.InvariantCulture);
+			string valueToSet = value.ToString(CultureInfo.InvariantCulture);
 			if (instance.Contains(key))
 			{
 				instance[key] = valueToSet;

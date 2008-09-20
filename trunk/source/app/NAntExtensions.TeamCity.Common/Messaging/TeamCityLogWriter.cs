@@ -5,6 +5,8 @@ using System.Text;
 
 using NAnt.Core;
 
+using NAntExtensions.TeamCity.Common.Container;
+
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	public class TeamCityLogWriter : TextWriter
@@ -15,16 +17,16 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		readonly bool _useTaskLogger;
 		bool _isOpen;
 
-		public TeamCityLogWriter(Task task, bool useTaskLogger) : base(CultureInfo.InvariantCulture)
+		public TeamCityLogWriter(Task task) : base(CultureInfo.InvariantCulture)
 		{
-			if (null == task)
+			if (task == null)
 			{
 				throw new ArgumentNullException("task");
 			}
-
+			
 			_isOpen = true;
-			_useTaskLogger = useTaskLogger;
 			_task = task;
+			_useTaskLogger = IoC.Resolve<IBuildEnvironment>().IsRunningWithTeamCityNAntRunner(task);
 		}
 
 		public override Encoding Encoding

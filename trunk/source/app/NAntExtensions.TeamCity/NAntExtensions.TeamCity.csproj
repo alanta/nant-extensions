@@ -54,6 +54,7 @@
     <Compile Include="Tasks\TeamCityBuildLogTask.cs" />
     <Compile Include="Tasks\TeamCityBuildStatus.cs" />
     <Compile Include="Tasks\TeamCityProgress.cs" />
+    <Compile Include="Tasks\TeamCityMessageTask.cs" />
     <Compile Include="Tasks\TeamCityTask.cs" />
     <Compile Include="Types\ProgressType.cs" />
     <Compile Include="Types\StatusType.cs" />
@@ -63,6 +64,9 @@
       <Project>{F123CB57-9979-4558-BB1E-38CF9F20B3AD}</Project>
       <Name>NAntExtensions.TeamCity.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tasks\ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
