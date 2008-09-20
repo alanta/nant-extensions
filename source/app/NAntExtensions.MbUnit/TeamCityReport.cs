@@ -8,7 +8,6 @@ using MbUnit.Core.Reports.Serialization;
 
 using NAnt.Core;
 
-using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
 using NAntExtensions.TeamCity.Common.Messaging;
 
@@ -149,8 +148,9 @@ namespace NAntExtensions.MbUnit
 
 			TeamCityReport tcReport = new TeamCityReport();
 			// TODO: this might break.
-			using (TextWriter writer = IoC.Resolve<ITeamCityLogWriter>() as TextWriter)
+			using (TeamCityLogWriter writer = IoC.Resolve<TeamCityLogWriter>())
 			{
+				writer.Task = task;
 				tcReport.Render(result, writer);
 			}
 		}

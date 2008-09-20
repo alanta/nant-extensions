@@ -12,11 +12,11 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		const string Message = "foo";
 		const string MessageWithParameters = "foo{0}{1}{2}";
 		ITeamCityMessageProvider _messageProvider;
-		ITeamCityLogWriter _writer;
+		TeamCityLogWriter _writer;
 
 		protected override void Before_each_spec()
 		{
-			_writer = Mocks.StrictMock<ITeamCityLogWriter>();
+			_writer = Mocks.StrictMock<TeamCityLogWriter>();
 			_messageProvider = new TeamCityMessageProvider(_writer);
 		}
 

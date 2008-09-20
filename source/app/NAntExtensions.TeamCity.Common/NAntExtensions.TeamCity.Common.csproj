@@ -66,9 +66,9 @@
     <Compile Include="BuildEnvironment\IBuildEnvironment.cs" />
     <Compile Include="BuildEnvironment\IEnvironment.cs" />
     <Compile Include="Messaging\Formatter.cs" />
-    <Compile Include="Messaging\ITeamCityLogWriter.cs" />
-    <Compile Include="Messaging\ITeamCityMessageProvider.cs" />
     <Compile Include="Messaging\TeamCityLogWriter.cs" />
+    <Compile Include="Messaging\ITeamCityMessageProvider.cs" />
+    <Compile Include="Messaging\DefaultTeamCityLogWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helper\PropertyDictionaryHelper.cs" />
     <Compile Include="Messaging\TeamCityMessageProvider.cs" />

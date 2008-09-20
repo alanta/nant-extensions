@@ -8,9 +8,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	internal class TeamCityMessageProvider : ITeamCityMessageProvider
 	{
-		readonly ITeamCityLogWriter _writer;
+		readonly TeamCityLogWriter _writer;
 
-		public TeamCityMessageProvider(ITeamCityLogWriter writer)
+		public TeamCityMessageProvider(TeamCityLogWriter writer)
 		{
 			if (writer == null)
 			{
