@@ -352,7 +352,6 @@
 			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
 					 prefix="lib\common\2.0\Machine.Specifications">
 				<include name="Machine.Specifications*.dll" />
-				<include name="nunit.framework.dll" />
 			</fileset>
 			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
 					 prefix="lib\net\2.0">
@@ -383,19 +382,29 @@
 	________________________________________________________________________________________________________________ -->
 	<target name="upload-setup"
 			depends="build-setup"
-			description="Upload the deployment package to Google Code.">
+			description="Upload the deployment packages to Google Code.">
 		<fail message="Cannot upload deployment package to Google Code, property 'googlecode.username' and/or property 'googlecode.password' does not exist."
 			  if="${not property::exists('googlecode.username') or not property::exists('googlecode.password')}" />
 
 		<tc-progress message="Uploading to Google Code"
 					 type="Start" />
 
-		<gcupload username="${googlecode.username}"
-				  password="${googlecode.password}"
-				  filename="${basedir.deployment.artifacts}\${project::get-name()}-${build.artifacts.suffix}.zip"
-				  targetfilename="${project::get-name()}-${build.number}.zip"
-				  summary="${project::get-name()}-${build.number}"
-				  projectname="${project::get-name()}"/>
+		<foreach item="File"
+				 property="zipfile">
+			<in>
+				<items>
+					<include name="${basedir.deployment.artifacts}\**\*.zip" />
+				</items>
+			</in>
+			<do>
+				<gcupload username="${googlecode.username}"
+						  password="${googlecode.password}"
+						  filename="${zipfile}"
+						  targetfilename="${path::get-file-name(zipfile)}"
+						  summary="${path::get-file-name-without-extension(zipfile)}"
+						  projectname="${project::get-name()}" />
+			</do>
+		</foreach>
 
 		<tc-progress message="Uploading to Google Code"
 					 type="End" />
