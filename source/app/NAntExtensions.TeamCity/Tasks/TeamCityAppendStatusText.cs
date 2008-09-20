@@ -21,11 +21,22 @@ using System.Xml;
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
+using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.Container;
+
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-appendstatustext")]
 	public class TeamCityAppendStatusText : TeamCityBuildLogTask
 	{
+		public TeamCityAppendStatusText() : this(IoC.Resolve<IBuildEnvironment>())
+		{
+		}
+
+		public TeamCityAppendStatusText(IBuildEnvironment environment)
+			: base(environment)
+		{
+		}
 		[TaskAttribute("value")]
 		public string Value
 		{

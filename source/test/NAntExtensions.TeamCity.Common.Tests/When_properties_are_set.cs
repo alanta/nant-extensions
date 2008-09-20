@@ -5,6 +5,8 @@ using MbUnit.Framework;
 
 using NAnt.Core;
 
+using NAntExtensions.TeamCity.Common.Helper;
+
 namespace NAntExtensions.TeamCity.Common.Tests
 {
 	public class When_properties_are_set : PropertyDictionarySpec

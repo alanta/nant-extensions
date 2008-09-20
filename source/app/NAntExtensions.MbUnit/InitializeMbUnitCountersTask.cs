@@ -1,7 +1,7 @@
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
-using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.MbUnit
 {

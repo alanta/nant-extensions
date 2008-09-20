@@ -6,7 +6,7 @@ using Machine.Specifications.Runner;
 
 using NAnt.Core;
 
-using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.Machine.Specifications.RunListeners
 {

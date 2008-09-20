@@ -3,19 +3,22 @@ using System;
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
+using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.Container;
 using NAntExtensions.TeamCity.Common.Messaging;
 using NAntExtensions.TeamCity.Types;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-progress")]
-	public class TeamCityProgress : TeamCityTask
+	public class TeamCityProgress : TeamCityMessageTask
 	{
-		public TeamCityProgress()
+		public TeamCityProgress() : base(IoC.Resolve<IBuildEnvironment>())
 		{
 		}
 
-		public TeamCityProgress(ITeamCityMessageProvider messageProvider) : base(messageProvider)
+		public TeamCityProgress(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
+			: base(environment, messageProvider)
 		{
 		}
 

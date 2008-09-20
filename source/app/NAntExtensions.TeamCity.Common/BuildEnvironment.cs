@@ -4,20 +4,32 @@ using NAnt.Core;
 
 namespace NAntExtensions.TeamCity.Common
 {
-	public class BuildEnvironment
+	public class BuildEnvironment : IBuildEnvironment
 	{
-		public static bool IsTeamCityBuild
+		readonly IEnvironment _environment;
+
+		public BuildEnvironment(IEnvironment environment)
 		{
-			get { return Environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null; }
+			if (environment == null)
+			{
+				throw new ArgumentNullException("environment");
+			}
+
+			_environment = environment;
 		}
 
-		public static bool IsRunningWithTeamCityNAntRunner(Task task)
+		public bool IsTeamCityBuild
+		{
+			get { return _environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null; }
+		}
+
+		public bool IsRunningWithTeamCityNAntRunner(Task task)
 		{
 			if (task == null)
 			{
 				throw new ArgumentNullException("task");
 			}
-			
+
 			return task.Properties != null && task.Properties.Contains("agent.name");
 		}
 	}

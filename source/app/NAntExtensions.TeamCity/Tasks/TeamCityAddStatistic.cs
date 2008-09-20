@@ -21,11 +21,22 @@ using System.Xml;
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
+using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.Container;
+
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-addstatistic")]
 	public class TeamCityAddStatistic : TeamCityBuildLogTask
 	{
+		public TeamCityAddStatistic() : this(IoC.Resolve<IBuildEnvironment>())
+		{
+		}
+
+		public TeamCityAddStatistic(IBuildEnvironment environment) : base(environment)
+		{
+		}
+
 		[TaskAttribute("key", Required = true)]
 		public string Key
 		{

@@ -22,11 +22,17 @@ using System.Xml;
 
 using NAnt.Core.Attributes;
 
+using NAntExtensions.TeamCity.Common;
+
 namespace NAntExtensions.TeamCity.Tasks
 {
 	public abstract class TeamCityBuildLogTask : TeamCityTask
 	{
 		string _teamCityInfoPath;
+
+		protected TeamCityBuildLogTask(IBuildEnvironment buildEnvironment) : base(buildEnvironment)
+		{
+		}
 
 		[TaskAttribute("teamCityInfoPath")]
 		public string TeamCityInfoPath

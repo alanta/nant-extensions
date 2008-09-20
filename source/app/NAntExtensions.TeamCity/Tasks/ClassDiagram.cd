@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="NAntExtensions.TeamCity.Tasks.TeamCityAddStatistic" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAEAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Tasks\TeamCityAddStatistic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NAntExtensions.TeamCity.Tasks.TeamCityTask" Collapsed="true">
+    <Position X="5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAgAAAAAAAAAAAAAQAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\TeamCityTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NAntExtensions.TeamCity.Tasks.TeamCityAddStatisticList" Collapsed="true">
+    <Position X="5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Tasks\TeamCityAddStatisticList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NAntExtensions.TeamCity.Tasks.TeamCityAppendStatusText" Collapsed="true">
+    <Position X="2.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAgAAAAAAgAgAAAAAAA=</HashCode>
+      <FileName>Tasks\TeamCityAppendStatusText.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NAntExtensions.TeamCity.Tasks.TeamCityBuildLogTask" Collapsed="true">
+    <Position X="2.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAQQAAACAAQAACAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Tasks\TeamCityBuildLogTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NAntExtensions.TeamCity.Tasks.TeamCityBuildStatus" Collapsed="true">
+    <Position X="7.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAEAAAIAAAAAA=</HashCode>
+      <FileName>Tasks\TeamCityBuildStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NAntExtensions.TeamCity.Tasks.TeamCityMessageTask" Collapsed="true">
+    <Position X="8.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\TeamCityMessageTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NAntExtensions.TeamCity.Tasks.TeamCityProgress" Collapsed="true">
+    <Position X="9.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Tasks\TeamCityProgress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
