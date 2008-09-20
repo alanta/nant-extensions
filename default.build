@@ -89,6 +89,8 @@
 
 		<delete file="teamcity-info.xml"
 				failonerror="false" />
+		<delete dir="${basedir.build}"
+				failonerror="false" />
 		<delete dir="${basedir.deployment.artifacts}"
 				failonerror="false" />
 		<delete dir="${basedir.temp}"
@@ -147,9 +149,22 @@
 				 verbosity="${build.msbuild.verbosity}">
 			<arg value="/p:Configuration=${build.msbuild.configuration}" />
 			<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
+			<arg value="/p:OutDir=${basedir.build}" />
 			<arg value="/p:BuildRunner=${build.runner}" />
 			<arg value="/maxcpucount" />
 		</msbuild>
+
+		<!--<exec program="${tools.ilmerge}/ILMerge.exe"
+			  workingdir="${basedir.build}"
+			  verbose="true">
+			<arg path="${path::get-full-path('NAntExtensions.MbUnit.Partial.dll')}" />
+			<arg path="${path::get-full-path('NAntExtensions.TeamCity.Common.dll')}" />
+			<arg value='/out:"NAntExtensions.MbUnit.dll"' />
+			<arg value="/t:library" />
+			--><!--<arg value="/internalize:../ilmerge.exclude" />--><!--
+			--><!--<arg value="/ndebug"
+				 unless="'${build.msbuild.configuration}' == 'Debug'" />--><!--
+		</exec>-->
 
 		<!-- Machine.Specifications. -->
 		<msbuild project="${basedir.app}\NAntExtensions.Machine.Specifications\NAntExtensions.Machine.Specifications.csproj"
@@ -157,6 +172,7 @@
 				 verbosity="${build.msbuild.verbosity}">
 			<arg value="/p:Configuration=${build.msbuild.configuration}" />
 			<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
+			<arg value="/p:OutDir=${basedir.build}" />
 			<arg value="/p:BuildRunner=${build.runner}" />
 			<arg value="/maxcpucount" />
 		</msbuild>
@@ -167,6 +183,7 @@
 				 verbosity="${build.msbuild.verbosity}">
 			<arg value="/p:Configuration=${build.msbuild.configuration}" />
 			<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
+			<arg value="/p:OutDir=${basedir.build}" />
 			<arg value="/p:BuildRunner=${build.runner}" />
 			<arg value="/maxcpucount" />
 		</msbuild>
@@ -179,12 +196,14 @@
 	________________________________________________________________________________________________________________ -->
 	<fileset id="test-projects">
 		<include name="${basedir.test}\**\*.csproj" />
-		<exclude name="${basedir.test}\**\*ForTesting.csproj"/>
+		<exclude name="${basedir.test}\**\*.ForTesting.csproj"/>
 	</fileset>
 
 	<fileset id="coverage-assemblies"
-			 basedir="${basedir.app}">
-		<include name="${basedir.app}\**\bin\${build.msbuild.configuration}\NAntExtensions.*.dll" />
+			 basedir="${basedir.build}">
+		<include name="NAntExtensions.*.dll" />
+		<exclude name="*.ForTesting.dll" />
+		<exclude name="NAntExtensions.*.Tests.dll" />
 	</fileset>
 
 	<target name="init-run-tests"
@@ -200,6 +219,7 @@
 						 verbosity="${build.msbuild.verbosity}">
 					<arg value="/p:Configuration=${build.msbuild.configuration}" />
 					<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
+					<arg value="/p:OutDir=${basedir.build}" />
 					<arg value="/p:BuildRunner=${build.runner}" />
 					<arg value="/maxcpucount" />
 				</msbuild>
@@ -226,9 +246,9 @@
 						report-filename-format="${path::get-file-name-without-extension(testproject)}"
 						report-output-directory="${basedir.test.results}"
 						verbose="true"
-						workingdir="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}">
+						workingdir="${basedir.build}">
 					<assemblies>
-						<include name="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}\${path::get-file-name-without-extension(testproject)}.dll" />
+						<include name="${basedir.build}\${path::get-file-name-without-extension(testproject)}.dll" />
 					</assemblies>
 				</mbunit>
 			</do>
@@ -266,7 +286,7 @@
 				<ncover program="${tools.ncover}\NCover.Console.exe"
 						commandLineExe="${tools.mbunit}\MbUnit.Cons.exe"
 						commandLineArgs='/verbose+ /report-folder:"${basedir.test.results}" /report-name-format:"${path::get-file-name-without-extension(testproject)}" /report-type:html "${path::get-file-name-without-extension(testproject)}.dll"'
-						workingDirectory="${path::get-directory-name(testproject)}\bin\${build.msbuild.configuration}"
+						workingDirectory="${basedir.build}"
 						coverageFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.xml"
 						logLevel="Normal"
 						logFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.log"
@@ -325,14 +345,15 @@
 			 ziplevel="9"
 			 duplicate="Preserve">
 			<fileset refid="license" />
-			<fileset basedir="${basedir.app}\NAntExtensions.MbUnit\bin\${build.msbuild.configuration}"
+			<fileset basedir="${basedir.build}"
 					 prefix="extensions\common\neutral\MbUnit">
-				<include name="NAntExtensions*.dll" />
-				<include name="NAntExtensions*.pdb" />
+				<include name="NAntExtensions.MbUnit*.*" />
+				<include name="NAntExtensions.TeamCity.Common.*" />
+				<exclude name="*.Tests.*" />
 			</fileset>
-			<fileset basedir="${basedir.app}\NAntExtensions.MbUnit\bin\${build.msbuild.configuration}"
+			<fileset basedir="${basedir.build}"
 					 prefix="lib\common\neutral\MbUnit">
-				<include name="MbUnit.Framework*.dll" />
+				<include name="MbUnit.Framework.dll" />
 				<include name="QuickGraph*.dll" />
 				<include name="Refly*.dll" />
 				<include name="TestFu*.dll" />
@@ -344,16 +365,17 @@
 			 ziplevel="9"
 			 duplicate="Preserve">
 			<fileset refid="license" />
-			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
+			<fileset basedir="${basedir.build}"
 					 prefix="extensions\common\2.0\Machine.Specifications">
-				<include name="NAntExtensions*.dll" />
-				<include name="NAntExtensions*.pdb" />
+				<include name="NAntExtensions.Machine.Specifications*.*" />
+				<include name="NAntExtensions.TeamCity.Common.*" />
+				<exclude name="*.Tests.*" />
 			</fileset>
-			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
+			<fileset basedir="${basedir.build}"
 					 prefix="lib\common\2.0\Machine.Specifications">
 				<include name="Machine.Specifications*.dll" />
 			</fileset>
-			<fileset basedir="${basedir.app}\NAntExtensions.Machine.Specifications\bin\${build.msbuild.configuration}"
+			<fileset basedir="${basedir.build}"
 					 prefix="lib\net\2.0">
 				<include name="nunit.framework.dll" />
 			</fileset>
@@ -367,10 +389,10 @@
 			<fileset basedir="${basedir.app}\NAntExtensions.TeamCity" >
 				<include name="License-BlueWireTechnologies.txt" />
 			</fileset>
-			<fileset basedir="${basedir.app}\NAntExtensions.TeamCity\bin\${build.msbuild.configuration}"
+			<fileset basedir="${basedir.build}"
 					 prefix="extensions\common\2.0\TeamCity">
-				<include name="NAntExtensions*.dll" />
-				<include name="NAntExtensions*.pdb" />
+				<include name="NAntExtensions.TeamCity*.*" />
+				<exclude name="*.Tests.*" />
 			</fileset>
 		</zip>
 
