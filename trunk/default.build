@@ -335,7 +335,7 @@
 		<property name="merge"
 				  value="${basedir.build}/NAntExtensions.TeamCity.dll"/>
 		<call target="ilmerge"/>
-		
+
 		<zipfileset id="license">
 			<include name="License.txt" />
 		</zipfileset>
@@ -346,7 +346,7 @@
 			 duplicate="Preserve">
 			<fileset refid="license" />
 			<fileset basedir="${basedir.build}"
-					 prefix="extensions\common\neutral\MbUnit">
+					 prefix="extensions\common\neutral">
 				<include name="NAntExtensions.MbUnit*.*" />
 				<exclude name="*.Tests.*" />
 				<exclude name="*.Partial.*" />
