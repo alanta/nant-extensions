@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 using Castle.MicroKernel.Registration;
 
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.TeamCity.Common.Container
@@ -12,7 +13,12 @@ namespace NAntExtensions.TeamCity.Common.Container
 		{
 			yield return Component.For<ITeamCityMessageProvider>().ImplementedBy<TeamCityMessageProvider>();
 			yield return Component.For<IEnvironment>().ImplementedBy<SystemEnvironment>();
-			yield return Component.For<IBuildEnvironment>().ImplementedBy<BuildEnvironment>();
+			yield return Component.For<ITeamCityLogWriter>().ImplementedBy<TeamCityLogWriter>();
+
+			// Uncomment these if you want to debug certain TeamCity environments.
+			//yield return Component.For<IBuildEnvironment>().ImplementedBy<DebugConsoleRunnerBuildEnvironment>();
+			//yield return Component.For<IBuildEnvironment>().ImplementedBy<DebugNAntRunnerBuildEnvironment>();
+			yield return Component.For<IBuildEnvironment>().ImplementedBy<TeamCityBuildEnvironment>();
 		}
 	}
 }

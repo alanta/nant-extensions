@@ -1,12 +1,14 @@
 using System;
 
-namespace NAntExtensions.TeamCity.Common
+namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 {
-	public class SystemEnvironment:IEnvironment
+	internal class SystemEnvironment : IEnvironment
 	{
+		#region IEnvironment Members
 		public string GetEnvironmentVariable(string variable)
 		{
 			return Environment.GetEnvironmentVariable(variable, EnvironmentVariableTarget.Process);
 		}
+		#endregion
 	}
 }

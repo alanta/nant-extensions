@@ -73,8 +73,8 @@
     <Compile Include="When_properties_are_added_or_updated.cs" />
     <Compile Include="When_properties_are_set.cs" />
     <Compile Include="When_the_container_configuration_is_initialized.cs" />
-    <None Include="When_the_build_environment_is_inspected_if_the_build_is_a_TeamCity_build.cs" />
-    <None Include="When_the_build_environment_is_inspected_if_the_build_is_run_with_the_TeamCity_NAnt_runner.cs" />
+    <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_a_TeamCity_build.cs" />
+    <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_run_with_the_TeamCity_NAnt_runner.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\NAntExtensions.TeamCity.Common\NAntExtensions.TeamCity.Common.csproj">

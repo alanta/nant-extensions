@@ -10,7 +10,7 @@ using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.Machine.Specifications.RunListeners
 {
-	public class NAntRunListener : RunListener, ISpecificationRunListener
+	internal class NAntRunListener : RunListener, ISpecificationRunListener
 	{
 		readonly Task _task;
 		int _contextCount;

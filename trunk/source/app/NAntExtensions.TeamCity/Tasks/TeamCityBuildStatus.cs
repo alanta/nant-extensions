@@ -1,7 +1,7 @@
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
-using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
 using NAntExtensions.TeamCity.Common.Messaging;
 using NAntExtensions.TeamCity.Types;
@@ -43,7 +43,7 @@ namespace NAntExtensions.TeamCity.Tasks
 
 			Log(Level.Verbose, "Reporting build status. Type={0}, Message={1}", StatusType, Message);
 
-			MessageProvider.Message("##teamcity[buildStatus status='{0}' text='{1}']",
+			MessageProvider.SendMessage("##teamcity[buildStatus status='{0}' text='{1}']",
 			                        StatusType.ToString().ToUpperInvariant(),
 			                        Message);
 		}

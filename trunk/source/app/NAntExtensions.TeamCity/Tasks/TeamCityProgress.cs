@@ -3,7 +3,7 @@ using System;
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
-using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
 using NAntExtensions.TeamCity.Common.Messaging;
 using NAntExtensions.TeamCity.Types;
@@ -48,13 +48,13 @@ namespace NAntExtensions.TeamCity.Tasks
 			switch (ProgressType)
 			{
 				case ProgressType.Message:
-					MessageProvider.Message("##teamcity[progressMessage '{0}']", Message);
+					MessageProvider.SendMessage("##teamcity[progressMessage '{0}']", Message);
 					break;
 				case ProgressType.Start:
-					MessageProvider.Message("##teamcity[progressStart '{0}']", Message);
+					MessageProvider.SendMessage("##teamcity[progressStart '{0}']", Message);
 					break;
 				case ProgressType.End:
-					MessageProvider.Message("##teamcity[progressFinish '{0}']", Message);
+					MessageProvider.SendMessage("##teamcity[progressFinish '{0}']", Message);
 					break;
 				default:
 					throw new BuildException(String.Format("Unknown progress type: '{0}'", ProgressType));

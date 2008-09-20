@@ -43,11 +43,11 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 			return builder.ToString();
 		}
-		
+
 		internal static object[] FormatValues(object[] values)
 		{
 			List<object> result = new List<object>();
-			
+
 			StringBuilder builder = new StringBuilder();
 
 			foreach (object value in values)
@@ -58,7 +58,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 				result.Add(builder.ToString());
 			}
-			
+
 			return result.ToArray();
 		}
 

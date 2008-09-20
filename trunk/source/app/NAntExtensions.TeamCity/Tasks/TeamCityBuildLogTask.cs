@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 // Copyright (c) 2008, Bluewire Technologies Ltd.
 // All rights reserved.
 // 
@@ -22,7 +22,7 @@ using System.Xml;
 
 using NAnt.Core.Attributes;
 
-using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
 
 namespace NAntExtensions.TeamCity.Tasks
 {

@@ -21,7 +21,7 @@ using System.Xml;
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
-using NAntExtensions.TeamCity.Common;
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
 
 namespace NAntExtensions.TeamCity.Tasks

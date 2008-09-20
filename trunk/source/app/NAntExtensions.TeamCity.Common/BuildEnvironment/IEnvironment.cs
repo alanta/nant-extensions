@@ -1,4 +1,4 @@
-namespace NAntExtensions.TeamCity.Common
+namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 {
 	public interface IEnvironment
 	{

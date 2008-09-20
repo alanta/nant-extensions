@@ -2,13 +2,13 @@ using System;
 
 using NAnt.Core;
 
-namespace NAntExtensions.TeamCity.Common
+namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 {
-	public class BuildEnvironment : IBuildEnvironment
+	internal class TeamCityBuildEnvironment : IBuildEnvironment
 	{
 		readonly IEnvironment _environment;
 
-		public BuildEnvironment(IEnvironment environment)
+		public TeamCityBuildEnvironment(IEnvironment environment)
 		{
 			if (environment == null)
 			{
@@ -18,6 +18,7 @@ namespace NAntExtensions.TeamCity.Common
 			_environment = environment;
 		}
 
+		#region IBuildEnvironment Members
 		public bool IsTeamCityBuild
 		{
 			get { return _environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null; }
@@ -32,5 +33,6 @@ namespace NAntExtensions.TeamCity.Common
 
 			return task.Properties != null && task.Properties.Contains("agent.name");
 		}
+		#endregion
 	}
 }
