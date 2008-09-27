@@ -65,7 +65,7 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Info, "Writing '{0}' to '{1}'", new object[] { KeyValuePairs, TeamCityInfoPath });
+			Log(Level.Info, "Writing '{0}' to '{1}'", KeyValuePairs ?? "(null)", TeamCityInfoPath);
 
 			XmlDocument teamCityInfo = LoadTeamCityInfo();
 			XmlElement buildNode = GetBuildNode(teamCityInfo);

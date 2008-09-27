@@ -13,7 +13,8 @@ namespace NAntExtensions.TeamCity.Tasks
 	[TaskName("tc-progress")]
 	public class ProgressTask : MessageTask
 	{
-		public ProgressTask() : base(IoC.Resolve<IBuildEnvironment>())
+		public ProgressTask()
+			: this(IoC.Resolve<IBuildEnvironment>(), IoC.Resolve<ITeamCityMessageProvider>())
 		{
 		}
 
@@ -43,7 +44,7 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Verbose, "Reporting progress. Type={0}, Message={1}", ProgressType, Message);
+			Log(Level.Verbose, "Reporting progress. Type={0}, Message={1}", ProgressType, Message ?? "(null)");
 
 			switch (ProgressType)
 			{

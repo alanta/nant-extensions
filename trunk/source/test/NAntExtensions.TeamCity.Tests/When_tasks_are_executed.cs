@@ -1,0 +1,143 @@
+using MbUnit.Framework;
+using MbUnit.Framework.Reflection;
+
+using NAnt.Core;
+
+using NAntExtensions.ForTesting;
+using NAntExtensions.TeamCity.Common.BuildEnvironment;
+using NAntExtensions.TeamCity.Common.Messaging;
+using NAntExtensions.TeamCity.Tasks;
+
+using Rhino.Mocks;
+using Rhino.Mocks.Constraints;
+
+namespace NAntExtensions.TeamCity.Tests
+{
+	[TypeFixture(typeof(TeamCityTask))]
+	[ProviderFactory(typeof(TaskFactory), typeof(TeamCityTask))]
+	public class When_tasks_are_executed : TypeSpec
+	{
+		#region Factory
+		public class TaskFactory
+		{
+			readonly IBuildEnvironment _buildEnvironment;
+			readonly ITeamCityMessageProvider _messageProvider;
+
+			public TaskFactory()
+			{
+				_messageProvider = InternalMocks.DynamicMock<ITeamCityMessageProvider>();
+				_buildEnvironment = InternalMocks.StrictMock<IBuildEnvironment>();
+			}
+
+			[Factory]
+			public TeamCityTask AddStatisticList
+			{
+				get
+				{
+					AddStatisticListTask task = InternalMocks.PartialMock<AddStatisticListTask>(_buildEnvironment);
+					SetupResult.For(task.Properties).Return(null);
+					task.KeyValuePairs = "foo=bar";
+					return task;
+				}
+			}
+
+			[Factory]
+			public TeamCityTask AddStatistic
+			{
+				get
+				{
+					TeamCityTask task = InternalMocks.PartialMock<AddStatisticTask>(_buildEnvironment);
+					SetupResult.For(task.Properties).Return(null);
+					return task;
+				}
+			}
+
+			[Factory]
+			public TeamCityTask AppendStatusText
+			{
+				get
+				{
+					TeamCityTask task = InternalMocks.PartialMock<AppendStatusTextTask>(_buildEnvironment);
+					SetupResult.For(task.Properties).Return(null);
+					return task;
+				}
+			}
+
+			[Factory]
+			public TeamCityTask BuildStatus
+			{
+				get
+				{
+					TeamCityTask task = InternalMocks.PartialMock<BuildStatusTask>(_buildEnvironment, _messageProvider);
+
+					// Setting the task on the message provider through MessageTask.set_MessageProvider() is not an expectation.
+					InternalMocks.BackToRecord(_messageProvider);
+
+					return task;
+				}
+			}
+
+			[Factory]
+			public TeamCityTask Progress
+			{
+				get
+				{
+					TeamCityTask task = InternalMocks.PartialMock<ProgressTask>(_buildEnvironment, _messageProvider);
+
+					// Setting the task on the message provider through MessageTask.set_MessageProvider() is not an expectation.
+					InternalMocks.BackToRecord(_messageProvider);
+
+					return task;
+				}
+			}
+		}
+		#endregion
+
+		protected static MockRepository InternalMocks = new MockRepository();
+
+		public When_tasks_are_executed() : base(InternalMocks)
+		{
+		}
+
+		[Test]
+		public void Skips_task_execution_when_run_outside_of_TeamCity(TeamCityTask task)
+		{
+			task.ForceTaskExecution = false;
+
+			using (Mocks.Record())
+			{
+				SetupResult.For(task.BuildEnvironment.IsTeamCityBuild).Return(false);
+
+				task.Log(Level.Verbose, null);
+				LastCall.Constraints(Is.Equal(Level.Verbose), Text.Contains("Skipping task execution"));
+			}
+
+			using (Mocks.Playback())
+			{
+				Reflector.InvokeMethod(task, "ExecuteTask");
+			}
+		}
+
+		[Test]
+		public void Executes_the_task_when_run_inside_a_TeamCity_build(TeamCityTask task)
+		{
+			task.ForceTaskExecution = false;
+
+			using (Mocks.Record())
+			{
+				SetupResult.For(task.BuildEnvironment.IsTeamCityBuild).Return(true);
+
+				task.Log(Level.Verbose, null);
+				LastCall.Constraints(Is.Equal(Level.Verbose), Text.Contains("Skipping task execution")).Repeat.Never();
+
+				task.Log(Level.Verbose, null);
+				LastCall.Constraints(Is.Anything(), Is.Anything()).Repeat.Any();
+			}
+
+			using (Mocks.Playback())
+			{
+				Reflector.InvokeMethod(task, "ExecuteTask");
+			}
+		}
+	}
+}
