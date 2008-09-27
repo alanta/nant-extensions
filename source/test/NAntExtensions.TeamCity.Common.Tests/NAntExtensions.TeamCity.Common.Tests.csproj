@@ -74,12 +74,13 @@
     <Compile Include="When_a_message_is_logged_to_TeamCity.cs" />
     <Compile Include="When_properties_are_added_or_updated.cs" />
     <Compile Include="When_properties_are_set.cs" />
+    <Compile Include="When_testing_related_messages_are_logged_to_TeamCity.cs" />
     <Compile Include="When_the_build_environment_is_created.cs" />
     <Compile Include="When_the_console_runner_debug_build_environment_is_inspected.cs" />
     <Compile Include="When_the_container_configuration_is_initialized.cs" />
     <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_a_TeamCity_build.cs" />
     <Compile Include="When_the_build_environment_is_inspected_if_the_build_is_run_with_the_TeamCity_NAnt_runner.cs" />
-    <Compile Include="When_the_message_privider_is_created.cs" />
+    <Compile Include="When_the_message_provider_is_created.cs" />
     <Compile Include="When_the_NAnt_runner_debug_build_environment_is_inspected.cs" />
     <Compile Include="When_the_system_environment_is_inspected.cs" />
   </ItemGroup>

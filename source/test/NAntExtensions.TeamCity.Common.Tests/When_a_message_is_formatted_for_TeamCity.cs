@@ -73,5 +73,11 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			Assert.AreEqual("|]", _builder.ToString());
 		}
+
+		[Test]
+		public void Should_encode_special_characters_when_passing_a_string()
+		{
+			Assert.AreEqual("|||'|n|r|]", Formatter.FormatValue("|'\n\r]"));
+		}
 	}
 }
