@@ -1,9 +1,7 @@
 using System;
 using System.IO;
-using System.Reflection;
 
 using Machine.Specifications;
-using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 
 using NAntExtensions.TeamCity.Common.Messaging;

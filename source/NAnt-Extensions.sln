@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.Machine.Spec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.TeamCity.Tests", "test\NAntExtensions.TeamCity.Tests\NAntExtensions.TeamCity.Tests.csproj", "{D2C9F2D6-81CA-49E9-AF25-F59F82FD3419}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.Machine.Specifications.Example.Tests", "test\NAntExtensions.Machine.Specifications.Example.Tests\NAntExtensions.Machine.Specifications.Example.Tests.csproj", "{55BD0722-C03A-406D-BAB4-F3BF86DBF5CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{D2C9F2D6-81CA-49E9-AF25-F59F82FD3419}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2C9F2D6-81CA-49E9-AF25-F59F82FD3419}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2C9F2D6-81CA-49E9-AF25-F59F82FD3419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55BD0722-C03A-406D-BAB4-F3BF86DBF5CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55BD0722-C03A-406D-BAB4-F3BF86DBF5CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55BD0722-C03A-406D-BAB4-F3BF86DBF5CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55BD0722-C03A-406D-BAB4-F3BF86DBF5CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +87,6 @@ Global
 		{5D9B5A98-E50A-4C91-9B99-91512720E985} = {2B9CD454-32DF-4F1E-993F-52786A507A6A}
 		{27C24491-AAFE-4BA5-992D-9FA4CCE22104} = {2B9CD454-32DF-4F1E-993F-52786A507A6A}
 		{D2C9F2D6-81CA-49E9-AF25-F59F82FD3419} = {2B9CD454-32DF-4F1E-993F-52786A507A6A}
+		{55BD0722-C03A-406D-BAB4-F3BF86DBF5CD} = {2B9CD454-32DF-4F1E-993F-52786A507A6A}
 	EndGlobalSection
 EndGlobal
