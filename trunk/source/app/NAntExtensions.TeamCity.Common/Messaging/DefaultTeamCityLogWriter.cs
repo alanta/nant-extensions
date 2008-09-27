@@ -14,10 +14,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		IBuildEnvironment _buildEnvironment;
 		bool _isOpen;
 
-		public DefaultTeamCityLogWriter(IBuildEnvironment buildEnvironment, Task task)
+		public DefaultTeamCityLogWriter(IBuildEnvironment buildEnvironment)
 		{
 			BuildEnvironment = buildEnvironment;
-			Task = task;
 
 			_isOpen = true;
 		}
@@ -117,7 +116,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			{
 				throw new ArgumentOutOfRangeException("count");
 			}
-			if ((buffer.Length - index) < count)
+			if (buffer.Length - index < count)
 			{
 				throw new ArgumentException("Invalid combination of offset and length.");
 			}
@@ -135,7 +134,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			{
 				if (UseTaskLogger)
 				{
-					Task.Log(Level.Info, _builder.ToString());
+					TaskToUseForLogging.Log(Level.Info, _builder.ToString());
 				}
 				else
 				{

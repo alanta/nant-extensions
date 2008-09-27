@@ -11,10 +11,13 @@ using NAnt.Core;
 using NAnt.Core.Attributes;
 using NAnt.Core.Types;
 
+using NAntExtensions.MbUnit.Reporting;
+using NAntExtensions.MbUnit.Types;
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
+using NAntExtensions.TeamCity.Common.Helper;
 
-namespace NAntExtensions.MbUnit
+namespace NAntExtensions.MbUnit.Tasks
 {
 	[TaskName("mbunit")]
 	public class MbUnitTask : Task
@@ -217,7 +220,7 @@ namespace NAntExtensions.MbUnit
 
 				if (BuildEnvironment.IsTeamCityBuild)
 				{
-					//TeamCityReport.RenderToLog(_result, this);
+					TeamCityReportGenerator.RenderReport(_result, this);
 				}
 
 				if (reportName != null)
@@ -289,24 +292,12 @@ namespace NAntExtensions.MbUnit
 
 		static void UpdateNAntProperties(PropertyDictionary properties, ReportResult reportResult)
 		{
-			AddOrUpdate(properties, "mbunit.asserts", reportResult.Counter.AssertCount);
-			AddOrUpdate(properties, "mbunit.failures", reportResult.Counter.FailureCount);
-			AddOrUpdate(properties, "mbunit.ignored", reportResult.Counter.IgnoreCount);
-			AddOrUpdate(properties, "mbunit.run", reportResult.Counter.RunCount);
-			AddOrUpdate(properties, "mbunit.skipped", reportResult.Counter.SkipCount);
-			AddOrUpdate(properties, "mbunit.successes", reportResult.Counter.SuccessCount);
-		}
-
-		static void AddOrUpdate(PropertyDictionary properties, string key, int value)
-		{
-			int parsedValue;
-			if (!int.TryParse(properties[key], out parsedValue))
-			{
-				parsedValue = 0;
-			}
-
-			parsedValue += value;
-			properties[key] = parsedValue.ToString();
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Asserts, reportResult.Counter.AssertCount);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Failures, reportResult.Counter.FailureCount);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Ignored, reportResult.Counter.IgnoreCount);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Run, reportResult.Counter.RunCount);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Skipped, reportResult.Counter.SkipCount);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Successes, reportResult.Counter.SuccessCount);
 		}
 
 		void Graph_Log(string message)

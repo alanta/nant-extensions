@@ -6,9 +6,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	internal class Formatter
 	{
-		internal static void FormatException(Exception exception, StringBuilder builder)
+		internal static void FormatException(ExceptionInfo exceptionInfo, StringBuilder builder)
 		{
-			if (exception == null)
+			if (exceptionInfo == null)
 			{
 				return;
 			}
@@ -18,21 +18,24 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				builder.AppendLine("--------------------------------");
 			}
 
-			builder.AppendFormat("{0}: {1}", exception.GetType(), exception.Message);
+			builder.AppendFormat("{0}: {1}", FormatValue(exceptionInfo.GetType().ToString()), FormatValue(exceptionInfo.Message));
 			builder.AppendLine();
 
-			if (!String.IsNullOrEmpty(exception.Source))
+			if (!String.IsNullOrEmpty(exceptionInfo.Source))
 			{
-				builder.AppendFormat(" Source: {0}", exception.Source);
+				builder.AppendFormat(" Source: {0}", FormatValue(exceptionInfo.Source));
+				builder.AppendLine();
 			}
-			builder.AppendLine();
 
-			builder.AppendFormat(" Stack: {0}", exception.StackTrace);
-			builder.AppendLine();
-
-			if (exception.InnerException != null)
+			if (!String.IsNullOrEmpty(exceptionInfo.StackTrace))
 			{
-				FormatException(exception.InnerException, builder);
+				builder.AppendFormat(" Stack: {0}", FormatValue(exceptionInfo.StackTrace));
+				builder.AppendLine();
+			}
+
+			if (exceptionInfo.InnerException != null)
+			{
+				FormatException(exceptionInfo.InnerException, builder);
 			}
 		}
 

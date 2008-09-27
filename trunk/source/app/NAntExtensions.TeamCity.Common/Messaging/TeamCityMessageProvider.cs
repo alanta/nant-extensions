@@ -10,20 +10,20 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 	{
 		readonly TeamCityLogWriter _writer;
 
-		public TeamCityMessageProvider(TeamCityLogWriter writer, Task task)
+		public TeamCityMessageProvider(TeamCityLogWriter writer, Task taskToUseForLogging)
 		{
 			if (writer == null)
 			{
 				throw new ArgumentNullException("writer");
 			}
 
-			if (task == null)
+			if (taskToUseForLogging == null)
 			{
-				throw new ArgumentNullException("task");
+				throw new ArgumentNullException("taskToUseForLogging");
 			}
 
 			_writer = writer;
-			_writer.Task = task;
+			_writer.TaskToUseForLogging = taskToUseForLogging;
 		}
 
 		#region ITeamCityMessageProvider Members
@@ -78,6 +78,11 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public void TestFailed(string testName, Exception exception)
 		{
+			TestFailed(testName, ExceptionInfo.FromException(exception));
+		}
+
+		public void TestFailed(string testName, ExceptionInfo exceptionInfo)
+		{
 			if (String.IsNullOrEmpty(testName))
 			{
 				return;
@@ -85,20 +90,20 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 			StringBuilder message = new StringBuilder();
 			message.AppendFormat(CultureInfo.InvariantCulture,
-			                     "##teamcity[testFailed name='{0}'",
-			                     Formatter.FormatValue(testName));
+								 "##teamcity[testFailed name='{0}'",
+								 Formatter.FormatValue(testName));
 
-			if (exception != null)
+			if (exceptionInfo != null)
 			{
 				StringBuilder formattedException = new StringBuilder();
-				Formatter.FormatException(exception, formattedException);
+				Formatter.FormatException(exceptionInfo, formattedException);
 				Formatter.FormatValue(formattedException);
 
 				message.AppendFormat(CultureInfo.InvariantCulture,
-				                     " message='{0}' details='{1}' type='{2}'",
-				                     Formatter.FormatValue(exception.Message),
-				                     formattedException,
-				                     Formatter.FormatValue(exception.GetType().ToString()));
+									 " message='{0}' details='{1}' type='{2}'",
+									 Formatter.FormatValue(exceptionInfo.Message),
+									 formattedException,
+									 Formatter.FormatValue(exceptionInfo.Type.ToString()));
 			}
 
 			message.Append("]");
