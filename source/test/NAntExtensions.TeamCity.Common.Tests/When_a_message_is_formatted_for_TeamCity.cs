@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 
 using MbUnit.Framework;
@@ -14,6 +15,13 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		protected override void Before_each_spec()
 		{
 			_builder = new StringBuilder();
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentNullException))]
+		public void Throws_if_FormatValue_is_called_with_a_null_StringBuilder()
+		{
+			Formatter.FormatValue((StringBuilder) null);
 		}
 
 		[Test]

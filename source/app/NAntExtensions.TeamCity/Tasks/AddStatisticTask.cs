@@ -40,14 +40,14 @@ namespace NAntExtensions.TeamCity.Tasks
 		[TaskAttribute("key", Required = true)]
 		public string Key
 		{
-			private get;
+			get;
 			set;
 		}
 
 		[TaskAttribute("value", Required = true)]
 		public string Value
 		{
-			private get;
+			get;
 			set;
 		}
 

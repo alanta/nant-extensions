@@ -28,8 +28,8 @@ namespace NAntExtensions.TeamCity.Tasks
 {
 	public abstract class BuildLogTask : TeamCityTask
 	{
-		string _teamCityInfoPath;
 		const string TeamCityInfoFileName = "teamcity-info.xml";
+		string _teamCityInfoPath;
 
 		protected BuildLogTask(IBuildEnvironment buildEnvironment) : base(buildEnvironment)
 		{
@@ -51,10 +51,22 @@ namespace NAntExtensions.TeamCity.Tasks
 
 		protected static XmlElement CreateStatisticValueNode(XmlDocument doc, string key, string value)
 		{
-			XmlElement element = doc.CreateElement("statisticValue");
+			XmlElement element = FindOrCreateElement(doc, key);
 			element.SetAttribute("key", key);
 			element.SetAttribute("value", value);
 			return element;
+		}
+
+		static XmlElement FindOrCreateElement(XmlDocument doc, string key)
+		{
+			XmlNode existingNodeForKey = doc.SelectSingleNode(String.Format("/build/statisticValue[@key='{0}']", key));
+
+			if (existingNodeForKey != null && existingNodeForKey.NodeType == XmlNodeType.Element)
+			{
+				return (XmlElement) existingNodeForKey;
+			}
+
+			return doc.CreateElement("statisticValue");
 		}
 
 		protected static XmlElement GetBuildNode(XmlDocument doc)
