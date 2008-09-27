@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 using MbUnit.Framework;
@@ -13,18 +14,20 @@ using Rhino.Mocks;
 
 namespace NAntExtensions.TeamCity.Tests
 {
-	public class When_build_status_text_is_appended : Spec
+	public class When_a_build_statistics_value_is_added : Spec
 	{
+		const string Key = "key";
+		const string SecondKey = "key2";
 		const string SecondValue = "bar";
 		const string Value = "foo";
 		IBuildEnvironment _buildEnvironment;
-		AppendStatusTextTask _task;
+		AddStatisticTask _task;
 
 		protected override void Before_each_spec()
 		{
 			_buildEnvironment = Mocks.StrictMock<IBuildEnvironment>();
 
-			_task = Mocks.PartialMock<AppendStatusTextTask>(_buildEnvironment);
+			_task = Mocks.PartialMock<AddStatisticTask>(_buildEnvironment);
 			_task.ForceTaskExecution = true;
 
 			// Logging is allowed at any time.
@@ -45,6 +48,7 @@ namespace NAntExtensions.TeamCity.Tests
 		[Test]
 		public void Creates_TeamCity_info_document()
 		{
+			_task.Key = Key;
 			_task.Value = Value;
 
 			using (Mocks.Playback())
@@ -56,8 +60,9 @@ namespace NAntExtensions.TeamCity.Tests
 		}
 
 		[Test]
-		public void Appends_first_status_message_to_document()
+		public void Adds_first_statistic_value_to_document()
 		{
+			_task.Key = Key;
 			_task.Value = Value;
 
 			using (Mocks.Playback())
@@ -66,22 +71,45 @@ namespace NAntExtensions.TeamCity.Tests
 			}
 
 			string xml = File.ReadAllText(_task.TeamCityInfoPath);
-			XmlAssert.XPathEvaluatesTo("/build/statusInfo/text[@action='append']", xml, Value);
+			XmlAssert.XPathEvaluatesTo(String.Format("/build/statisticValue[@key='{0}']/@value", Key), xml, Value);
 		}
 
 		[Test]
-		public void Appends_subsequent_status_messages_to_document()
+		public void Adds_subsequent_statistic_values_to_document()
 		{
 			using (Mocks.Playback())
 			{
+				_task.Key = Key;
 				_task.Value = Value;
 				Reflector.InvokeMethod(_task, "ExecuteTask");
+
+				_task.Key = SecondKey;
 				_task.Value = SecondValue;
 				Reflector.InvokeMethod(_task, "ExecuteTask");
 			}
 
 			string xml = File.ReadAllText(_task.TeamCityInfoPath);
-			XmlAssert.XPathEvaluatesTo("/build/statusInfo/text[@action='append']", xml, Value + SecondValue);
+
+			XmlAssert.XPathEvaluatesTo(String.Format("/build/statisticValue[@key='{0}']/@value", Key), xml, Value);
+			XmlAssert.XPathEvaluatesTo(String.Format("/build/statisticValue[@key='{0}']/@value", SecondKey), xml, SecondValue);
+		}
+
+		[Test]
+		public void Overwrites_existing_values_for_a_given_key()
+		{
+			using (Mocks.Playback())
+			{
+				_task.Key = Key;
+				_task.Value = Value;
+				Reflector.InvokeMethod(_task, "ExecuteTask");
+
+				_task.Value = SecondValue;
+				Reflector.InvokeMethod(_task, "ExecuteTask");
+			}
+
+			string xml = File.ReadAllText(_task.TeamCityInfoPath);
+
+			XmlAssert.XPathEvaluatesTo(String.Format("/build/statisticValue[@key='{0}']/@value", Key), xml, SecondValue);
 		}
 	}
 }

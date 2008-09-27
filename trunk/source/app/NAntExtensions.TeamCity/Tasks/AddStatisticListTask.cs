@@ -41,11 +41,11 @@ namespace NAntExtensions.TeamCity.Tasks
 		[TaskAttribute("keyValuePairs")]
 		public string KeyValuePairs
 		{
-			private get;
+			get;
 			set;
 		}
 
-		void AddKeyValuePairsToXml(XmlDocument teamCityInfoXml, XmlElement buildNode)
+		void AddKeyValuePairsToXml(XmlDocument teamCityInfoXml, XmlNode buildNode)
 		{
 			foreach (string str in KeyValuePairs.Split(new[] { ';' }))
 			{
