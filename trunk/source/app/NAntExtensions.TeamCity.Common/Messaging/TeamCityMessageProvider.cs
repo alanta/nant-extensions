@@ -36,6 +36,11 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public void TestSuiteStarted(string assemblyName)
 		{
+			if (String.IsNullOrEmpty(assemblyName))
+			{
+				return;
+			}
+
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
 			                                "##teamcity[testSuiteStarted name='{0}']",
 			                                Formatter.FormatValue(assemblyName)));
@@ -43,6 +48,11 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public void TestSuiteFinished(string assemblyName)
 		{
+			if (String.IsNullOrEmpty(assemblyName))
+			{
+				return;
+			}
+
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
 			                                "##teamcity[testSuiteFinished name='{0}']",
 			                                Formatter.FormatValue(assemblyName)));
@@ -50,6 +60,11 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public void TestStarted(string testName)
 		{
+			if (String.IsNullOrEmpty(testName))
+			{
+				return;
+			}
+
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
 			                                "##teamcity[testStarted name='{0}']",
 			                                Formatter.FormatValue(testName)));
@@ -57,6 +72,11 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public void TestIgnored(string testName, string message)
 		{
+			if (String.IsNullOrEmpty(testName))
+			{
+				return;
+			}
+
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
 			                                "##teamcity[testIgnored name='{0}' message='{1}']",
 			                                Formatter.FormatValue(testName),
@@ -65,20 +85,41 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public void TestFailed(string testName, Exception exception)
 		{
-			StringBuilder formattedException = new StringBuilder();
-			Formatter.FormatException(exception, formattedException);
-			Formatter.FormatValue(formattedException);
+			if (String.IsNullOrEmpty(testName))
+			{
+				return;
+			}
 
-			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-			                                "##teamcity[testFailed  name='{0}' message='{1}' details='{2}' type='{3}']",
-			                                Formatter.FormatValue(testName),
-			                                Formatter.FormatValue(exception.Message),
-			                                formattedException,
-			                                Formatter.FormatValue(exception.GetType().ToString())));
+			StringBuilder message = new StringBuilder();
+			message.AppendFormat(CultureInfo.InvariantCulture,
+			                     "##teamcity[testFailed name='{0}'",
+			                     Formatter.FormatValue(testName));
+
+			if (exception != null)
+			{
+				StringBuilder formattedException = new StringBuilder();
+				Formatter.FormatException(exception, formattedException);
+				Formatter.FormatValue(formattedException);
+
+				message.AppendFormat(CultureInfo.InvariantCulture,
+				                     " message='{0}' details='{1}' type='{2}'",
+				                     Formatter.FormatValue(exception.Message),
+				                     formattedException,
+				                     Formatter.FormatValue(exception.GetType().ToString()));
+			}
+
+			message.Append("]");
+
+			_writer.WriteLine(message.ToString());
 		}
 
 		public void TestOutputStream(string testName, string outputStream)
 		{
+			if (String.IsNullOrEmpty(testName))
+			{
+				return;
+			}
+
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
 			                                "##teamcity[testStdOut name='{0}' out='{1}']",
 			                                Formatter.FormatValue(testName),
@@ -87,6 +128,11 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public void TestErrorStream(string testName, string errorStream)
 		{
+			if (String.IsNullOrEmpty(testName))
+			{
+				return;
+			}
+
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
 			                                "##teamcity[testStdErr name='{0}' out='{1}']",
 			                                Formatter.FormatValue(testName),
@@ -95,6 +141,11 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public void TestFinished(string testName)
 		{
+			if (String.IsNullOrEmpty(testName))
+			{
+				return;
+			}
+
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
 			                                "##teamcity[testFinished name='{0}']",
 			                                Formatter.FormatValue(testName)));

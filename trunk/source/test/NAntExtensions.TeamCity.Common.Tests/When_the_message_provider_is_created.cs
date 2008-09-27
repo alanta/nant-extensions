@@ -9,7 +9,7 @@ using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.TeamCity.Common.Tests
 {
-	public class When_the_message_privider_is_created : Spec
+	public class When_the_message_provider_is_created : Spec
 	{
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
