@@ -3,6 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{4050F7E4-A4E9-48CB-8EC7-A3811D007E89}"
 	ProjectSection(SolutionItems) = preProject
+		..\default.build = ..\default.build
 		..\default.properties = ..\default.properties
 		..\ilmerge.internalize = ..\ilmerge.internalize
 	EndProjectSection
