@@ -13,67 +13,41 @@ namespace NAntExtensions.TeamCity.Common.Tests
 {
 	public class When_the_build_environment_is_inspected_if_the_build_is_run_with_the_TeamCity_NAnt_runner : Spec
 	{
-		TeamCityBuildEnvironment _sut;
+		const string TeamCityEnvironmentVariable = "teamcity-dotnet-log-file";
+		DefaultBuildEnvironment _sut;
+		IEnvironment _environment;
 
 		protected override void Before_each_spec()
 		{
-			_sut = new TeamCityBuildEnvironment(Mocks.StrictMock<IEnvironment>());
+			_environment = Mocks.StrictMock<IEnvironment>();
+			_sut = new DefaultBuildEnvironment(_environment);
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void Should_throw_an_exception_if_the_passed_task_is_null()
+		public void Should_report_a_normal_build_if_TeamCity_environment_variable_does_not_exist()
 		{
-			_sut.IsRunningWithTeamCityNAntRunner(null);
-		}
-
-		[Test]
-		public void Should_report_a_normal_build_if_task_properties_are_null()
-		{
-			Task task = Mocks.PartialMock<Task>();
-
 			using (Mocks.Record())
 			{
-				SetupResult.For(task.Properties).Return(null);
+				Expect.Call(_environment.GetEnvironmentVariable(TeamCityEnvironmentVariable)).Return(null);
 			}
 
 			using (Mocks.Playback())
 			{
-				Assert.IsFalse(_sut.IsRunningWithTeamCityNAntRunner(task));
+				Assert.IsFalse(_sut.IsRunningWithTeamCityNAntRunner);
 			}
 		}
 
 		[Test]
-		public void Should_report_a_normal_build_if_task_properties_do_not_contain_the_agent_name()
+		public void Should_report_a_TeamCity_build_if_TeamCity_environment_variable_does_exist()
 		{
-			Task task = Mocks.PartialMock<Task>();
-
 			using (Mocks.Record())
 			{
-				SetupResult.For(task.Properties).Return(new PropertyDictionary(null));
+				Expect.Call(_environment.GetEnvironmentVariable(TeamCityEnvironmentVariable)).Return("foo");
 			}
 
 			using (Mocks.Playback())
 			{
-				Assert.IsFalse(_sut.IsRunningWithTeamCityNAntRunner(task));
-			}
-		}
-
-		[Test]
-		public void Should_report_a_TeamCity_build_if_task_properties_do_contain_the_agent_name()
-		{
-			Task task = Mocks.PartialMock<Task>();
-
-			using (Mocks.Record())
-			{
-				PropertyDictionary properties = new PropertyDictionary(null);
-				properties.Add("agent.name", "42");
-				SetupResult.For(task.Properties).Return(properties);
-			}
-
-			using (Mocks.Playback())
-			{
-				Assert.IsTrue(_sut.IsRunningWithTeamCityNAntRunner(task));
+				Assert.IsTrue(_sut.IsRunningWithTeamCityNAntRunner);
 			}
 		}
 	}
