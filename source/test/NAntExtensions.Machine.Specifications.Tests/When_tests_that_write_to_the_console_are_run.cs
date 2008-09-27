@@ -1,7 +1,7 @@
 using System;
-using System.Reflection;
 
-using Machine.Specifications.Model;
+using Machine.Specifications;
+using Machine.Specifications.Runner;
 
 using MbUnit.Framework;
 
@@ -18,22 +18,18 @@ namespace NAntExtensions.Machine.Specifications.Tests
 	{
 		const string ConsoleErrorMessage = "Console.Error: foo bar baz";
 		const string ConsoleOutMessage = "Console.Out: foo bar baz";
-		FieldInfo _fieldInfo;
 		TeamCityRunListener _listener;
-		Specification _specification;
 		ITeamCityMessageProvider _messageProvider;
+		SpecificationInfo _specificationInfo;
 
 		protected override void Before_each_spec()
 		{
-			_fieldInfo = Mocks.PartialMock<FieldInfo>();
-			SetupResult.For(_fieldInfo.Name).Return("foo");
-			Mocks.Replay(_fieldInfo);
-
-			_specification = Mocks.PartialMock<Specification>(_fieldInfo, _fieldInfo);
+			_specificationInfo = new SpecificationInfo("Spec");
 
 			_messageProvider = Mocks.DynamicMock<ITeamCityMessageProvider>();
 			_listener = new TeamCityRunListener(_messageProvider);
-			_listener.OnContextStart(new Context(GetType(), null, null, null, null, null, null));
+
+			_listener.OnContextStart(new ContextInfo("Context", "Concern"));
 		}
 
 		[Test]
@@ -45,13 +41,13 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				LastCall.Constraints(Is.Anything(), Is.Equal(ConsoleOutMessage));
 			}
 
-			_listener.OnSpecificationStart(_specification);
+			_listener.OnSpecificationStart(_specificationInfo);
 
 			using (Mocks.Playback())
 			{
 				Console.Write(ConsoleOutMessage);
 
-				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult());
+				_listener.OnSpecificationEnd(_specificationInfo, Result.Pass());
 			}
 		}
 
@@ -64,11 +60,11 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				LastCall.IgnoreArguments().Repeat.Never();
 			}
 
-			_listener.OnSpecificationStart(_specification);
+			_listener.OnSpecificationStart(_specificationInfo);
 
 			using (Mocks.Playback())
 			{
-				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult());
+				_listener.OnSpecificationEnd(_specificationInfo, Result.Pass());
 			}
 		}
 
@@ -81,13 +77,13 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				LastCall.Constraints(Is.Anything(), Is.Equal(ConsoleErrorMessage));
 			}
 
-			_listener.OnSpecificationStart(_specification);
+			_listener.OnSpecificationStart(_specificationInfo);
 
 			using (Mocks.Playback())
 			{
 				Console.Error.Write(ConsoleErrorMessage);
 
-				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult());
+				_listener.OnSpecificationEnd(_specificationInfo, Result.Pass());
 			}
 		}
 
@@ -100,11 +96,11 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				LastCall.IgnoreArguments().Repeat.Never();
 			}
 
-			_listener.OnSpecificationStart(_specification);
+			_listener.OnSpecificationStart(_specificationInfo);
 
 			using (Mocks.Playback())
 			{
-				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult());
+				_listener.OnSpecificationEnd(_specificationInfo, Result.Pass());
 			}
 		}
 	}

@@ -63,7 +63,7 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="MachineSpecificationsTask.cs" />
+    <Compile Include="Tasks\MachineSpecificationsTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RunListeners\NAntRunListener.cs" />
     <Compile Include="RunListeners\RunListener.cs" />

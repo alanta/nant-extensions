@@ -15,7 +15,7 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
 using NAntExtensions.TeamCity.Common.Messaging;
 
-namespace NAntExtensions.Machine.Specifications
+namespace NAntExtensions.Machine.Specifications.Tasks
 {
 	[TaskName("mspec")]
 	public class MachineSpecificationsTask : Task
@@ -80,6 +80,14 @@ namespace NAntExtensions.Machine.Specifications
 			set { _workingDirectory = value; }
 		}
 
+		[TaskAttribute("include-timing-info")]
+		[BooleanValidator]
+		public bool IncludeTimeInfo
+		{
+			get;
+			set;
+		}
+
 		protected override void ExecuteTask()
 		{
 			string originalWorkingDirectory = Environment.CurrentDirectory;
@@ -136,7 +144,7 @@ namespace NAntExtensions.Machine.Specifications
 			string reportPath = Path.Combine(ReportDirectory, ReportFilename);
 			if (!String.IsNullOrEmpty(reportPath))
 			{
-				GenerateHtmlReportRunListener htmlReport = new GenerateHtmlReportRunListener(reportPath);
+				GenerateHtmlReportRunListener htmlReport = new GenerateHtmlReportRunListener(reportPath, IncludeTimeInfo);
 				result.Add(htmlReport);
 			}
 

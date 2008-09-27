@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 
+using Machine.Specifications;
 using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 
@@ -55,35 +56,35 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 			UpdateNAntProperties(_task.Properties, _contextCount, _specificationCount, _failedSpecificationCount);
 		}
 
-		public void OnAssemblyStart(Assembly assembly)
+		public void OnAssemblyStart(AssemblyInfo assembly)
 		{
-			_task.Log(Level.Info, String.Format("{0}Specs in {1}:", Environment.NewLine, assembly.GetName().Name));
+			_task.Log(Level.Info, String.Format("{0}Specs in {1}:", Environment.NewLine, assembly.Name));
 		}
 
-		public void OnAssemblyEnd(Assembly assembly)
+		public void OnAssemblyEnd(AssemblyInfo assembly)
 		{
 		}
 
-		public override void OnContextStart(Context context)
+		public override void OnContextStart(ContextInfo context)
 		{
 			base.OnContextStart(context);
 
 			_task.Log(Level.Verbose, String.Format("{0}{1}", Environment.NewLine, context.FullName));
 		}
 
-		public override void OnContextEnd(Context context)
+		public override void OnContextEnd(ContextInfo context)
 		{
 			base.OnContextEnd(context);
 
 			_contextCount++;
 		}
 
-		public void OnSpecificationStart(Specification specification)
+		public void OnSpecificationStart(SpecificationInfo specification)
 		{
 			_task.Log(Level.Verbose, String.Format("    \x00bb {0}", specification.Name));
 		}
 
-		public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
+		public void OnSpecificationEnd(SpecificationInfo specification, Result result)
 		{
 			_specificationCount++;
 
