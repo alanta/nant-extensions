@@ -5,6 +5,7 @@ using Machine.Specifications.Runner;
 
 using NAnt.Core;
 
+using NAntExtensions.Machine.Specifications.Types;
 using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.Machine.Specifications.RunListeners
@@ -109,9 +110,9 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		                                 int specifications,
 		                                 int failedSpecifications)
 		{
-			PropertyDictionaryHelper.AddOrUpdateInt(properties, "mspec.contexts", contexts);
-			PropertyDictionaryHelper.AddOrUpdateInt(properties, "mspec.specs", specifications);
-			PropertyDictionaryHelper.AddOrUpdateInt(properties, "mspec.failedspecs", failedSpecifications);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Contexts, contexts);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Specifications, specifications);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.FailedSpecifications, failedSpecifications);
 		}
 	}
 }

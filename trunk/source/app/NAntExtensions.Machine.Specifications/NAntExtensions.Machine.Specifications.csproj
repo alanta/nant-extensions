@@ -69,6 +69,7 @@
     <Compile Include="RunListeners\NAntRunListener.cs" />
     <Compile Include="RunListeners\RunListener.cs" />
     <Compile Include="RunListeners\TeamCityRunListener.cs" />
+    <Compile Include="Types\Counter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NAntExtensions.TeamCity.Common\NAntExtensions.TeamCity.Common.csproj">

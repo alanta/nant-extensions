@@ -1,6 +1,7 @@
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
+using NAntExtensions.Machine.Specifications.Types;
 using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.Machine.Specifications.Tasks
@@ -10,9 +11,10 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 	{
 		protected override void ExecuteTask()
 		{
-			PropertyDictionaryHelper.SetInt(Properties, "mspec.contexts", 0);
-			PropertyDictionaryHelper.SetInt(Properties, "mspec.specs", 0);
-			PropertyDictionaryHelper.SetInt(Properties, "mspec.failedspecs", 0);
+			foreach (string counter in Counter.All)
+			{
+				PropertyDictionaryHelper.SetInt(Properties, counter, 0);	
+			}
 		}
 	}
 }
