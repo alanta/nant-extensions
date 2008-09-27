@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.IO;
 
@@ -7,14 +8,24 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	public abstract class TeamCityLogWriter : TextWriter
 	{
+		Task _task;
+
 		protected TeamCityLogWriter() : base(CultureInfo.InvariantCulture)
 		{
 		}
 
-		public abstract Task Task
+		public Task Task
 		{
-			get;
-			set;
+			get { return _task; }
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("value");
+				}
+
+				_task = value;
+			}
 		}
 	}
 }

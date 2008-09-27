@@ -134,7 +134,7 @@ namespace NAntExtensions.MbUnit
 			sb.Replace("]", "|]");
 		}
 
-		internal static void RenderToLog(ReportResult result, Task task)
+		internal void RenderToLog(ReportResult result, Task task)
 		{
 			if (null == result)
 			{
@@ -148,9 +148,9 @@ namespace NAntExtensions.MbUnit
 
 			TeamCityReport tcReport = new TeamCityReport();
 			// TODO: this might break.
-			using (TeamCityLogWriter writer = IoC.Resolve<TeamCityLogWriter>())
+			using (TeamCityLogWriter writer = IoC.Resolve<TeamCityLogWriter>(new object[] { this }))
 			{
-				writer.Task = task;
+				//writer.Task = task;
 				tcReport.Render(result, writer);
 			}
 		}

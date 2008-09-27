@@ -10,30 +10,23 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 	{
 		readonly TeamCityLogWriter _writer;
 
-		public TeamCityMessageProvider(TeamCityLogWriter writer)
+		public TeamCityMessageProvider(TeamCityLogWriter writer, Task task)
 		{
 			if (writer == null)
 			{
 				throw new ArgumentNullException("writer");
 			}
 
+			if (task == null)
+			{
+				throw new ArgumentNullException("task");
+			}
+
 			_writer = writer;
+			_writer.Task = task;
 		}
 
 		#region ITeamCityMessageProvider Members
-		public Task Task
-		{
-			set
-			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-
-				_writer.Task = value;
-			}
-		}
-
 		public void TestSuiteStarted(string assemblyName)
 		{
 			if (String.IsNullOrEmpty(assemblyName))

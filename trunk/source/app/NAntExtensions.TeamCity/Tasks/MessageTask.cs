@@ -13,21 +13,13 @@ namespace NAntExtensions.TeamCity.Tasks
 		protected MessageTask(IBuildEnvironment buildEnvironment, ITeamCityMessageProvider messageProvider)
 			: base(buildEnvironment)
 		{
-			MessageProvider = messageProvider;
+			MessageProvider = messageProvider ?? IoC.Resolve<ITeamCityMessageProvider>(new object[] { this });
 		}
 
 		protected ITeamCityMessageProvider MessageProvider
 		{
-			get
-			{
-				if (_messageProvider == null)
-				{
-					MessageProvider = IoC.Resolve<ITeamCityMessageProvider>();
-				}
-
-				return _messageProvider;
-			}
-			private set
+			get { return _messageProvider; }
+			set
 			{
 				if (value == null)
 				{
@@ -35,7 +27,6 @@ namespace NAntExtensions.TeamCity.Tasks
 				}
 
 				_messageProvider = value;
-				_messageProvider.Task = this;
 			}
 		}
 	}

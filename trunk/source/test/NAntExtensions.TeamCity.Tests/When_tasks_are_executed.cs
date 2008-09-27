@@ -66,29 +66,13 @@ namespace NAntExtensions.TeamCity.Tests
 			[Factory]
 			public TeamCityTask BuildStatus
 			{
-				get
-				{
-					TeamCityTask task = InternalMocks.PartialMock<BuildStatusTask>(_buildEnvironment, _messageProvider);
-
-					// Setting the task on the message provider through MessageTask.set_MessageProvider() is not an expectation.
-					InternalMocks.BackToRecord(_messageProvider);
-
-					return task;
-				}
+				get { return InternalMocks.PartialMock<BuildStatusTask>(_buildEnvironment, _messageProvider); }
 			}
 
 			[Factory]
 			public TeamCityTask Progress
 			{
-				get
-				{
-					TeamCityTask task = InternalMocks.PartialMock<ProgressTask>(_buildEnvironment, _messageProvider);
-
-					// Setting the task on the message provider through MessageTask.set_MessageProvider() is not an expectation.
-					InternalMocks.BackToRecord(_messageProvider);
-
-					return task;
-				}
+				get { return InternalMocks.PartialMock<ProgressTask>(_buildEnvironment, _messageProvider); }
 			}
 		}
 		#endregion

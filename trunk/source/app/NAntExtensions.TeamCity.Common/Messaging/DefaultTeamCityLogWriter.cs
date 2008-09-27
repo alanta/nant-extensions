@@ -13,26 +13,13 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		readonly StringBuilder _builder = new StringBuilder();
 		IBuildEnvironment _buildEnvironment;
 		bool _isOpen;
-		Task _task;
 
-		public DefaultTeamCityLogWriter(IBuildEnvironment buildEnvironment)
+		public DefaultTeamCityLogWriter(IBuildEnvironment buildEnvironment, Task task)
 		{
 			BuildEnvironment = buildEnvironment;
+			Task = task;
 
 			_isOpen = true;
-		}
-
-		public override Task Task
-		{
-			get { return _task; }
-			set
-			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-				_task = value;
-			}
 		}
 
 		bool UseTaskLogger

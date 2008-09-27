@@ -4,7 +4,6 @@ using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
-using NAntExtensions.TeamCity.Common.Container;
 using NAntExtensions.TeamCity.Common.Messaging;
 using NAntExtensions.TeamCity.Types;
 
@@ -13,8 +12,7 @@ namespace NAntExtensions.TeamCity.Tasks
 	[TaskName("tc-progress")]
 	public class ProgressTask : MessageTask
 	{
-		public ProgressTask()
-			: this(IoC.Resolve<IBuildEnvironment>(), IoC.Resolve<ITeamCityMessageProvider>())
+		public ProgressTask() : this(null, null)
 		{
 		}
 

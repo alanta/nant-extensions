@@ -22,19 +22,17 @@ using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
-using NAntExtensions.TeamCity.Common.Container;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-addstatisticlist")]
 	public class AddStatisticListTask : BuildLogTask
 	{
-		public AddStatisticListTask() : this(IoC.Resolve<IBuildEnvironment>())
+		public AddStatisticListTask() : this(null)
 		{
 		}
 
-		public AddStatisticListTask(IBuildEnvironment environment)
-			: base(environment)
+		public AddStatisticListTask(IBuildEnvironment environment) : base(environment)
 		{
 		}
 
