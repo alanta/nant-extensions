@@ -8,15 +8,25 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	public abstract class TeamCityLogWriter : TextWriter
 	{
-		Task _task;
+		Task _taskToUseForLogging;
 
 		protected TeamCityLogWriter() : base(CultureInfo.InvariantCulture)
 		{
 		}
 
-		public Task Task
+		protected internal Task TaskToUseForLogging
 		{
-			get { return _task; }
+			get
+			{
+				if (_taskToUseForLogging == null)
+				{
+					throw new InvalidOperationException(
+						"The Task for the TeamCity log writer has not been assigned and therefore cannot be used. " +
+						"Something has gone wrong while configuring the TeamCityMessageProvider instance.");
+				}
+
+				return _taskToUseForLogging;
+			}
 			set
 			{
 				if (value == null)
@@ -24,7 +34,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 					throw new ArgumentNullException("value");
 				}
 
-				_task = value;
+				_taskToUseForLogging = value;
 			}
 		}
 	}

@@ -31,7 +31,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 			Exception exception = new Exception("foo");
 			exception.Source = "here";
 
-			Formatter.FormatException(exception, _builder);
+			Formatter.FormatException(ExceptionInfo.FromException(exception), _builder);
 
 			StringAssert.Contains(_builder.ToString(), "foo");
 		}
@@ -39,7 +39,8 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		[Test]
 		public void Can_format_nested_exceptions()
 		{
-			Formatter.FormatException(new Exception("foo", new InvalidOperationException("bar")), _builder);
+			Formatter.FormatException(ExceptionInfo.FromException(new Exception("foo", new InvalidOperationException("bar"))),
+			                          _builder);
 
 			StringAssert.Contains(_builder.ToString(), "foo");
 			StringAssert.Contains(_builder.ToString(), "bar");
@@ -50,7 +51,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		{
 			_builder.Append("start");
 
-			Formatter.FormatException(new Exception("foo"), _builder);
+			Formatter.FormatException(ExceptionInfo.FromException(new Exception("foo")), _builder);
 
 			StringAssert.StartsWith(_builder.ToString(), "start-");
 		}

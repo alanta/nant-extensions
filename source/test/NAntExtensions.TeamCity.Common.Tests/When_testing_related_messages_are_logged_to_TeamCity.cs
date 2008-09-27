@@ -189,7 +189,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Playback())
 			{
-				_messageProvider.TestFailed(TestName, null);
+				_messageProvider.TestFailed(TestName, (Exception) null);
 			}
 		}
 
@@ -221,7 +221,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Playback())
 			{
-				_messageProvider.TestFailed(testName, null);
+				_messageProvider.TestFailed(testName, (Exception) null);
 			}
 		}
 

@@ -13,7 +13,7 @@ namespace NAntExtensions.TeamCity.Tasks
 		protected MessageTask(IBuildEnvironment buildEnvironment, ITeamCityMessageProvider messageProvider)
 			: base(buildEnvironment)
 		{
-			MessageProvider = messageProvider ?? IoC.Resolve<ITeamCityMessageProvider>(new object[] { this });
+			MessageProvider = messageProvider ?? IoC.Resolve<ITeamCityMessageProvider>(new { taskToUseForLogging = this });
 		}
 
 		protected ITeamCityMessageProvider MessageProvider

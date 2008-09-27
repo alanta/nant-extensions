@@ -167,7 +167,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				_messageProvider.TestStarted(null);
 				LastCall.IgnoreArguments();
 
-				_messageProvider.TestFailed(null, null);
+				_messageProvider.TestFailed(null, (Exception) null);
 				LastCall.IgnoreArguments();
 
 				_messageProvider.TestFinished(null);
@@ -193,7 +193,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				_messageProvider.TestStarted(null);
 				LastCall.IgnoreArguments();
 
-				_messageProvider.TestFailed(null, null);
+				_messageProvider.TestFailed(null, (Exception) null);
 				LastCall.Constraints(Is.Anything(), Is.Equal(exception));
 
 				_messageProvider.TestFinished(null);

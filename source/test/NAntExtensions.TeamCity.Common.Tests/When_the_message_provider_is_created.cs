@@ -33,7 +33,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Record())
 			{
-				teamCityLogWriter.Task = task;
+				teamCityLogWriter.TaskToUseForLogging = task;
 			}
 
 			using (Mocks.Playback())

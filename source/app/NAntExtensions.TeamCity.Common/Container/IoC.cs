@@ -69,9 +69,9 @@ namespace NAntExtensions.TeamCity.Common.Container
 			return Container.Resolve<T>();
 		}
 
-		public static T Resolve<T>(object[] argumentsForConstructor)
+		public static T Resolve<T>(object argumentsAsAnonymousType)
 		{
-			return Container.Resolve<T>(argumentsForConstructor);
+			return Container.Resolve<T>(argumentsAsAnonymousType);
 		}
 
 		public static T Resolve<T>(string name)

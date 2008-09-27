@@ -9,6 +9,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		void TestStarted(string testName);
 		void TestIgnored(string testName, string message);
 		void TestFailed(string testName, Exception exception);
+		void TestFailed(string testName, ExceptionInfo exceptionInfo);
 		void TestOutputStream(string testName, string outputStream);
 		void TestErrorStream(string testName, string errorStream);
 		void TestFinished(string testName);
