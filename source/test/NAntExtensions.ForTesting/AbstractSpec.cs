@@ -1,5 +1,3 @@
-using System;
-
 using Rhino.Mocks;
 
 namespace NAntExtensions.ForTesting
@@ -25,20 +23,10 @@ namespace NAntExtensions.ForTesting
 		/// </summary>
 		/// <value>The static mocks.</value>
 		/// <remarks>Override this member if you want to use CombinatorialTests with factory
-		/// methods that created instances of systems under test with mocked dependencies.</remarks>
+		/// methods that create instances of systems under test with mocked dependencies.</remarks>
 		protected virtual MockRepository StaticMocks
 		{
 			get { return null; }
-		}
-
-		protected IDisposable Record
-		{
-			get { return Mocks.Unordered(); }
-		}
-
-		protected IDisposable RecordWithOrder
-		{
-			get { return Mocks.Ordered(); }
 		}
 
 		public virtual void SetUp()

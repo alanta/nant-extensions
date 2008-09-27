@@ -33,10 +33,10 @@ namespace NAntExtensions.TeamCity.Tasks
 		{
 		}
 
-		public AppendStatusTextTask(IBuildEnvironment environment)
-			: base(environment)
+		public AppendStatusTextTask(IBuildEnvironment environment) : base(environment)
 		{
 		}
+
 		[TaskAttribute("value")]
 		public string Value
 		{
@@ -51,7 +51,7 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Info, "Writing '{0}' to '{1}'", Value, TeamCityInfoPath);
+			Log(Level.Info, "Writing '{0}' to '{1}'", Value ?? "(null)", TeamCityInfoPath);
 
 			XmlDocument teamCityInfo = LoadTeamCityInfo();
 			XmlElement buildNode = GetBuildNode(teamCityInfo);

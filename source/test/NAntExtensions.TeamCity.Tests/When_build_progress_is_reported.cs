@@ -10,16 +10,15 @@ using NAntExtensions.TeamCity.Tasks;
 using NAntExtensions.TeamCity.Types;
 
 using Rhino.Mocks;
-using Rhino.Mocks.Interfaces;
 
 namespace NAntExtensions.TeamCity.Tests
 {
 	public class When_build_progress_is_reported : Spec
 	{
 		const string Message = "foo";
+		IBuildEnvironment _buildEnvironment;
 		ITeamCityMessageProvider _messageProvider;
 		ProgressTask _task;
-		IBuildEnvironment _buildEnvironment;
 
 		protected override void Before_each_spec()
 		{
@@ -29,27 +28,24 @@ namespace NAntExtensions.TeamCity.Tests
 			_task = Mocks.PartialMock<ProgressTask>(_buildEnvironment, _messageProvider);
 			_task.ForceTaskExecution = true;
 
-			// Setting the task on the message provider by MessageTask.set_MessageProvider() is not an expectation.
+			// Setting the task on the message provider through MessageTask.set_MessageProvider() is not an expectation.
 			Mocks.BackToRecord(_messageProvider);
-			
-			// We're executing the task by calling ExecuteTask (which is abstract) via reflection, so we have to
-			// set up an expectation.
-			Reflector.InvokeMethod(_task, "ExecuteTask");
-			LastCall.CallOriginalMethod(OriginalCallOptions.NoExpectation);
 
 			// Logging is allowed at any time.
 			_task.Log(Level.Debug, null);
 			LastCall.IgnoreArguments().Repeat.Any();
-
-			Mocks.Replay(_task);
 		}
 
 		[Test]
 		[ExpectedException(typeof(BuildException))]
-		public void Throws_exception_if_progress_type_if_unknown()
+		public void Throws_exception_if_progress_type_is_unknown()
 		{
 			Reflector.SetProperty(_task, "ProgressType", int.MinValue);
 			
+			using (Mocks.Record())
+			{
+			}
+
 			using (Mocks.Playback())
 			{
 				Reflector.InvokeMethod(_task, "ExecuteTask");

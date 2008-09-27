@@ -29,12 +29,13 @@ namespace NAntExtensions.TeamCity.Tasks
 	public abstract class BuildLogTask : TeamCityTask
 	{
 		string _teamCityInfoPath;
+		const string TeamCityInfoFileName = "teamcity-info.xml";
 
 		protected BuildLogTask(IBuildEnvironment buildEnvironment) : base(buildEnvironment)
 		{
 		}
 
-		[TaskAttribute("teamCityInfoPath")]
+		[TaskAttribute("teamcity-info-path")]
 		public string TeamCityInfoPath
 		{
 			get
@@ -69,13 +70,13 @@ namespace NAntExtensions.TeamCity.Tasks
 
 		protected string GetDefaultTeamCityInfoPath()
 		{
-			if (!Properties.Contains("teamcity.build.checkoutDir"))
+			if (Properties == null || !Properties.Contains("teamcity.build.checkoutDir"))
 			{
-				return "teamcity-info.xml";
+				return TeamCityInfoFileName;
 			}
 
 			string checkoutDir = Properties["teamcity.build.checkoutDir"];
-			return Path.Combine(checkoutDir, "teamcity-info.xml");
+			return Path.Combine(checkoutDir, TeamCityInfoFileName);
 		}
 
 		protected XmlDocument LoadTeamCityInfo()

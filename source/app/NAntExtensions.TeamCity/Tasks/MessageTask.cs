@@ -10,10 +10,6 @@ namespace NAntExtensions.TeamCity.Tasks
 	{
 		ITeamCityMessageProvider _messageProvider;
 
-		protected MessageTask(IBuildEnvironment buildEnvironment) : base(buildEnvironment)
-		{
-		}
-
 		protected MessageTask(IBuildEnvironment buildEnvironment, ITeamCityMessageProvider messageProvider)
 			: base(buildEnvironment)
 		{

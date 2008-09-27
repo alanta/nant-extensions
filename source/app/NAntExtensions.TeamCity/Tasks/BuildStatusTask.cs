@@ -11,7 +11,8 @@ namespace NAntExtensions.TeamCity.Tasks
 	[TaskName("tc-buildstatus")]
 	public class BuildStatusTask : MessageTask
 	{
-		public BuildStatusTask() : base(IoC.Resolve<IBuildEnvironment>())
+		public BuildStatusTask()
+			: this(IoC.Resolve<IBuildEnvironment>(), IoC.Resolve<ITeamCityMessageProvider>())
 		{
 		}
 
@@ -41,7 +42,7 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Verbose, "Reporting build status. Type={0}, Message={1}", StatusType, Message);
+			Log(Level.Verbose, "Reporting build status. Type={0}, Message={1}", StatusType, Message??"(null)");
 
 			MessageProvider.SendMessage("##teamcity[buildStatus status='{0}' text='{1}']",
 			                        StatusType.ToString().ToUpperInvariant(),
