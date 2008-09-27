@@ -193,7 +193,7 @@
 		<exclude name="${basedir.test}\**\*.ForTesting.csproj"/>
 		<exclude name="${basedir.test}\**\NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
 	</fileset>
-	
+
 	<fileset id="mspec-test-projects">
 		<include name="${basedir.test}\**\NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
 	</fileset>
@@ -226,7 +226,7 @@
 				</msbuild>
 			</do>
 		</foreach>
-		
+
 		<foreach item="File"
 				 property="testproject">
 			<in>
@@ -248,7 +248,7 @@
 		</foreach>
 
 		<mkdir dir="${basedir.test.results}"/>
-		
+
 		<mbunit-initcounters />
 		<mspec-initcounters />
 	</target>
@@ -289,7 +289,7 @@
 						 value="${mbunit.skipped}"/>
 		<tc-addstatistic key="MbUnitPassedTests"
 						 value="${mbunit.successes}"/>
-		
+
 		<foreach item="File"
 				 property="testproject">
 			<in>
@@ -466,17 +466,15 @@
 		<fail message="Cannot merge assemblies, property 'merge' is empty or does not exist. (The property is reset after each call to the 'ilmerge' task."
 			  if="${not property::exists('merge') or string::get-length(property::get-value('merge')) == 0}" />
 
-		<move file="${merge}"
-			  tofile="${merge}.Partial.dll"
-			  overwrite="true" />
+		<mkdir dir="${basedir.build}\merged"/>
 
 		<exec program="${tools.ilmerge}/ILMerge.exe"
 			  workingdir="${basedir.build}">
-			<arg path="${merge}.Partial.dll" />
+			<arg path="${merge}" />
 			<arg path="${basedir.build}/NAntExtensions.TeamCity.Common.dll" />
 			<arg path="${basedir.build}/Castle*.dll" />
-			<arg value='/out:"${merge}"' />
-			<arg line='/attr:"${merge}.Partial.dll"' />
+			<arg value='/out:"${basedir.build}\merged\${path::get-file-name(merge)}"' />
+			<arg line='/attr:"${merge}"' />
 			<arg value="/t:library" />
 			<arg value="/wildcards" />
 			<arg value="/log:ilmerge.log" />
@@ -484,6 +482,13 @@
 			<arg value="/ndebug"
 				 unless="${build.msbuild.configuration == 'Debug'}" />
 		</exec>
+
+		<move todir="${basedir.build}"
+			  overwrite="true">
+			<fileset basedir="${basedir.build}\merged">
+				<include name="*"/>
+			</fileset>
+		</move>
 
 		<property name="merge"
 				  value="" />
