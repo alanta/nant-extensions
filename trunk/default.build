@@ -116,7 +116,7 @@
 					 type="End" />
 	</target>
 
-	<!-- Plugins/Macros.
+	<!-- Tasks.
 	________________________________________________________________________________________________________________ -->
 	<target name="init-build-app"
 			depends="clean"
@@ -152,6 +152,8 @@
 			<arg value="/p:OutDir=${basedir.build}" />
 			<arg value="/p:BuildRunner=${build.runner}" />
 			<arg value="/maxcpucount" />
+			<property name="teamcity_dotnet_use_msbuild_v35"
+					  value="true" />
 		</msbuild>
 
 		<!-- Machine.Specifications. -->
@@ -163,6 +165,8 @@
 			<arg value="/p:OutDir=${basedir.build}" />
 			<arg value="/p:BuildRunner=${build.runner}" />
 			<arg value="/maxcpucount" />
+			<property name="teamcity_dotnet_use_msbuild_v35"
+					  value="true" />
 		</msbuild>
 
 		<!-- TeamCity. -->
@@ -174,6 +178,8 @@
 			<arg value="/p:OutDir=${basedir.build}" />
 			<arg value="/p:BuildRunner=${build.runner}" />
 			<arg value="/maxcpucount" />
+			<property name="teamcity_dotnet_use_msbuild_v35"
+					  value="true" />
 		</msbuild>
 
 		<tc-progress message="Building application"
@@ -210,6 +216,8 @@
 					<arg value="/p:OutDir=${basedir.build}" />
 					<arg value="/p:BuildRunner=${build.runner}" />
 					<arg value="/maxcpucount" />
+					<property name="teamcity_dotnet_use_msbuild_v35"
+							  value="true" />
 				</msbuild>
 			</do>
 		</foreach>
