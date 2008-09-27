@@ -1,8 +1,6 @@
 using System;
-using System.Reflection;
 
 using Machine.Specifications;
-using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 
 using NAnt.Core;
@@ -68,7 +66,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		public override void OnContextStart(ContextInfo context)
 		{
 			base.OnContextStart(context);
-
+			
 			_task.Log(Level.Verbose, String.Format("{0}{1}", Environment.NewLine, context.FullName));
 		}
 
@@ -100,7 +98,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 					                     Environment.NewLine,
 					                     line);
 				}
-
+				
 				_task.Log(Level.Error, line);
 			}
 		}

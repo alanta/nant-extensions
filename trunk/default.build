@@ -188,9 +188,14 @@
 
 	<!-- Unit tests.
 	________________________________________________________________________________________________________________ -->
-	<fileset id="test-projects">
+	<fileset id="mbunit-test-projects">
 		<include name="${basedir.test}\**\*.csproj" />
 		<exclude name="${basedir.test}\**\*.ForTesting.csproj"/>
+		<exclude name="${basedir.test}\**\NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
+	</fileset>
+	
+	<fileset id="mspec-test-projects">
+		<include name="${basedir.test}\**\NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
 	</fileset>
 
 	<fileset id="coverage-assemblies"
@@ -205,7 +210,27 @@
 		<foreach item="File"
 				 property="testproject">
 			<in>
-				<items refid="test-projects" />
+				<items refid="mbunit-test-projects" />
+			</in>
+			<do>
+				<msbuild project="${testproject}"
+						 target="${build.msbuild.target}"
+						 verbosity="${build.msbuild.verbosity}">
+					<arg value="/p:Configuration=${build.msbuild.configuration}" />
+					<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
+					<arg value="/p:OutDir=${basedir.build}" />
+					<arg value="/p:BuildRunner=${build.runner}" />
+					<arg value="/maxcpucount" />
+					<property name="teamcity_dotnet_use_msbuild_v35"
+							  value="true" />
+				</msbuild>
+			</do>
+		</foreach>
+		
+		<foreach item="File"
+				 property="testproject">
+			<in>
+				<items refid="mspec-test-projects" />
 			</in>
 			<do>
 				<msbuild project="${testproject}"
@@ -223,7 +248,9 @@
 		</foreach>
 
 		<mkdir dir="${basedir.test.results}"/>
+		
 		<mbunit-initcounters />
+		<mspec-initcounters />
 	</target>
 
 	<target name="run-tests"
@@ -235,7 +262,7 @@
 		<foreach item="File"
 				 property="testproject">
 			<in>
-				<items refid="test-projects" />
+				<items refid="mbunit-test-projects" />
 			</in>
 			<do>
 				<mbunit report-types="html"
@@ -262,6 +289,30 @@
 						 value="${mbunit.skipped}"/>
 		<tc-addstatistic key="MbUnitPassedTests"
 						 value="${mbunit.successes}"/>
+		
+		<foreach item="File"
+				 property="testproject">
+			<in>
+				<items refid="mspec-test-projects" />
+			</in>
+			<do>
+				<mspec report-directory="${basedir.test.results}"
+					   report-filename="${path::get-file-name-without-extension(testproject)}.html"
+					   workingdir="${basedir.build}"
+					   verbose="true">
+					<assemblies>
+						<include name="${basedir.build}\${path::get-file-name-without-extension(testproject)}.dll" />
+					</assemblies>
+				</mspec>
+			</do>
+		</foreach>
+
+		<tc-addstatistic key="MSpecContexts"
+						 value="${mspec.contexts}"/>
+		<tc-addstatistic key="MSpecSpecs"
+						 value="${mspec.specs}"/>
+		<tc-addstatistic key="MSpecFailedSpecs"
+						 value="${mspec.failedspecs}"/>
 
 		<tc-progress message="Running tests"
 					 type="End" />
@@ -276,7 +327,7 @@
 		<foreach item="File"
 				 property="testproject">
 			<in>
-				<items refid="test-projects" />
+				<items refid="mbunit-test-projects" />
 			</in>
 			<do>
 				<ncover program="${tools.ncover}\NCover.Console.exe"

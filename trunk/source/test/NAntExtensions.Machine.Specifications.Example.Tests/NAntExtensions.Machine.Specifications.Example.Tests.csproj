@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{352A3C1B-1372-45A4-8B0C-FA7D536AA5B4}</ProjectGuid>
+    <ProjectGuid>{55BD0722-C03A-406D-BAB4-F3BF86DBF5CD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NAntExtensions.Machine.Specifications</RootNamespace>
-    <AssemblyName>NAntExtensions.Machine.Specifications</AssemblyName>
+    <RootNamespace>NAntExtensions.Machine.Specifications.Example.Tests</RootNamespace>
+    <AssemblyName>NAntExtensions.Machine.Specifications.Example.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,15 +33,7 @@
   <ItemGroup>
     <Reference Include="Machine.Specifications, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Machine.Specifications\Machine.Specifications.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications.Reporting, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\Machine.Specifications\Machine.Specifications.Reporting.dll</HintPath>
-    </Reference>
-    <Reference Include="NAnt.Core, Version=0.86.2898.0, Culture=neutral">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\lib\NAnt\NAnt.Core.dll</HintPath>
+      <HintPath>..\..\..\tools\Machine.Specifications\Machine.Specifications.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -63,18 +55,9 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Tasks\InitializeMachineSpecificationsCountersTask.cs" />
-    <Compile Include="Tasks\MachineSpecificationsTask.cs" />
+    <Compile Include="Account.cs" />
+    <Compile Include="BankingSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RunListeners\NAntRunListener.cs" />
-    <Compile Include="RunListeners\RunListener.cs" />
-    <Compile Include="RunListeners\TeamCityRunListener.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NAntExtensions.TeamCity.Common\NAntExtensions.TeamCity.Common.csproj">
-      <Project>{F123CB57-9979-4558-BB1E-38CF9F20B3AD}</Project>
-      <Name>NAntExtensions.TeamCity.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
