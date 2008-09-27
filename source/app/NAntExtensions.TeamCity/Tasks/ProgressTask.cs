@@ -11,13 +11,13 @@ using NAntExtensions.TeamCity.Types;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-progress")]
-	public class TeamCityProgress : TeamCityMessageTask
+	public class ProgressTask : MessageTask
 	{
-		public TeamCityProgress() : base(IoC.Resolve<IBuildEnvironment>())
+		public ProgressTask() : base(IoC.Resolve<IBuildEnvironment>())
 		{
 		}
 
-		public TeamCityProgress(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
+		public ProgressTask(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
 			: base(environment, messageProvider)
 		{
 		}

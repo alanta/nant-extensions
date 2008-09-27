@@ -48,13 +48,13 @@
     </Compile>
     <Compile Include="Functions\TeamCityFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tasks\TeamCityAddStatistic.cs" />
-    <Compile Include="Tasks\TeamCityAddStatisticList.cs" />
-    <Compile Include="Tasks\TeamCityAppendStatusText.cs" />
-    <Compile Include="Tasks\TeamCityBuildLogTask.cs" />
-    <Compile Include="Tasks\TeamCityBuildStatus.cs" />
-    <Compile Include="Tasks\TeamCityProgress.cs" />
-    <Compile Include="Tasks\TeamCityMessageTask.cs" />
+    <Compile Include="Tasks\AddStatisticTask.cs" />
+    <Compile Include="Tasks\AddStatisticListTask.cs" />
+    <Compile Include="Tasks\AppendStatusTextTask.cs" />
+    <Compile Include="Tasks\BuildLogTask.cs" />
+    <Compile Include="Tasks\BuildStatusTask.cs" />
+    <Compile Include="Tasks\ProgressTask.cs" />
+    <Compile Include="Tasks\MessageTask.cs" />
     <Compile Include="Tasks\TeamCityTask.cs" />
     <Compile Include="Types\ProgressType.cs" />
     <Compile Include="Types\StatusType.cs" />

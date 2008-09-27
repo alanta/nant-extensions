@@ -6,15 +6,15 @@ using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
-	public abstract class TeamCityMessageTask : TeamCityTask
+	public abstract class MessageTask : TeamCityTask
 	{
 		ITeamCityMessageProvider _messageProvider;
 
-		protected TeamCityMessageTask(IBuildEnvironment buildEnvironment) : base(buildEnvironment)
+		protected MessageTask(IBuildEnvironment buildEnvironment) : base(buildEnvironment)
 		{
 		}
 
-		protected TeamCityMessageTask(IBuildEnvironment buildEnvironment, ITeamCityMessageProvider messageProvider)
+		protected MessageTask(IBuildEnvironment buildEnvironment, ITeamCityMessageProvider messageProvider)
 			: base(buildEnvironment)
 		{
 			MessageProvider = messageProvider;

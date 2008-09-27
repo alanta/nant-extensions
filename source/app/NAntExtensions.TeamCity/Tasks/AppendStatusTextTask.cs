@@ -26,28 +26,21 @@ using NAntExtensions.TeamCity.Common.Container;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
-	[TaskName("tc-addstatistic")]
-	public class TeamCityAddStatistic : TeamCityBuildLogTask
+	[TaskName("tc-appendstatustext")]
+	public class AppendStatusTextTask : BuildLogTask
 	{
-		public TeamCityAddStatistic() : this(IoC.Resolve<IBuildEnvironment>())
+		public AppendStatusTextTask() : this(IoC.Resolve<IBuildEnvironment>())
 		{
 		}
 
-		public TeamCityAddStatistic(IBuildEnvironment environment) : base(environment)
+		public AppendStatusTextTask(IBuildEnvironment environment)
+			: base(environment)
 		{
 		}
-
-		[TaskAttribute("key", Required = true)]
-		public string Key
-		{
-			private get;
-			set;
-		}
-
-		[TaskAttribute("value", Required = true)]
+		[TaskAttribute("value")]
 		public string Value
 		{
-			private get;
+			get;
 			set;
 		}
 
@@ -58,14 +51,33 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Info, "Writing '{0}={1}' to '{2}'", Key, Value, TeamCityInfoPath);
+			Log(Level.Info, "Writing '{0}' to '{1}'", Value, TeamCityInfoPath);
 
 			XmlDocument teamCityInfo = LoadTeamCityInfo();
 			XmlElement buildNode = GetBuildNode(teamCityInfo);
-			XmlElement newChild = CreateStatisticValueNode(teamCityInfo, Key, Value);
+			XmlElement statusInfoNode = GetStatusInfoNode(teamCityInfo, buildNode);
 
-			buildNode.AppendChild(newChild);
+			AppendStatusText(teamCityInfo, statusInfoNode, Value);
 			SaveTeamCityInfo(teamCityInfo);
+		}
+
+		static void AppendStatusText(XmlDocument doc, XmlElement statusInfoNode, string text)
+		{
+			XmlElement newChild = doc.CreateElement("text");
+			newChild.SetAttribute("action", "append");
+			newChild.InnerText = text;
+			statusInfoNode.AppendChild(newChild);
+		}
+
+		static XmlElement GetStatusInfoNode(XmlDocument doc, XmlElement buildNode)
+		{
+			XmlElement newChild = buildNode.SelectSingleNode("statusInfo") as XmlElement;
+			if (newChild == null)
+			{
+				newChild = doc.CreateElement("statusInfo");
+				buildNode.AppendChild(newChild);
+			}
+			return newChild;
 		}
 	}
 }
