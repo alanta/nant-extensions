@@ -1,14 +1,12 @@
 using System;
 
-using NAnt.Core;
-
 namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 {
-	internal class TeamCityBuildEnvironment : IBuildEnvironment
+	internal class DefaultBuildEnvironment : IBuildEnvironment
 	{
 		readonly IEnvironment _environment;
 
-		public TeamCityBuildEnvironment(IEnvironment environment)
+		public DefaultBuildEnvironment(IEnvironment environment)
 		{
 			if (environment == null)
 			{
@@ -24,14 +22,14 @@ namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 			get { return _environment.GetEnvironmentVariable("TEAMCITY_PROJECT_NAME") != null; }
 		}
 
-		public bool IsRunningWithTeamCityNAntRunner(Task task)
+		public bool IsRunningWithTeamCityNAntRunner
 		{
-			if (task == null)
+			get
 			{
-				throw new ArgumentNullException("task");
+				// HACK: This relies on an implementation detail. The NAnt runner sets this environment
+				// variable whereas the Command Line runner does not.
+				return _environment.GetEnvironmentVariable("teamcity-dotnet-log-file") != null;
 			}
-
-			return task.Properties != null && task.Properties.Contains("agent.name");
 		}
 		#endregion
 	}

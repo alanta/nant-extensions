@@ -37,7 +37,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		bool UseTaskLogger
 		{
-			get { return BuildEnvironment.IsRunningWithTeamCityNAntRunner(Task); }
+			get { return BuildEnvironment.IsRunningWithTeamCityNAntRunner; }
 		}
 
 		public override Encoding Encoding

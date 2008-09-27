@@ -1,5 +1,3 @@
-using NAnt.Core;
-
 namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 {
 	internal class DebugConsoleRunnerBuildEnvironment : IBuildEnvironment
@@ -10,9 +8,9 @@ namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 			get { return true; }
 		}
 
-		public bool IsRunningWithTeamCityNAntRunner(Task task)
+		public bool IsRunningWithTeamCityNAntRunner
 		{
-			return false;
+			get { return false; }
 		}
 		#endregion
 	}

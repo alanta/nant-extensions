@@ -1,5 +1,3 @@
-using NAnt.Core;
-
 namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 {
 	public interface IBuildEnvironment
@@ -9,6 +7,9 @@ namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 			get;
 		}
 
-		bool IsRunningWithTeamCityNAntRunner(Task task);
+		bool IsRunningWithTeamCityNAntRunner
+		{
+			get;
+		}
 	}
 }

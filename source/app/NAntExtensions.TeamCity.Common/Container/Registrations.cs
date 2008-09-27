@@ -19,7 +19,7 @@ namespace NAntExtensions.TeamCity.Common.Container
 			// Uncomment these if you want to debug certain TeamCity environments.
 			//yield return Component.For<IBuildEnvironment>().ImplementedBy<DebugConsoleRunnerBuildEnvironment>();
 			//yield return Component.For<IBuildEnvironment>().ImplementedBy<DebugNAntRunnerBuildEnvironment>();
-			yield return Component.For<IBuildEnvironment>().ImplementedBy<TeamCityBuildEnvironment>();
+			yield return Component.For<IBuildEnvironment>().ImplementedBy<DefaultBuildEnvironment>();
 		}
 	}
 }

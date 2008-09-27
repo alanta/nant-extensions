@@ -11,13 +11,13 @@ namespace NAntExtensions.TeamCity.Common.Tests
 	{
 		const string TeamCityEnvironmentVariable = "TEAMCITY_PROJECT_NAME";
 		IEnvironment _environment;
-		TeamCityBuildEnvironment _sut;
+		DefaultBuildEnvironment _sut;
 
 		protected override void Before_each_spec()
 		{
 			_environment = Mocks.StrictMock<IEnvironment>();
 
-			_sut = new TeamCityBuildEnvironment(_environment);
+			_sut = new DefaultBuildEnvironment(_environment);
 		}
 
 		[Test]

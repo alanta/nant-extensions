@@ -13,7 +13,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void Requires_an_instance_of_IBuildEnvironment()
 		{
-			new TeamCityBuildEnvironment(null);
+			new DefaultBuildEnvironment(null);
 		}
 	}
 }

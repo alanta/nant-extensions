@@ -23,7 +23,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		[Test]
 		public void Should_report_a_console_runner_build()
 		{
-			Assert.IsFalse(_sut.IsRunningWithTeamCityNAntRunner(null));
+			Assert.IsFalse(_sut.IsRunningWithTeamCityNAntRunner);
 		}
 	}
 }
