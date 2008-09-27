@@ -22,14 +22,13 @@ using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
-using NAntExtensions.TeamCity.Common.Container;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-appendstatustext")]
 	public class AppendStatusTextTask : BuildLogTask
 	{
-		public AppendStatusTextTask() : this(IoC.Resolve<IBuildEnvironment>())
+		public AppendStatusTextTask() : this(null)
 		{
 		}
 

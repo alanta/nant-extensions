@@ -4,6 +4,7 @@ using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
+using NAntExtensions.TeamCity.Common.Container;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
@@ -13,7 +14,7 @@ namespace NAntExtensions.TeamCity.Tasks
 
 		protected TeamCityTask(IBuildEnvironment buildEnvironment)
 		{
-			BuildEnvironment = buildEnvironment;
+			BuildEnvironment = buildEnvironment ?? IoC.Resolve<IBuildEnvironment>();
 		}
 
 		[TaskAttribute("force")]

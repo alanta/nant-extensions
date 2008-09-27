@@ -217,7 +217,7 @@ namespace NAntExtensions.MbUnit
 
 				if (BuildEnvironment.IsTeamCityBuild)
 				{
-					TeamCityReport.RenderToLog(_result, this);
+					//TeamCityReport.RenderToLog(_result, this);
 				}
 
 				if (reportName != null)

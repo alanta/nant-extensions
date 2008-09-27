@@ -28,9 +28,6 @@ namespace NAntExtensions.TeamCity.Tests
 			_task = Mocks.PartialMock<ProgressTask>(_buildEnvironment, _messageProvider);
 			_task.ForceTaskExecution = true;
 
-			// Setting the task on the message provider through MessageTask.set_MessageProvider() is not an expectation.
-			Mocks.BackToRecord(_messageProvider);
-
 			// Logging is allowed at any time.
 			_task.Log(Level.Debug, null);
 			LastCall.IgnoreArguments().Repeat.Any();

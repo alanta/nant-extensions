@@ -2,6 +2,8 @@ using System;
 
 using MbUnit.Framework;
 
+using NAnt.Core;
+
 using NAntExtensions.ForTesting;
 using NAntExtensions.TeamCity.Common.Messaging;
 
@@ -17,7 +19,9 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		protected override void Before_each_spec()
 		{
 			_writer = Mocks.StrictMock<TeamCityLogWriter>();
-			_messageProvider = new TeamCityMessageProvider(_writer);
+			_messageProvider = new TeamCityMessageProvider(_writer, Mocks.StrictMock<Task>());
+
+			Mocks.BackToRecord(_writer);
 		}
 
 		[RowTest]

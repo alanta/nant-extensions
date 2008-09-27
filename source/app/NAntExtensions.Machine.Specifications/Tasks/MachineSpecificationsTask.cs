@@ -150,9 +150,7 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 
 			if (BuildEnvironment.IsTeamCityBuild)
 			{
-				ITeamCityMessageProvider messageProvider = IoC.Resolve<ITeamCityMessageProvider>();
-				messageProvider.Task = this;
-				TeamCityRunListener teamCity = new TeamCityRunListener(messageProvider);
+				TeamCityRunListener teamCity = new TeamCityRunListener(IoC.Resolve<ITeamCityMessageProvider>(new object[] { this }));
 
 				result.Add(teamCity);
 			}

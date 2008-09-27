@@ -1,16 +1,9 @@
 using System;
 
-using NAnt.Core;
-
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	public interface ITeamCityMessageProvider
 	{
-		Task Task
-		{
-			set;
-		}
-
 		void TestSuiteStarted(string assemblyName);
 		void TestSuiteFinished(string assemblyName);
 		void TestStarted(string testName);
