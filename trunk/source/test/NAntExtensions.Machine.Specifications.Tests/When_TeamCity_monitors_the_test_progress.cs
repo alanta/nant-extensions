@@ -1,7 +1,7 @@
 using System;
-using System.Reflection;
 
-using Machine.Specifications.Model;
+using Machine.Specifications;
+using Machine.Specifications.Runner;
 
 using MbUnit.Framework;
 
@@ -17,21 +17,20 @@ namespace NAntExtensions.Machine.Specifications.Tests
 	[TestFixture]
 	public class When_TeamCity_monitors_the_test_progress : Spec
 	{
-		FieldInfo _fieldInfo;
+		AssemblyInfo _assemblyInfo;
+		ContextInfo _contextInfo;
 		TeamCityRunListener _listener;
-		Specification _specification;
 		ITeamCityMessageProvider _messageProvider;
+		SpecificationInfo _specificationInfo;
 
 		protected override void Before_each_spec()
 		{
-			_fieldInfo = Mocks.PartialMock<FieldInfo>();
-			SetupResult.For(_fieldInfo.Name).Return("foo");
-			Mocks.Replay(_fieldInfo);
-
-			_specification = Mocks.PartialMock<Specification>(_fieldInfo, _fieldInfo);
-
 			_messageProvider = Mocks.StrictMock<ITeamCityMessageProvider>();
 			_listener = new TeamCityRunListener(_messageProvider);
+
+			_assemblyInfo = new AssemblyInfo("Assembly");
+			_contextInfo = new ContextInfo("Context", "Concern");
+			_specificationInfo = new SpecificationInfo("Spec");
 		}
 
 		[Test]
@@ -52,7 +51,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 
 			using (Mocks.Playback())
 			{
-				_listener.OnAssemblyStart(GetType().Assembly);
+				_listener.OnAssemblyStart(_assemblyInfo);
 			}
 		}
 
@@ -67,7 +66,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 
 			using (Mocks.Playback())
 			{
-				_listener.OnAssemblyEnd(GetType().Assembly);
+				_listener.OnAssemblyEnd(_assemblyInfo);
 			}
 		}
 
@@ -132,11 +131,11 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				LastCall.IgnoreArguments();
 			}
 
-			_listener.OnContextStart(new Context(GetType(), null, null, null, null, null, null));
+			_listener.OnContextStart(_contextInfo);
 
 			using (Mocks.Playback())
 			{
-				_listener.OnSpecificationStart(_specification);
+				_listener.OnSpecificationStart(_specificationInfo);
 			}
 		}
 
@@ -152,12 +151,12 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				LastCall.IgnoreArguments();
 			}
 
-			_listener.OnContextStart(new Context(GetType(), null, null, null, null, null, null));
+			_listener.OnContextStart(_contextInfo);
 
 			using (Mocks.Playback())
 			{
-				_listener.OnSpecificationStart(_specification);
-				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult());
+				_listener.OnSpecificationStart(_specificationInfo);
+				_listener.OnSpecificationEnd(_specificationInfo, Result.Pass());
 			}
 		}
 
@@ -176,12 +175,12 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				LastCall.IgnoreArguments();
 			}
 
-			_listener.OnContextStart(new Context(GetType(), null, null, null, null, null, null));
+			_listener.OnContextStart(_contextInfo);
 
 			using (Mocks.Playback())
 			{
-				_listener.OnSpecificationStart(_specification);
-				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult(Result.Failed));
+				_listener.OnSpecificationStart(_specificationInfo);
+				_listener.OnSpecificationEnd(_specificationInfo, Result.Failure(new Exception()));
 			}
 		}
 
@@ -202,12 +201,12 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				LastCall.IgnoreArguments();
 			}
 
-			_listener.OnContextStart(new Context(GetType(), null, null, null, null, null, null));
+			_listener.OnContextStart(_contextInfo);
 
 			using (Mocks.Playback())
 			{
-				_listener.OnSpecificationStart(_specification);
-				_listener.OnSpecificationEnd(_specification, new SpecificationVerificationResult(exception));
+				_listener.OnSpecificationStart(_specificationInfo);
+				_listener.OnSpecificationEnd(_specificationInfo, Result.Failure(exception));
 			}
 		}
 	}

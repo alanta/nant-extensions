@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
+using Machine.Specifications;
 using Machine.Specifications.Model;
 using Machine.Specifications.Runner;
 
@@ -28,14 +29,14 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		}
 
 		#region ISpecificationRunListener Members
-		public void OnAssemblyStart(Assembly assembly)
+		public void OnAssemblyStart(AssemblyInfo assembly)
 		{
-			_messageProvider.TestSuiteStarted(assembly.GetName().Name);
+			_messageProvider.TestSuiteStarted(assembly.Name);
 		}
 
-		public void OnAssemblyEnd(Assembly assembly)
+		public void OnAssemblyEnd(AssemblyInfo assembly)
 		{
-			_messageProvider.TestSuiteFinished(assembly.GetName().Name);
+			_messageProvider.TestSuiteFinished(assembly.Name);
 		}
 
 		public void OnRunStart()
@@ -46,7 +47,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		{
 		}
 
-		public void OnSpecificationStart(Specification specification)
+		public void OnSpecificationStart(SpecificationInfo specification)
 		{
 			_messageProvider.TestStarted(GetContextSpecName(_currentContext, specification));
 
@@ -59,7 +60,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 			Console.SetError(_testConsoleError);
 		}
 
-		public void OnSpecificationEnd(Specification specification, SpecificationVerificationResult result)
+		public void OnSpecificationEnd(SpecificationInfo specification, Result result)
 		{
 			try
 			{
