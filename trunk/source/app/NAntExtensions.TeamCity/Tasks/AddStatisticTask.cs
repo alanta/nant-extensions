@@ -26,36 +26,29 @@ using NAntExtensions.TeamCity.Common.Container;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
-	[TaskName("tc-addstatisticlist")]
-	public class TeamCityAddStatisticList : TeamCityBuildLogTask
+	[TaskName("tc-addstatistic")]
+	public class AddStatisticTask : BuildLogTask
 	{
-		public TeamCityAddStatisticList() : this(IoC.Resolve<IBuildEnvironment>())
+		public AddStatisticTask() : this(IoC.Resolve<IBuildEnvironment>())
 		{
 		}
 
-		public TeamCityAddStatisticList(IBuildEnvironment environment)
-			: base(environment)
+		public AddStatisticTask(IBuildEnvironment environment) : base(environment)
 		{
 		}
 
-		[TaskAttribute("keyValuePairs")]
-		public string KeyValuePairs
+		[TaskAttribute("key", Required = true)]
+		public string Key
 		{
 			private get;
 			set;
 		}
 
-		void AddKeyValuePairsToXml(XmlDocument teamCityInfoXml, XmlElement buildNode)
+		[TaskAttribute("value", Required = true)]
+		public string Value
 		{
-			foreach (string str in KeyValuePairs.Split(new[] { ';' }))
-			{
-				string[] strArray = str.Split(new[] { '=' });
-				if (strArray.Length > 1)
-				{
-					XmlElement newChild = CreateStatisticValueNode(teamCityInfoXml, strArray[0], strArray[1]);
-					buildNode.AppendChild(newChild);
-				}
-			}
+			private get;
+			set;
 		}
 
 		protected override void ExecuteTask()
@@ -65,12 +58,13 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Info, "Writing '{0}' to '{1}'", new object[] { KeyValuePairs, TeamCityInfoPath });
+			Log(Level.Info, "Writing '{0}={1}' to '{2}'", Key, Value, TeamCityInfoPath);
 
 			XmlDocument teamCityInfo = LoadTeamCityInfo();
 			XmlElement buildNode = GetBuildNode(teamCityInfo);
+			XmlElement newChild = CreateStatisticValueNode(teamCityInfo, Key, Value);
 
-			AddKeyValuePairsToXml(teamCityInfo, buildNode);
+			buildNode.AppendChild(newChild);
 			SaveTeamCityInfo(teamCityInfo);
 		}
 	}

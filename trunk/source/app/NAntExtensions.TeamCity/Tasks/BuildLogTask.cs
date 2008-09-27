@@ -26,11 +26,11 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
-	public abstract class TeamCityBuildLogTask : TeamCityTask
+	public abstract class BuildLogTask : TeamCityTask
 	{
 		string _teamCityInfoPath;
 
-		protected TeamCityBuildLogTask(IBuildEnvironment buildEnvironment) : base(buildEnvironment)
+		protected BuildLogTask(IBuildEnvironment buildEnvironment) : base(buildEnvironment)
 		{
 		}
 

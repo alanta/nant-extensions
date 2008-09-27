@@ -26,22 +26,36 @@ using NAntExtensions.TeamCity.Common.Container;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
-	[TaskName("tc-appendstatustext")]
-	public class TeamCityAppendStatusText : TeamCityBuildLogTask
+	[TaskName("tc-addstatisticlist")]
+	public class AddStatisticListTask : BuildLogTask
 	{
-		public TeamCityAppendStatusText() : this(IoC.Resolve<IBuildEnvironment>())
+		public AddStatisticListTask() : this(IoC.Resolve<IBuildEnvironment>())
 		{
 		}
 
-		public TeamCityAppendStatusText(IBuildEnvironment environment)
+		public AddStatisticListTask(IBuildEnvironment environment)
 			: base(environment)
 		{
 		}
-		[TaskAttribute("value")]
-		public string Value
+
+		[TaskAttribute("keyValuePairs")]
+		public string KeyValuePairs
 		{
-			get;
+			private get;
 			set;
+		}
+
+		void AddKeyValuePairsToXml(XmlDocument teamCityInfoXml, XmlElement buildNode)
+		{
+			foreach (string str in KeyValuePairs.Split(new[] { ';' }))
+			{
+				string[] strArray = str.Split(new[] { '=' });
+				if (strArray.Length > 1)
+				{
+					XmlElement newChild = CreateStatisticValueNode(teamCityInfoXml, strArray[0], strArray[1]);
+					buildNode.AppendChild(newChild);
+				}
+			}
 		}
 
 		protected override void ExecuteTask()
@@ -51,33 +65,13 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Info, "Writing '{0}' to '{1}'", Value, TeamCityInfoPath);
+			Log(Level.Info, "Writing '{0}' to '{1}'", new object[] { KeyValuePairs, TeamCityInfoPath });
 
 			XmlDocument teamCityInfo = LoadTeamCityInfo();
 			XmlElement buildNode = GetBuildNode(teamCityInfo);
-			XmlElement statusInfoNode = GetStatusInfoNode(teamCityInfo, buildNode);
 
-			AppendStatusText(teamCityInfo, statusInfoNode, Value);
+			AddKeyValuePairsToXml(teamCityInfo, buildNode);
 			SaveTeamCityInfo(teamCityInfo);
-		}
-
-		static void AppendStatusText(XmlDocument doc, XmlElement statusInfoNode, string text)
-		{
-			XmlElement newChild = doc.CreateElement("text");
-			newChild.SetAttribute("action", "append");
-			newChild.InnerText = text;
-			statusInfoNode.AppendChild(newChild);
-		}
-
-		static XmlElement GetStatusInfoNode(XmlDocument doc, XmlElement buildNode)
-		{
-			XmlElement newChild = buildNode.SelectSingleNode("statusInfo") as XmlElement;
-			if (newChild == null)
-			{
-				newChild = doc.CreateElement("statusInfo");
-				buildNode.AppendChild(newChild);
-			}
-			return newChild;
 		}
 	}
 }

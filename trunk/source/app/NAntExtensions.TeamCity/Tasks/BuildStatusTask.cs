@@ -9,13 +9,13 @@ using NAntExtensions.TeamCity.Types;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	[TaskName("tc-buildstatus")]
-	public class TeamCityBuildStatus : TeamCityMessageTask
+	public class BuildStatusTask : MessageTask
 	{
-		public TeamCityBuildStatus() : base(IoC.Resolve<IBuildEnvironment>())
+		public BuildStatusTask() : base(IoC.Resolve<IBuildEnvironment>())
 		{
 		}
 
-		public TeamCityBuildStatus(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
+		public BuildStatusTask(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
 			: base(environment, messageProvider)
 		{
 		}

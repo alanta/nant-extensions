@@ -18,7 +18,7 @@ namespace NAntExtensions.TeamCity.Tests
 	{
 		const string Message = "foo";
 		ITeamCityMessageProvider _messageProvider;
-		TeamCityProgress _task;
+		ProgressTask _task;
 		IBuildEnvironment _buildEnvironment;
 
 		protected override void Before_each_spec()
@@ -26,10 +26,10 @@ namespace NAntExtensions.TeamCity.Tests
 			_messageProvider = Mocks.StrictMock<ITeamCityMessageProvider>();
 			_buildEnvironment = Mocks.StrictMock<IBuildEnvironment>();
 
-			_task = Mocks.PartialMock<TeamCityProgress>(_buildEnvironment, _messageProvider);
+			_task = Mocks.PartialMock<ProgressTask>(_buildEnvironment, _messageProvider);
 			_task.ForceTaskExecution = true;
 
-			// Setting the task on the message provider by TeamCityMessageTask.set_MessageProvider() is not an expectation.
+			// Setting the task on the message provider by MessageTask.set_MessageProvider() is not an expectation.
 			Mocks.BackToRecord(_messageProvider);
 			
 			// We're executing the task by calling ExecuteTask (which is abstract) via reflection, so we have to
