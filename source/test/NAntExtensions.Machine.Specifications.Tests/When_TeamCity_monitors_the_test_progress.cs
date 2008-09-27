@@ -14,7 +14,6 @@ using Rhino.Mocks.Constraints;
 
 namespace NAntExtensions.Machine.Specifications.Tests
 {
-	[TestFixture]
 	public class When_TeamCity_monitors_the_test_progress : Spec
 	{
 		AssemblyInfo _assemblyInfo;
