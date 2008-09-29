@@ -369,6 +369,94 @@
 					 type="End" />
 	</target>
 
+	<!-- Docs.
+	________________________________________________________________________________________________________________ -->
+	<target name="init-build-docs"
+			depends="build-app">
+		<mkdir dir="${basedir.build}/docs"/>
+	</target>
+
+	<target name="build-docs"
+			depends="build-app, init-build-docs"
+			description="Creates the applications' documentation.">
+
+		<tc-progress message="Building docs"
+					 type="Start" />
+
+		<nantschema output="${basedir.build}/docs/NAnt.xsd" />
+
+		<ndoc>
+			<assemblies basedir="${basedir.build}">
+				<include name="NAntExtensions.*.dll" />
+				<exclude name="NAntExtensions.TeamCity.Common.dll" />
+			</assemblies>
+			<documenters>
+				<documenter name="NAnt">
+					<property name="OutputDirectory"
+							  value="${basedir.build}/docs" />
+					<property name="SdkLinksOnWeb"
+							  value="true" />
+					<!-- Only document classes in NAntExtensions. namespace -->
+					<property name="NamespaceFilter"
+							  value="NAntExtensions" />
+					<!-- Set the name and version of the product for which docs are generated. -->
+					<property name="ProductName"
+							  value="${project::get-name()}" />
+					<property name="ProductVersion"
+							  value="${build.number}" />
+					<property name="ProductUrl"
+							  value="http://code.google.com/p/nant-extensions/" />
+					<property name="Preliminary"
+							  value="${not(build.msbuild.configuration == 'Release')}" />
+					<property name="DocumentAttributes"
+							  value="true" />
+					<property name="IncludeAssemblyVersion"
+							  value="true" />
+					<property name="ShowMissingParams"
+							  value="true" />
+					<property name="ShowMissingReturns"
+							  value="true" />
+					<property name="ShowMissingValues"
+							  value="true" />
+				</documenter>
+			</documenters>
+		</ndoc>
+
+		<!-- Copy images and stylesheet. -->
+		<copy todir="${basedir.build}/docs">
+			<fileset basedir="${basedir.docs}">
+				<include name="**/*" />
+				<!-- Exclude static html pages as these will be filter-copied. -->
+				<exclude name="**/*.html" />
+			</fileset>
+		</copy>
+
+		<!-- Filter-copy static HTML pages. -->
+		<copy todir="${basedir.build}/docs">
+			<fileset basedir="${basedir.docs}">
+				<include name="**/*.html" />
+			</fileset>
+			<filterchain>
+				<replacetokens>
+					<token key="product.name"
+						   value="${project::get-name()}" />
+					<token key="build.number"
+						   value="${build.number}" />
+				</replacetokens>
+				<!-- When NOT building a release package, add prelimary notice. -->
+				<replacestring  from="@notice.preliminary@"
+								to="&lt;p class=&quot;topicstatus&quot;>[This is preliminary documentation and subject to change.]&lt;/p>"
+								unless="${build.msbuild.configuration == 'Release'}" />
+				<!-- When building a release package, remove the placeholder. -->
+				<replacestring from="@notice.preliminary@"
+							   to=""
+							   if="${build.msbuild.configuration == 'Release'}" />
+			</filterchain>
+		</copy>
+
+		<tc-progress message="Building docs"
+					 type="Start" />
+	</target>
 
 	<!-- Setup.
 	________________________________________________________________________________________________________________ -->
@@ -378,7 +466,7 @@
 	</target>
 
 	<target name="build-setup"
-			depends="build-app, run-tests, init-build-setup"
+			depends="build-app, run-tests, build-docs, init-build-setup"
 			description="Creates the applications' deployment package.">
 		<tc-progress message="Building setup"
 					 type="Start" />
@@ -408,7 +496,6 @@
 					 prefix="extensions\common\neutral">
 				<include name="NAntExtensions.MbUnit*.*" />
 				<exclude name="*.Tests.*" />
-				<exclude name="*.Partial.*" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="lib\common\neutral\MbUnit">
@@ -428,7 +515,6 @@
 					 prefix="extensions\common\2.0">
 				<include name="NAntExtensions.Machine.Specifications.*" />
 				<exclude name="*.Tests.*" />
-				<exclude name="*.Partial.*" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="lib\common\2.0\Machine.Specifications">
@@ -452,8 +538,16 @@
 					 prefix="extensions\common\2.0">
 				<include name="NAntExtensions.TeamCity.*" />
 				<exclude name="NAntExtensions.TeamCity.Common.*" />
-				<exclude name="*.Partial.*" />
 				<exclude name="*.Tests.*" />
+			</fileset>
+		</zip>
+
+		<!-- Docs. -->
+		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-Documentation-${build.artifacts.suffix}.zip"
+			 ziplevel="9"
+			 duplicate="Preserve">
+			<fileset basedir="${basedir.build}/docs" >
+				<include name="**/*.*" />
 			</fileset>
 		</zip>
 

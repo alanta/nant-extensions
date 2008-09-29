@@ -6,6 +6,9 @@ using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.MbUnit.Tasks
 {
+	/// <summary>
+	/// Initializes all MbUnit counters with 0.
+	/// </summary>
 	[TaskName("mbunit-initcounters")]
 	public class InitializeMbUnitCountersTask : Task
 	{
