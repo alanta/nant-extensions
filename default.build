@@ -101,13 +101,13 @@
 				 property="folder">
 			<in>
 				<items>
-					<include name="${basedir.source}\**" />
+					<include name="${basedir.source}/**" />
 				</items>
 			</in>
 			<do>
-				<delete dir="${folder}\bin"
+				<delete dir="${folder}/bin"
 						failonerror="false" />
-				<delete dir="${folder}\obj"
+				<delete dir="${folder}/obj"
 						failonerror="false" />
 			</do>
 		</foreach>
@@ -122,7 +122,7 @@
 			depends="clean"
 			description="Creates VersionInfo.cs from the specified build number or leaves the file as-is.">
 		<asminfo language="CSharp"
-				 output="${basedir.source}\VersionInfo.cs"
+				 output="${basedir.source}/VersionInfo.cs"
 				 if="${version::parse(build.number) != version::parse(build.number.fromfile)}">
 			<imports>
 				<import namespace="System" />
@@ -144,7 +144,7 @@
 					 type="Start" />
 
 		<!-- MbUnit. -->
-		<msbuild project="${basedir.app}\NAntExtensions.MbUnit\NAntExtensions.MbUnit.csproj"
+		<msbuild project="${basedir.app}/NAntExtensions.MbUnit/NAntExtensions.MbUnit.csproj"
 				 target="${build.msbuild.target}"
 				 verbosity="${build.msbuild.verbosity}">
 			<arg value="/p:Configuration=${build.msbuild.configuration}" />
@@ -157,7 +157,7 @@
 		</msbuild>
 
 		<!-- Machine.Specifications. -->
-		<msbuild project="${basedir.app}\NAntExtensions.Machine.Specifications\NAntExtensions.Machine.Specifications.csproj"
+		<msbuild project="${basedir.app}/NAntExtensions.Machine.Specifications/NAntExtensions.Machine.Specifications.csproj"
 				 target="${build.msbuild.target}"
 				 verbosity="${build.msbuild.verbosity}">
 			<arg value="/p:Configuration=${build.msbuild.configuration}" />
@@ -170,7 +170,7 @@
 		</msbuild>
 
 		<!-- TeamCity. -->
-		<msbuild project="${basedir.app}\NAntExtensions.TeamCity\NAntExtensions.TeamCity.csproj"
+		<msbuild project="${basedir.app}/NAntExtensions.TeamCity/NAntExtensions.TeamCity.csproj"
 				 target="${build.msbuild.target}"
 				 verbosity="${build.msbuild.verbosity}">
 			<arg value="/p:Configuration=${build.msbuild.configuration}" />
@@ -189,13 +189,13 @@
 	<!-- Unit tests.
 	________________________________________________________________________________________________________________ -->
 	<fileset id="mbunit-test-projects">
-		<include name="${basedir.test}\**\*.csproj" />
-		<exclude name="${basedir.test}\**\*.ForTesting.csproj"/>
-		<exclude name="${basedir.test}\**\NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
+		<include name="${basedir.test}/**/*.csproj" />
+		<exclude name="${basedir.test}/**/*.ForTesting.csproj"/>
+		<exclude name="${basedir.test}/**/NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
 	</fileset>
 
 	<fileset id="mspec-test-projects">
-		<include name="${basedir.test}\**\NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
+		<include name="${basedir.test}/**/NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
 	</fileset>
 
 	<fileset id="coverage-assemblies"
@@ -271,7 +271,7 @@
 						verbose="true"
 						workingdir="${basedir.build}">
 					<assemblies>
-						<include name="${basedir.build}\${path::get-file-name-without-extension(testproject)}.dll" />
+						<include name="${basedir.build}/${path::get-file-name-without-extension(testproject)}.dll" />
 					</assemblies>
 				</mbunit>
 			</do>
@@ -302,7 +302,7 @@
 					   include-time-info="true"
 					   verbose="true">
 					<assemblies>
-						<include name="${basedir.build}\${path::get-file-name-without-extension(testproject)}.dll" />
+						<include name="${basedir.build}/${path::get-file-name-without-extension(testproject)}.dll" />
 					</assemblies>
 				</mspec>
 			</do>
@@ -331,20 +331,20 @@
 				<items refid="mbunit-test-projects" />
 			</in>
 			<do>
-				<ncover program="${tools.ncover}\NCover.Console.exe"
-						commandLineExe="${tools.mbunit}\MbUnit.Cons.exe"
+				<ncover program="${tools.ncover}/NCover.Console.exe"
+						commandLineExe="${tools.mbunit}/MbUnit.Cons.exe"
 						commandLineArgs='/verbose+ /report-folder:"${basedir.test.results}" /report-name-format:"${path::get-file-name-without-extension(testproject)}" /report-type:html "${path::get-file-name-without-extension(testproject)}.dll"'
 						workingDirectory="${basedir.build}"
-						coverageFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.xml"
+						coverageFile="${basedir.test.results}/${path::get-file-name-without-extension(testproject)}-Coverage.xml"
 						logLevel="Normal"
-						logFile="${basedir.test.results}\${path::get-file-name-without-extension(testproject)}-Coverage.log"
+						logFile="${basedir.test.results}/${path::get-file-name-without-extension(testproject)}-Coverage.log"
 						excludeAttributes="CoverageExcludeAttribute">
 					<assemblies refid="coverage-assemblies" />
 				</ncover>
 			</do>
 		</foreach>
 
-		<ncoverexplorer program="${tools.ncoverexplorer}\NCoverExplorer.Console.exe"
+		<ncoverexplorer program="${tools.ncoverexplorer}/NCoverExplorer.Console.exe"
 						satisfactoryCoverage="${tools.ncoverexplorer.satisfactorycoverage}"
 						reportType="ModuleClassFunctionSummary"
 						outputDir="${basedir.test.results}"
@@ -353,12 +353,12 @@
 						projectName="${project::get-name()}"
 						showExcluded="false" >
 			<fileset>
-				<include name="${basedir.test.results}\*-Coverage.xml" />
+				<include name="${basedir.test.results}/*-Coverage.xml" />
 			</fileset>
 		</ncoverexplorer>
 
-		<if test="${environment::variable-exists('TEAMCITY_PROJECT_NAME')}">
-			<xmlpeek file="${basedir.test.results}\Coverage.xml"
+		<if test="${teamcity::is-teamcity-build()}">
+			<xmlpeek file="${basedir.test.results}/Coverage.xml"
 					 property="codecoverage"
 					 xpath="/coverageReport/project/@functionCoverage"/>
 			<tc-addstatistic key="NCoverCodeCoverage"
@@ -489,18 +489,18 @@
 		</zipfileset>
 
 		<!-- MbUnit. -->
-		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-MbUnit-${build.artifacts.suffix}.zip"
+		<zip zipfile="${basedir.deployment.artifacts}/NAntExtensions-MbUnit-${build.artifacts.suffix}.zip"
 			 ziplevel="9"
 			 duplicate="Preserve">
 			<fileset refid="license" />
 			<fileset basedir="${basedir.build}"
-					 prefix="extensions\common\neutral">
+					 prefix="extensions/common/neutral">
 				<include name="NAntExtensions.MbUnit*.*" />
 				<exclude name="*.Tests.*" />
 				<exclude name="*.xml" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
-					 prefix="lib\common\neutral\MbUnit">
+					 prefix="lib/common/neutral/MbUnit">
 				<include name="MbUnit.Framework.dll" />
 				<include name="QuickGraph*.dll" />
 				<include name="Refly*.dll" />
@@ -509,36 +509,36 @@
 		</zip>
 
 		<!-- Machine.Specifications. -->
-		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-Machine.Specifications-${build.artifacts.suffix}.zip"
+		<zip zipfile="${basedir.deployment.artifacts}/NAntExtensions-Machine.Specifications-${build.artifacts.suffix}.zip"
 			 ziplevel="9"
 			 duplicate="Preserve">
 			<fileset refid="license" />
 			<fileset basedir="${basedir.build}"
-					 prefix="extensions\common\2.0">
+					 prefix="extensions/common/2.0">
 				<include name="NAntExtensions.Machine.Specifications.*" />
 				<exclude name="*.Tests.*" />
 				<exclude name="*.xml" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
-					 prefix="lib\common\2.0\Machine.Specifications">
+					 prefix="lib/common/2.0/Machine.Specifications">
 				<include name="Machine.Specifications*.dll" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
-					 prefix="lib\net\2.0">
+					 prefix="lib/net/2.0">
 				<include name="nunit.framework.dll" />
 			</fileset>
 		</zip>
 
 		<!-- TeamCity. -->
-		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-TeamCity-${build.artifacts.suffix}.zip"
+		<zip zipfile="${basedir.deployment.artifacts}/NAntExtensions-TeamCity-${build.artifacts.suffix}.zip"
 			 ziplevel="9"
 			 duplicate="Preserve">
 			<fileset refid="license" />
-			<fileset basedir="${basedir.app}\NAntExtensions.TeamCity" >
+			<fileset basedir="${basedir.app}/NAntExtensions.TeamCity" >
 				<include name="License-BlueWireTechnologies.txt" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
-					 prefix="extensions\common\2.0">
+					 prefix="extensions/common/2.0">
 				<include name="NAntExtensions.TeamCity.*" />
 				<exclude name="NAntExtensions.TeamCity.Common.*" />
 				<exclude name="*.Tests.*" />
@@ -547,7 +547,7 @@
 		</zip>
 
 		<!-- Docs. -->
-		<zip zipfile="${basedir.deployment.artifacts}\NAntExtensions-Documentation-${build.artifacts.suffix}.zip"
+		<zip zipfile="${basedir.deployment.artifacts}/NAntExtensions-Documentation-${build.artifacts.suffix}.zip"
 			 ziplevel="9"
 			 duplicate="Preserve">
 			<fileset basedir="${basedir.build}/docs" >
@@ -564,14 +564,14 @@
 		<fail message="Cannot merge assemblies, property 'merge' is empty or does not exist. (The property is reset after each call to the 'ilmerge' task."
 			  if="${not property::exists('merge') or string::get-length(property::get-value('merge')) == 0}" />
 
-		<mkdir dir="${basedir.build}\merged"/>
+		<mkdir dir="${basedir.build}/merged"/>
 
 		<exec program="${tools.ilmerge}/ILMerge.exe"
 			  workingdir="${basedir.build}">
 			<arg path="${merge}" />
 			<arg path="${basedir.build}/NAntExtensions.TeamCity.Common.dll" />
 			<arg path="${basedir.build}/Castle*.dll" />
-			<arg value='/out:"${basedir.build}\merged\${path::get-file-name(merge)}"' />
+			<arg value='/out:"${basedir.build}/merged/${path::get-file-name(merge)}"' />
 			<arg line='/attr:"${merge}"' />
 			<arg value="/t:library" />
 			<arg value="/wildcards" />
@@ -583,7 +583,7 @@
 
 		<move todir="${basedir.build}"
 			  overwrite="true">
-			<fileset basedir="${basedir.build}\merged">
+			<fileset basedir="${basedir.build}/merged">
 				<include name="*"/>
 			</fileset>
 		</move>
@@ -607,7 +607,7 @@
 				 property="zipfile">
 			<in>
 				<items>
-					<include name="${basedir.deployment.artifacts}\**\*.zip" />
+					<include name="${basedir.deployment.artifacts}/**/*.zip" />
 				</items>
 			</in>
 			<do>
