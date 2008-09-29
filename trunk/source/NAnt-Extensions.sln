@@ -34,6 +34,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.Machine.Spec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.MbUnit.Tests", "test\NAntExtensions.MbUnit.Tests\NAntExtensions.MbUnit.Tests.csproj", "{1304223F-9F3E-46C6-ADDC-39AF8251F7F4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{00046CFD-7EAA-4014-87FC-DDE9E4524ECE}"
+	ProjectSection(SolutionItems) = preProject
+		docs\index.html = docs\index.html
+		docs\style.css = docs\style.css
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
