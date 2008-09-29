@@ -9,25 +9,45 @@ using NAntExtensions.TeamCity.Types;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
+	/// <summary>
+	/// TODO
+	/// </summary>
+	/// <example>
+	/// <code>
+	/// <![CDATA[
+	/// <tc-progress message="Running tests"
+	///              type="Start" />
+	/// ]]></code>
+	/// </example>
 	[TaskName("tc-progress")]
 	public class ProgressTask : MessageTask
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ProgressTask"/> class.
+		/// </summary>
 		public ProgressTask() : this(null, null)
 		{
 		}
 
-		public ProgressTask(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
+		internal ProgressTask(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
 			: base(environment, messageProvider)
 		{
 		}
 
+		/// <summary>
+		/// The progress type to report to TeamCity.
+		/// </summary>
+		/// <value>The type of the progress.</value>
 		[TaskAttribute("type", Required = false)]
 		public ProgressType ProgressType
 		{
 			get;
 			set;
 		}
-
+		
+		/// <summary>
+		/// The message to show on the TeamCity dashboard.
+		/// </summary>
 		[TaskAttribute("message", Required = false)]
 		public string Message
 		{
@@ -35,6 +55,9 @@ namespace NAntExtensions.TeamCity.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Executes the task.
+		/// </summary>
 		protected override void ExecuteTask()
 		{
 			if (ShouldSkipTaskExecution)

@@ -28,11 +28,14 @@ namespace NAntExtensions.TeamCity.Tasks
 	[TaskName("tc-addstatistic")]
 	public class AddStatisticTask : BuildLogTask
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="AddStatisticTask"/> class.
+		/// </summary>
 		public AddStatisticTask() : this(null)
 		{
 		}
 
-		public AddStatisticTask(IBuildEnvironment environment) : base(environment)
+		internal AddStatisticTask(IBuildEnvironment environment) : base(environment)
 		{
 		}
 
@@ -50,6 +53,9 @@ namespace NAntExtensions.TeamCity.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Executes the task.
+		/// </summary>
 		protected override void ExecuteTask()
 		{
 			if (ShouldSkipTaskExecution)

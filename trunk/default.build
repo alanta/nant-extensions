@@ -267,7 +267,7 @@
 			<do>
 				<mbunit report-types="html"
 						report-filename-format="${path::get-file-name-without-extension(testproject)}"
-						report-output-directory="${basedir.test.results}"
+						report-directory="${basedir.test.results}"
 						verbose="true"
 						workingdir="${basedir.build}">
 					<assemblies>
@@ -299,6 +299,7 @@
 				<mspec report-directory="${basedir.test.results}"
 					   report-filename="${path::get-file-name-without-extension(testproject)}.html"
 					   workingdir="${basedir.build}"
+					   include-time-info="true"
 					   verbose="true">
 					<assemblies>
 						<include name="${basedir.build}\${path::get-file-name-without-extension(testproject)}.dll" />
@@ -496,6 +497,7 @@
 					 prefix="extensions\common\neutral">
 				<include name="NAntExtensions.MbUnit*.*" />
 				<exclude name="*.Tests.*" />
+				<exclude name="*.xml" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="lib\common\neutral\MbUnit">
@@ -515,6 +517,7 @@
 					 prefix="extensions\common\2.0">
 				<include name="NAntExtensions.Machine.Specifications.*" />
 				<exclude name="*.Tests.*" />
+				<exclude name="*.xml" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="lib\common\2.0\Machine.Specifications">
@@ -539,6 +542,7 @@
 				<include name="NAntExtensions.TeamCity.*" />
 				<exclude name="NAntExtensions.TeamCity.Common.*" />
 				<exclude name="*.Tests.*" />
+				<exclude name="*.xml" />
 			</fileset>
 		</zip>
 

@@ -31,6 +31,10 @@ namespace NAntExtensions.TeamCity.Tasks
 		const string TeamCityInfoFileName = "teamcity-info.xml";
 		string _teamCityInfoPath;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BuildLogTask"/> class.
+		/// </summary>
+		/// <param name="buildEnvironment">The build environment.</param>
 		protected BuildLogTask(IBuildEnvironment buildEnvironment) : base(buildEnvironment)
 		{
 		}
@@ -49,6 +53,13 @@ namespace NAntExtensions.TeamCity.Tasks
 			set { _teamCityInfoPath = value; }
 		}
 
+		/// <summary>
+		/// Creates a statistic node with a key and a value.
+		/// </summary>
+		/// <param name="doc">The teamcity-info.xml document to create the node in.</param>
+		/// <param name="key">The key.</param>
+		/// <param name="value">The value.</param>
+		/// <returns></returns>
 		protected static XmlElement CreateStatisticValueNode(XmlDocument doc, string key, string value)
 		{
 			XmlElement element = FindOrCreateElement(doc, key);
@@ -69,6 +80,11 @@ namespace NAntExtensions.TeamCity.Tasks
 			return doc.CreateElement("statisticValue");
 		}
 
+		/// <summary>
+		/// Returns the build node of the document.
+		/// </summary>
+		/// <param name="doc">The teamcity-info.xml document.</param>
+		/// <returns></returns>
 		protected static XmlElement GetBuildNode(XmlDocument doc)
 		{
 			XmlElement documentElement = doc.DocumentElement;
@@ -80,6 +96,10 @@ namespace NAntExtensions.TeamCity.Tasks
 			return documentElement;
 		}
 
+		/// <summary>
+		/// Returns the default path to teamcity-info.xml.
+		/// </summary>
+		/// <returns></returns>
 		protected string GetDefaultTeamCityInfoPath()
 		{
 			if (Properties == null || !Properties.Contains("teamcity.build.checkoutDir"))
@@ -91,6 +111,10 @@ namespace NAntExtensions.TeamCity.Tasks
 			return Path.Combine(checkoutDir, TeamCityInfoFileName);
 		}
 
+		/// <summary>
+		/// Loads the teamcity-info.xml document.
+		/// </summary>
+		/// <returns>An <see cref="XmlDocument"/> representing the current teamcity-info.xml document.</returns>
 		protected XmlDocument LoadTeamCityInfo()
 		{
 			XmlDocument document = new XmlDocument();
@@ -101,6 +125,10 @@ namespace NAntExtensions.TeamCity.Tasks
 			return document;
 		}
 
+		/// <summary>
+		/// Saves the teamcity-info.xml document.
+		/// </summary>
+		/// <param name="teamCityInfoXml">The teamcity-info.xml document to save.</param>
 		protected void SaveTeamCityInfo(XmlDocument teamCityInfoXml)
 		{
 			teamCityInfoXml.Save(TeamCityInfoPath);

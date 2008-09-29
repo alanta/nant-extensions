@@ -17,25 +17,49 @@ using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.Machine.Specifications.Tasks
 {
+	/// <summary>
+	/// Runs Machine.Specifications tests.
+	/// </summary>
+	/// <example>
+	/// <code>
+	/// <![CDATA[
+	/// <mspec report-directory="reports"
+	///	       report-filename="Assembly.Report.html"
+	///        workingdir="build-directory"
+	///        include-time-info="true"
+	///        verbose="true">
+	///        <assemblies>
+	///            <include name="build-directory/Assembly.dll" />
+	///        </assemblies>
+	/// </mspec>
+	/// ]]></code>
+	/// </example>
 	[TaskName("mspec")]
 	public class MachineSpecificationsTask : Task
 	{
 		IBuildEnvironment _buildEnvironment;
 		DirectoryInfo _workingDirectory;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MachineSpecificationsTask"/> class.
+		/// </summary>
 		public MachineSpecificationsTask() : this(IoC.Resolve<IBuildEnvironment>())
 		{
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MachineSpecificationsTask"/> class.
+		/// </summary>
+		/// <param name="buildEnvironment">The build environment.</param>
 		public MachineSpecificationsTask(IBuildEnvironment buildEnvironment)
 		{
 			BuildEnvironment = buildEnvironment;
 		}
 
-		protected IBuildEnvironment BuildEnvironment
+		IBuildEnvironment BuildEnvironment
 		{
 			get { return _buildEnvironment; }
-			private set
+			set
 			{
 				if (value == null)
 				{
@@ -44,7 +68,11 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 				_buildEnvironment = value;
 			}
 		}
-
+		
+		/// <summary>
+		/// Gets or sets the assemblies to include in the test run.
+		/// </summary>
+		/// <value>The assemblies.</value>
 		[BuildElementArray("assemblies", Required = true, ElementType = typeof(FileSet))]
 		public FileSet[] Assemblies
 		{
@@ -52,6 +80,10 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Target output folder for the reports.
+		/// </summary>
+		/// <value>The report directory.</value>
 		[TaskAttribute("report-directory")]
 		public string ReportDirectory
 		{
@@ -59,13 +91,21 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Gets or sets the report file name.
+		/// </summary>
+		/// <value>The report file name format.</value>
 		[TaskAttribute("report-filename")]
 		public string ReportFilename
 		{
 			get;
 			set;
 		}
-
+		
+		/// <summary>
+		/// The directory in which the test run will be executed.
+		/// </summary>
+		/// <value>The working directory.</value>
 		[TaskAttribute("workingdir")]
 		public DirectoryInfo WorkingDirectory
 		{
@@ -80,7 +120,10 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 			set { _workingDirectory = value; }
 		}
 
-		[TaskAttribute("include-timing-info")]
+		/// <summary>
+		/// Gets or sets a value indicating whether to include the time when the report has been generated in the report.
+		/// </summary>
+		[TaskAttribute("include-time-info")]
 		[BooleanValidator]
 		public bool IncludeTimeInfo
 		{
@@ -88,6 +131,9 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Executes the task.
+		/// </summary>
 		protected override void ExecuteTask()
 		{
 			string originalWorkingDirectory = Environment.CurrentDirectory;

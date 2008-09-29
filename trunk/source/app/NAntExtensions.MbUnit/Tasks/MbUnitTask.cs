@@ -19,6 +19,9 @@ using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.MbUnit.Tasks
 {
+	/// <summary>
+	/// Runs MbUnit tests.
+	/// </summary>
 	[TaskName("mbunit")]
 	public class MbUnitTask : Task
 	{
@@ -29,19 +32,26 @@ namespace NAntExtensions.MbUnit.Tasks
 		string _transformReportFileNameFormat;
 		DirectoryInfo _workingDirectory;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MbUnitTask"/> class.
+		/// </summary>
 		public MbUnitTask() : this(IoC.Resolve<IBuildEnvironment>())
 		{
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MbUnitTask"/> class.
+		/// </summary>
+		/// <param name="buildEnvironment">The build environment.</param>
 		public MbUnitTask(IBuildEnvironment buildEnvironment)
 		{
 			BuildEnvironment = buildEnvironment;
 		}
 
-		protected IBuildEnvironment BuildEnvironment
+		IBuildEnvironment BuildEnvironment
 		{
 			get { return _buildEnvironment; }
-			private set
+			set
 			{
 				if (value == null)
 				{
@@ -51,6 +61,10 @@ namespace NAntExtensions.MbUnit.Tasks
 			}
 		}
 
+		/// <summary>
+		/// Gets or sets the report format to generate. Valid values are: text, xml, dox, html and transform. If you specify transform, you will also have to set the <see cref="Transform"/> attribute.
+		/// </summary>
+		/// <value>The report types.</value>
 		[TaskAttribute("report-types")]
 		public string ReportTypes
 		{
@@ -58,6 +72,10 @@ namespace NAntExtensions.MbUnit.Tasks
 			set { _reportTypes = value; }
 		}
 
+		/// <summary>
+		/// Gets or sets the assemblies to include in the test run.
+		/// </summary>
+		/// <value>The assemblies.</value>
 		[BuildElementArray("assemblies", Required = true, ElementType = typeof(FileSet))]
 		public FileSet[] Assemblies
 		{
@@ -65,6 +83,10 @@ namespace NAntExtensions.MbUnit.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Path where the assemblies can be loaded.
+		/// </summary>
+		/// <value>The assembly paths.</value>
 		[BuildElement("assembly-paths", Required = false)]
 		public DirSet AssemblyPaths
 		{
@@ -72,6 +94,10 @@ namespace NAntExtensions.MbUnit.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Gets or sets the report file name format.
+		/// </summary>
+		/// <value>The report file name format.</value>
 		[TaskAttribute("report-filename-format", Required = false)]
 		public string ReportFileNameFormat
 		{
@@ -79,13 +105,21 @@ namespace NAntExtensions.MbUnit.Tasks
 			set { _reportFileNameFormat = value; }
 		}
 
-		[TaskAttribute("report-output-directory", Required = false)]
-		public string ReportOutputDirectory
+		/// <summary>
+		/// Target output folder for the reports.
+		/// </summary>
+		/// <value>The report directory.</value>
+		[TaskAttribute("report-directory", Required = false)]
+		public string ReportDirectory
 		{
 			get;
 			set;
 		}
 
+		/// <summary>
+		/// Gets or sets the XSL transformation file to use for the 'transform' report type.
+		/// </summary>
+		/// <value>The transform.</value>
 		[TaskAttribute("transform", Required = false)]
 		public FileInfo Transform
 		{
@@ -93,6 +127,10 @@ namespace NAntExtensions.MbUnit.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Gets or sets the XSL transform report file name format to use for the 'transform' report type.
+		/// </summary>
+		/// <value>The transform report file name format.</value>
 		[TaskAttribute("transform-report-filename-format", Required = false)]
 		public string TransformReportFileNameFormat
 		{
@@ -107,6 +145,10 @@ namespace NAntExtensions.MbUnit.Tasks
 			set { _transformReportFileNameFormat = value; }
 		}
 
+		/// <summary>
+		/// The directory in which the test run will be executed.
+		/// </summary>
+		/// <value>The working directory.</value>
 		[TaskAttribute("workingdir")]
 		public DirectoryInfo WorkingDirectory
 		{
@@ -121,6 +163,9 @@ namespace NAntExtensions.MbUnit.Tasks
 			set { _workingDirectory = value; }
 		}
 
+		/// <summary>
+		/// Executes the task.
+		/// </summary>
 		protected override void ExecuteTask()
 		{
 			Log(Level.Info, "MbUnit {0} test runner", typeof(Fixture).Assembly.GetName().Version);
@@ -173,7 +218,7 @@ namespace NAntExtensions.MbUnit.Tasks
 			}
 			Log(Level.Verbose, "ReportTypes: {0}", ReportTypes);
 			Log(Level.Verbose, "ReportFileNameFormat: {0}", ReportFileNameFormat);
-			Log(Level.Verbose, "ReportOutputDirectory: {0}", ReportOutputDirectory);
+			Log(Level.Verbose, "ReportDirectory: {0}", ReportDirectory);
 		}
 
 		void GenerateReports()
@@ -191,16 +236,16 @@ namespace NAntExtensions.MbUnit.Tasks
 				switch (reportType.ToLower())
 				{
 					case "text":
-						reportName = TextReport.RenderToText(_result, ReportOutputDirectory, ReportFileNameFormat);
+						reportName = TextReport.RenderToText(_result, ReportDirectory, ReportFileNameFormat);
 						break;
 					case "xml":
-						reportName = XmlReport.RenderToXml(_result, ReportOutputDirectory, ReportFileNameFormat);
+						reportName = XmlReport.RenderToXml(_result, ReportDirectory, ReportFileNameFormat);
 						break;
 					case "html":
-						reportName = HtmlReport.RenderToHtml(_result, ReportOutputDirectory, ReportFileNameFormat);
+						reportName = HtmlReport.RenderToHtml(_result, ReportDirectory, ReportFileNameFormat);
 						break;
 					case "dox":
-						reportName = DoxReport.RenderToDox(_result, ReportOutputDirectory, ReportFileNameFormat);
+						reportName = DoxReport.RenderToDox(_result, ReportDirectory, ReportFileNameFormat);
 						break;
 					case "transform":
 						if (Transform == null)
@@ -209,7 +254,7 @@ namespace NAntExtensions.MbUnit.Tasks
 						}
 
 						reportName = HtmlReport.RenderToHtml(_result,
-						                                     ReportOutputDirectory,
+						                                     ReportDirectory,
 						                                     Transform.FullName,
 						                                     TransformReportFileNameFormat);
 						break;

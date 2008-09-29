@@ -9,7 +9,7 @@ using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.MbUnit.Reporting
 {
-	public class TeamCityReportGenerator
+	internal class TeamCityReportGenerator
 	{
 		public void Render(ReportResult result, ITeamCityMessageProvider messageProvider)
 		{

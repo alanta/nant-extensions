@@ -7,18 +7,35 @@ using NAntExtensions.TeamCity.Types;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
+	/// <summary>
+	/// TODO
+	/// </summary>
+	/// <example>
+	/// <code>
+	/// <![CDATA[
+	/// <tc-buildstatus message="The build has failed"
+	///                 type="Error" />
+	/// ]]></code>
+	/// </example>
 	[TaskName("tc-buildstatus")]
 	public class BuildStatusTask : MessageTask
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="BuildStatusTask"/> class.
+		/// </summary>
 		public BuildStatusTask() : this(null, null)
 		{
 		}
 
-		public BuildStatusTask(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
+		internal BuildStatusTask(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
 			: base(environment, messageProvider)
 		{
 		}
 
+		/// <summary>
+		/// The status type to report to TeamCity.
+		/// </summary>
+		/// <value>The type of the status.</value>
 		[TaskAttribute("type", Required = false)]
 		public StatusType StatusType
 		{
@@ -26,6 +43,10 @@ namespace NAntExtensions.TeamCity.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// The message to include with the report status.
+		/// </summary>
+		/// <value>The message.</value>
 		[TaskAttribute("message", Required = false)]
 		public string Message
 		{
@@ -33,6 +54,9 @@ namespace NAntExtensions.TeamCity.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Executes the task.
+		/// </summary>
 		protected override void ExecuteTask()
 		{
 			if (ShouldSkipTaskExecution)
