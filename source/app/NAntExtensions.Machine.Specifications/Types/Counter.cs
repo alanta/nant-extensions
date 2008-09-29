@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace NAntExtensions.Machine.Specifications.Types
 {
-	public class Counter
+	internal class Counter
 	{
 		public const string Contexts = "mspec.contexts";
 		public const string FailedSpecifications = "mspec.failedspecs";

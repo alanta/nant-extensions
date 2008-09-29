@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace NAntExtensions.MbUnit.Types
 {
-	public class Counter
+	internal class Counter
 	{
 		public const string Asserts = "mbunit.asserts";
 		public const string Failures = "mbunit.failures";

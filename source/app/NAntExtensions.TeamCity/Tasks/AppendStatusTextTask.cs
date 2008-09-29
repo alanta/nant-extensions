@@ -28,11 +28,14 @@ namespace NAntExtensions.TeamCity.Tasks
 	[TaskName("tc-appendstatustext")]
 	public class AppendStatusTextTask : BuildLogTask
 	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="AppendStatusTextTask"/> class.
+		/// </summary>
 		public AppendStatusTextTask() : this(null)
 		{
 		}
 
-		public AppendStatusTextTask(IBuildEnvironment environment) : base(environment)
+		internal AppendStatusTextTask(IBuildEnvironment environment) : base(environment)
 		{
 		}
 
@@ -43,6 +46,9 @@ namespace NAntExtensions.TeamCity.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// Executes the task.
+		/// </summary>
 		protected override void ExecuteTask()
 		{
 			if (ShouldSkipTaskExecution)
