@@ -103,7 +103,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 									 " message='{0}' details='{1}' type='{2}'",
 									 Formatter.FormatValue(exceptionInfo.Message),
 									 formattedException,
-									 Formatter.FormatValue(exceptionInfo.Type.ToString()));
+									 Formatter.FormatValue(exceptionInfo.Type));
 			}
 
 			message.Append("]");

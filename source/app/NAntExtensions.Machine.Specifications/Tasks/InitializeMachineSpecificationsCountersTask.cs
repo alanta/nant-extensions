@@ -16,6 +16,8 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 	/// <item><term>mspec.contexts</term><description>The number of contexts.</description></item>
 	/// <item><term>mspec.failedspecs</term><description>The number of failed specifications.</description></item>
 	/// <item><term>mspec.specs</term><description>The number of specifications.</description></item>
+	/// <item><term>mspec.ignoredspecs</term><description>The number of ignored specifications.</description></item>
+	/// <item><term>mspec.unimplementedspecs</term><description>The number of unimplemented specifications.</description></item>
 	/// </list>
 	/// </remarks>
 	/// <example>

@@ -11,8 +11,8 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 	internal class TeamCityRunListener : RunListener, ISpecificationRunListener
 	{
 		readonly ITeamCityMessageProvider _messageProvider;
-		TextWriter _consoleError;
-		TextWriter _consoleOut;
+		TextWriter _defaultConsoleError;
+		TextWriter _defaultConsoleOut;
 		StringWriter _testConsoleError;
 		StringWriter _testConsoleOut;
 
@@ -49,11 +49,11 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		{
 			_messageProvider.TestStarted(GetContextSpecName(_currentContext, specification));
 
-			_consoleOut = Console.Out;
+			_defaultConsoleOut = Console.Out;
 			_testConsoleOut = new StringWriter();
 			Console.SetOut(_testConsoleOut);
 
-			_consoleError = Console.Error;
+			_defaultConsoleError = Console.Error;
 			_testConsoleError = new StringWriter();
 			Console.SetError(_testConsoleError);
 		}
@@ -62,16 +62,28 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		{
 			try
 			{
-				Console.SetOut(_consoleOut);
-				Console.SetError(_consoleError);
+				Console.SetOut(_defaultConsoleOut);
+				Console.SetError(_defaultConsoleError);
 				_testConsoleOut.Flush();
 				_testConsoleError.Flush();
 
 				string specName = GetContextSpecName(_currentContext, specification);
 
-				if (!result.Passed)
+				switch (result.Status)
 				{
-					_messageProvider.TestFailed(specName, result.Exception);
+					case Status.Passing:
+						break;
+					case Status.Failing:
+						_messageProvider.TestFailed(specName, result.Exception);
+						break;
+					case Status.Ignored:
+						_messageProvider.TestIgnored(specName, null);
+						break;
+					case Status.NotImplemented:
+						_messageProvider.TestIgnored(specName, "Not implemented");
+						break;
+					default:
+						break;
 				}
 
 				string stdStream = _testConsoleOut.ToString();

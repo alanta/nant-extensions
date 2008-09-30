@@ -57,6 +57,7 @@
     </Compile>
     <Compile Include="Account.cs" />
     <Compile Include="BankingSpecs.cs" />
+    <Compile Include="EmptySpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

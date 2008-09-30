@@ -149,7 +149,7 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 					listeners.Add(nantRunListener);
 
 					AggregateRunListener rootListener = new AggregateRunListener(listeners);
-					ISpecificationRunner runner = new AppDomainRunner(rootListener);
+					ISpecificationRunner runner = new AppDomainRunner(rootListener, RunOptions.Default);
 
 					foreach (FileSet assemblySet in Assemblies)
 					{

@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 // Copyright (c) 2008 Machine Project
 // Portions Copyright (c) 2008 Jacob Lewallen, Aaron Jensen
 //
@@ -21,44 +21,33 @@
 // THE SOFTWARE.
 #endregion
 
-using System;
-
 using Machine.Specifications;
+
+// This class demonstrates the creation of "empty"
+// specs.. technically speaking, this is a normal
+// context class in MSpec, with the exception that
+// none of the It delegate members are assigned
+// an anon method, so they're empty. That being said
+// they will be parsed by the runner and still add
+// to the test count, but show up as "unimplemented"
+// in any reports.
+//
+// This functionality is entirely optional, as far as
+// patterns go, but this is useful for documentating specs
+// of some component of the software prior to it's creation,
+// ie the UI prior to being designed. This allows
+// the implementation team to put expectations down in
+// code and have a place to come back to later, when
+// the documented functionality is implemented (or
+// intra-implementation, even). 
 
 namespace NAntExtensions.Machine.Specifications.Example.Tests
 {
-	[Subject(typeof(Account), "Funds transfer")]
-	public class when_transferring_between_two_accounts : with_from_account_and_to_account
+	[Subject("Recent Account Activity Summary page")]
+	public class when_a_customer_first_views_the_account_summary_page
 	{
-		Because of = () => fromAccount.Transfer(1m, toAccount);
-
-		It should_credit_the_to_account_by_the_amount_transferred = () => toAccount.Balance.ShouldEqual(2m);
-		It should_debit_the_from_account_by_the_amount_transferred = () => fromAccount.Balance.ShouldEqual(0m);
-	}
-
-	[Subject(typeof(Account), "Funds transfer")]
-	[Tags("failure")]
-	public class when_transferring_an_amount_larger_than_the_balance_of_the_from_account : with_from_account_and_to_account
-	{
-		static Exception exception;
-		Because of = () => exception = Catch.Exception(() => fromAccount.Transfer(2m, toAccount));
-
-		It should_not_allow_the_transfer = () => exception.ShouldBeOfType<Exception>();
-	}
-
-	public class failure
-	{
-	}
-
-	public abstract class with_from_account_and_to_account
-	{
-		protected static Account fromAccount;
-		protected static Account toAccount;
-
-		Establish context = () =>
-			{
-				fromAccount = new Account { Balance = 1m };
-				toAccount = new Account { Balance = 1m };
-			};
+		It should_display_all_account_transactions_for_the_past_thirty_days;
+		It should_display_debit_amounts_in_red_text;
+		It should_display_deposit_amounts_in_black_text;
 	}
 }
