@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 using Machine.Specifications;
 using Machine.Specifications.Runner;
@@ -15,13 +16,21 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		readonly Task _task;
 		int _contextCount;
 		int _failedSpecificationCount;
+		int _ignoredSpecificationCount;
+		int _passedSpecificationCount;
 		int _specificationCount;
+		int _unimplementedSpecificationCount;
 
 		public NAntRunListener(Task task)
 		{
+			if (task == null)
+			{
+				throw new ArgumentNullException("task");
+			}
+
 			_task = task;
 
-			UpdateNAntProperties(_task.Properties, 0, 0, 0);
+			UpdateNAntProperties(_task.Properties, 0, 0, 0, 0, 0, 0);
 		}
 
 		public bool FailureOccurred
@@ -30,31 +39,6 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		}
 
 		#region ISpecificationRunListener Members
-		public void OnRunStart()
-		{
-			_task.Log(Level.Info, "Running specs");
-
-			_contextCount = 0;
-			_specificationCount = 0;
-			_failedSpecificationCount = 0;
-		}
-
-		public void OnRunEnd()
-		{
-			string summary = String.Format("{0}Contexts: {1}, Specifications: {2}",
-			                               Environment.NewLine,
-			                               _contextCount,
-			                               _specificationCount);
-			if (_failedSpecificationCount > 0)
-			{
-				summary = summary + String.Format(" ({0} failed)", _failedSpecificationCount);
-			}
-
-			_task.Log(Level.Info, summary);
-
-			UpdateNAntProperties(_task.Properties, _contextCount, _specificationCount, _failedSpecificationCount);
-		}
-
 		public void OnAssemblyStart(AssemblyInfo assembly)
 		{
 			_task.Log(Level.Info, String.Format("{0}Specs in {1}:", Environment.NewLine, assembly.Name));
@@ -64,10 +48,54 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		{
 		}
 
+		public void OnRunStart()
+		{
+			_task.Log(Level.Info, "Running specs");
+
+			_contextCount = 0;
+			_specificationCount = 0;
+			_failedSpecificationCount = 0;
+			_unimplementedSpecificationCount = 0;
+			_ignoredSpecificationCount = 0;
+			_passedSpecificationCount = 0;
+		}
+
+		public void OnRunEnd()
+		{
+			StringBuilder summary = new StringBuilder();
+			summary.Append(Environment.NewLine);
+			summary.AppendFormat("Contexts: {0}, Specifications: {1}", _contextCount, _specificationCount);
+
+			if (_failedSpecificationCount > 0 || _unimplementedSpecificationCount > 0 || _ignoredSpecificationCount > 0)
+			{
+				summary.AppendFormat(", {0} passed, {1} failed", _passedSpecificationCount, _failedSpecificationCount);
+
+				if (_unimplementedSpecificationCount > 0)
+				{
+					summary.AppendFormat(", {0} not implemented", _unimplementedSpecificationCount);
+				}
+
+				if (_ignoredSpecificationCount > 0)
+				{
+					summary.AppendFormat(", {0} ignored", _ignoredSpecificationCount);
+				}
+			}
+
+			_task.Log(Level.Info, summary.ToString());
+
+			UpdateNAntProperties(_task.Properties,
+			                     _contextCount,
+			                     _specificationCount,
+			                     _passedSpecificationCount,
+			                     _failedSpecificationCount,
+			                     _ignoredSpecificationCount,
+			                     _unimplementedSpecificationCount);
+		}
+
 		public override void OnContextStart(ContextInfo context)
 		{
 			base.OnContextStart(context);
-			
+
 			_task.Log(Level.Verbose, String.Format("{0}{1}", Environment.NewLine, context.FullName));
 		}
 
@@ -87,20 +115,37 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		{
 			_specificationCount++;
 
-			if (!result.Passed)
+			switch (result.Status)
 			{
-				_failedSpecificationCount++;
+				case Status.Passing:
+					_passedSpecificationCount++;
+					break;
 
-				string line = result.Exception.ToString();
-				if (!_task.Verbose)
-				{
-					line = String.Format("{0}{1}{2}",
-					                     GetContextSpecNameWithFormat(_currentContext, specification),
-					                     Environment.NewLine,
-					                     line);
-				}
-				
-				_task.Log(Level.Error, line);
+				case Status.NotImplemented:
+					_unimplementedSpecificationCount++;
+					_task.Log(Level.Verbose, "      (NOT IMPLEMENTED)");
+					break;
+
+				case Status.Ignored:
+					_ignoredSpecificationCount ++;
+					_task.Log(Level.Verbose, "      (IGNORED)");
+					break;
+				default:
+					_failedSpecificationCount ++;
+
+					StringBuilder line = new StringBuilder();
+
+					if (!_task.Verbose)
+					{
+						// If the task is not verbose, we did not log the specification start, so we include it here.
+						line.AppendLine(GetContextSpecNameWithFormat(_currentContext, specification));
+					}
+
+					line.AppendLine("      (FAIL)");
+					line.AppendLine(result.Exception.ToString());
+
+					_task.Log(Level.Error, line.ToString());
+					break;
 			}
 		}
 		#endregion
@@ -108,11 +153,17 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		static void UpdateNAntProperties(PropertyDictionary properties,
 		                                 int contexts,
 		                                 int specifications,
-		                                 int failedSpecifications)
+		                                 int passedSpecifications,
+		                                 int failedSpecifications,
+		                                 int ignoredSpecifications,
+		                                 int unimplementedSpecifications)
 		{
 			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Contexts, contexts);
 			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Specifications, specifications);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.PassedSpecifications, passedSpecifications);
 			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.FailedSpecifications, failedSpecifications);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.IgnoredSpecifications, ignoredSpecifications);
+			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.UnimplementedSpecifications, unimplementedSpecifications);
 		}
 	}
 }

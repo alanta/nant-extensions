@@ -9,6 +9,9 @@ namespace NAntExtensions.Machine.Specifications.Types
 		public const string Contexts = "mspec.contexts";
 		public const string FailedSpecifications = "mspec.failedspecs";
 		public const string Specifications = "mspec.specs";
+		public const string IgnoredSpecifications = "mspec.ignoredspecs";
+		public const string UnimplementedSpecifications = "mspec.unimplementedspecs";
+		public const string PassedSpecifications = "mspec.passedspecs";
 
 		public static IEnumerable<string> All
 		{

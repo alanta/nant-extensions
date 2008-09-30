@@ -12,7 +12,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		[Test]
 		public void The_All_member_contains_every_public_counter_value()
 		{
-			Assert.AreEqual(3, Counter.All.Count());
+			Assert.AreEqual(6, Counter.All.Count());
 		}
 
 		[Test]
