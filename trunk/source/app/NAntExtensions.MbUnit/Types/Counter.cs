@@ -5,12 +5,14 @@ namespace NAntExtensions.MbUnit.Types
 {
 	internal class Counter
 	{
-		public const string Asserts = "mbunit.asserts";
-		public const string Failures = "mbunit.failures";
-		public const string Ignored = "mbunit.ignored";
-		public const string Run = "mbunit.run";
-		public const string Skipped = "mbunit.skipped";
-		public const string Successes = "mbunit.successes";
+		internal const string Prefix = "mbunit.";
+
+		public const string Asserts = Prefix + "asserts";
+		public const string Failures = Prefix + "failures";
+		public const string Ignored = Prefix + "ignored";
+		public const string Run = Prefix + "run";
+		public const string Skipped = Prefix + "skipped";
+		public const string Successes = Prefix + "successes";
 
 		public static IEnumerable<string> All
 		{

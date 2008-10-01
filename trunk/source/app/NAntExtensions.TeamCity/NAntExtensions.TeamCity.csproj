@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="Functions\TeamCityFunctions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\AddStatisticFromPropertiesTask.cs" />
     <Compile Include="Tasks\AddStatisticTask.cs" />
     <Compile Include="Tasks\AddStatisticListTask.cs" />
     <Compile Include="Tasks\AppendStatusTextTask.cs" />

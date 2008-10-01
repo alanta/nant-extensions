@@ -65,6 +65,7 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Functions\MachineSpecificationsFunctions.cs" />
     <Compile Include="Tasks\InitializeMachineSpecificationsCountersTask.cs" />
     <Compile Include="Tasks\MachineSpecificationsTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

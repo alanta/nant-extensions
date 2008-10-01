@@ -276,19 +276,8 @@
 			</do>
 		</foreach>
 
-		<tc-addstatistic key="MbUnitAsserts"
-						 value="${mbunit.asserts}"/>
-		<tc-addstatistic key="MbUnitFailedTests"
-						 value="${mbunit.failures}"/>
-		<tc-addstatistic key="MbUnitIgnoredTests"
-						 value="${mbunit.ignored}"/>
-		<tc-addstatistic key="MbUnitRunTests"
-						 value="${mbunit.run}"/>
-		<tc-addstatistic key="MbUnitSkippedTests"
-						 value="${mbunit.skipped}"/>
-		<tc-addstatistic key="MbUnitPassedTests"
-						 value="${mbunit.successes}"/>
-
+		<tc-addstatistic-fromprops starting-with="${mbunit::get-counter-prefix()}" />
+		
 		<foreach item="File"
 				 property="testproject">
 			<in>
@@ -307,12 +296,7 @@
 			</do>
 		</foreach>
 
-		<tc-addstatistic key="MSpecContexts"
-						 value="${mspec.contexts}"/>
-		<tc-addstatistic key="MSpecSpecs"
-						 value="${mspec.specs}"/>
-		<tc-addstatistic key="MSpecFailedSpecs"
-						 value="${mspec.failedspecs}"/>
+		<tc-addstatistic-fromprops starting-with="${mspec::get-counter-prefix()}" />
 
 		<tc-progress message="Running tests"
 					 type="End" />
