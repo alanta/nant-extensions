@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:nant="http://tempuri.org/nant-donotuse.xsd" elementFormDefault="qualified" targetNamespace="http://tempuri.org/nant-donotuse.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:annotation>
-    <xs:documentation>NAnt schema generated at 09/29/2008 22:59:14</xs:documentation>
+    <xs:documentation>NAnt schema generated at 10/01/2008 01:42:15</xs:documentation>
   </xs:annotation>
   <xs:complexType name="NAnt.Core.TaskContainer">
     <xs:sequence minOccurs="0" maxOccurs="unbounded">
@@ -5271,7 +5271,7 @@
     <xs:attribute name="report-directory" use="optional" />
     <xs:attribute name="report-filename" use="optional" />
     <xs:attribute name="workingdir" use="optional" />
-    <xs:attribute name="include-timing-info" use="optional" />
+    <xs:attribute name="include-time-info" use="optional" />
     <xs:attribute name="failonerror" use="optional" />
     <xs:attribute name="verbose" use="optional" />
     <xs:attribute name="if" use="optional" />
