@@ -66,11 +66,16 @@ namespace NAntExtensions.MbUnit.Reporting
 
 		static ExceptionInfo GetExceptionInfo(ReportException reportException)
 		{
+			if (reportException == null)
+			{
+				return null;
+			}
+
 			ExceptionInfo exceptionInfo = new ExceptionInfo();
-			exceptionInfo.Type = reportException.Exception.Type;
-			exceptionInfo.Message = reportException.Exception.Message;
-			exceptionInfo.Source = reportException.Exception.Source;
-			exceptionInfo.StackTrace = reportException.Exception.StackTrace;
+			exceptionInfo.Type = reportException.Type;
+			exceptionInfo.Message = reportException.Message;
+			exceptionInfo.Source = reportException.Source;
+			exceptionInfo.StackTrace = reportException.StackTrace;
 
 			if (reportException.Exception != null)
 			{
