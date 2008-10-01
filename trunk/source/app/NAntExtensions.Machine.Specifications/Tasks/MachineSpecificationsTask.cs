@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
+using Machine.Specifications.Model;
 using Machine.Specifications.Reporting;
 using Machine.Specifications.Runner;
 
@@ -136,6 +137,8 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 		/// </summary>
 		protected override void ExecuteTask()
 		{
+			Log(Level.Info, "Machine.Specifications {0} test runner", typeof(Subject).Assembly.GetName().Version);
+
 			string originalWorkingDirectory = Environment.CurrentDirectory;
 			try
 			{
