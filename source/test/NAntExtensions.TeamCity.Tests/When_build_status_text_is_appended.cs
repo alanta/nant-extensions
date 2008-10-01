@@ -45,7 +45,7 @@ namespace NAntExtensions.TeamCity.Tests
 		[Test]
 		public void Creates_TeamCity_info_document()
 		{
-			_task.Value = Value;
+			_task.Message = Value;
 
 			using (Mocks.Playback())
 			{
@@ -58,7 +58,7 @@ namespace NAntExtensions.TeamCity.Tests
 		[Test]
 		public void Appends_first_status_message_to_document()
 		{
-			_task.Value = Value;
+			_task.Message = Value;
 
 			using (Mocks.Playback())
 			{
@@ -74,9 +74,9 @@ namespace NAntExtensions.TeamCity.Tests
 		{
 			using (Mocks.Playback())
 			{
-				_task.Value = Value;
+				_task.Message = Value;
 				Reflector.InvokeMethod(_task, "ExecuteTask");
-				_task.Value = SecondValue;
+				_task.Message = SecondValue;
 				Reflector.InvokeMethod(_task, "ExecuteTask");
 			}
 

@@ -26,6 +26,9 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
+	/// <summary>
+	/// The base class for all tasks that operate on the teamcity-info.xml file.
+	/// </summary>
 	public abstract class BuildLogTask : TeamCityTask
 	{
 		const string TeamCityInfoFileName = "teamcity-info.xml";
@@ -39,6 +42,10 @@ namespace NAntExtensions.TeamCity.Tasks
 		{
 		}
 
+		/// <summary>
+		/// Allows you to override the path to the teamcity-info.xml file. By default, the path to the file is detected
+		/// automatically.
+		/// </summary>
 		[TaskAttribute("teamcity-info-path")]
 		public string TeamCityInfoPath
 		{

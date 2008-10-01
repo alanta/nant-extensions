@@ -25,6 +25,18 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
+	/// <summary>
+	/// Adds a single TeamCity build statistics value to teamcity-info.xml.
+	/// </summary>
+	/// <example>
+	/// <code>
+	/// <![CDATA[
+	/// <tc-addstatistic key="key1"
+	///                  value="value1" />
+	/// ]]></code>
+	/// </example>
+	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingandDisplayingCustomStatistics">
+	/// Build Script Interaction with TeamCity</seealso>
 	[TaskName("tc-addstatistic")]
 	public class AddStatisticTask : BuildLogTask
 	{
@@ -39,6 +51,10 @@ namespace NAntExtensions.TeamCity.Tasks
 		{
 		}
 
+		/// <summary>
+		/// The key to add.
+		/// </summary>
+		/// <value>The key.</value>
 		[TaskAttribute("key", Required = true)]
 		public string Key
 		{
@@ -46,6 +62,10 @@ namespace NAntExtensions.TeamCity.Tasks
 			set;
 		}
 
+		/// <summary>
+		/// The value to add for the key.
+		/// </summary>
+		/// <value>The value.</value>
 		[TaskAttribute("value", Required = true)]
 		public string Value
 		{

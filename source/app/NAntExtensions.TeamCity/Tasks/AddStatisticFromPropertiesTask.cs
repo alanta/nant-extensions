@@ -9,6 +9,18 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
+	/// <summary>
+	/// Adds TeamCity build statistics values to teamcity-info.xml based on NAnt properties matching the specified prefix.
+	/// </summary>
+	/// <example>
+	/// <code>
+	/// <![CDATA[
+	/// <tc-addstatistic-fromprops starting-with="mspec."
+	///                            ignore-case="true" />
+	/// ]]></code>
+	/// </example>
+	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingandDisplayingCustomStatistics">
+	/// Build Script Interaction with TeamCity</seealso>
 	[TaskName("tc-addstatistic-fromprops")]
 	public class AddStatisticFromPropertiesTask : BuildLogTask
 	{
@@ -25,7 +37,7 @@ namespace NAntExtensions.TeamCity.Tasks
 		}
 
 		/// <summary>
-		/// Adds TeamCity statistics values for all NAnt properties starting with this strings.
+		/// Adds TeamCity statistics values for all NAnt properties starting with this string.
 		/// </summary>
 		/// <value>The properties starting with.</value>
 		[TaskAttribute("starting-with", Required = true)]
@@ -36,7 +48,7 @@ namespace NAntExtensions.TeamCity.Tasks
 		}
 
 		/// <summary>
-		/// Compare property names case insensitive. The default value is 'true'.
+		/// Compare property names with a case insensitive comparison. The default value is <c>true</c>.
 		/// </summary>
 		[TaskAttribute("ignore-case")]
 		public bool IgnoreCase
