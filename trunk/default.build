@@ -515,7 +515,8 @@
 		<call target="ilmerge"/>
 
 		<zipfileset id="license">
-			<include name="License.txt" />
+			<include name="${basedir.license}\License.txt" />
+			<include name="${basedir.license}\License-Castle.txt" />
 		</zipfileset>
 
 		<!-- MbUnit. -->
@@ -523,6 +524,9 @@
 			 ziplevel="9"
 			 duplicate="Preserve">
 			<fileset refid="license" />
+			<fileset>
+				<include name="${basedir.license}\License-MbUnit.txt" />
+			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="extensions/common/neutral">
 				<include name="NAntExtensions.MbUnit*.*" />
@@ -543,6 +547,9 @@
 			 ziplevel="9"
 			 duplicate="Preserve">
 			<fileset refid="license" />
+			<fileset>
+				<include name="${basedir.license}\License-Machine.Specifications.txt" />
+			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="extensions/common/2.0">
 				<include name="NAntExtensions.Machine.Specifications.*" />
@@ -564,8 +571,8 @@
 			 ziplevel="9"
 			 duplicate="Preserve">
 			<fileset refid="license" />
-			<fileset basedir="${basedir.app}/NAntExtensions.TeamCity" >
-				<include name="License-BlueWireTechnologies.txt" />
+			<fileset>
+				<include name="${basedir.license}\License-BlueWireTechnologies.txt" />				
 			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="extensions/common/2.0">
