@@ -10,7 +10,7 @@ if %errorlevel% EQU 0 (
 		echo %%~nf | find /i "doc"
 
 		if errorlevel 1 (
-			tools\Info-ZIP\unzip.exe -o "%%f" * -x License*.txt -d tools\NAnt
+			tools\Info-ZIP\unzip.exe -o "%%f" * -x licenses\*.* -d tools\NAnt
 			echo.
 		)
 	)
