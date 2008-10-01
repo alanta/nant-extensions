@@ -67,9 +67,10 @@ namespace NAntExtensions.TeamCity.Tasks
 
 			XmlDocument teamCityInfo = LoadTeamCityInfo();
 			XmlElement buildNode = GetBuildNode(teamCityInfo);
+			
 			XmlElement newChild = CreateStatisticValueNode(teamCityInfo, Key, Value);
-
 			buildNode.AppendChild(newChild);
+
 			SaveTeamCityInfo(teamCityInfo);
 		}
 	}

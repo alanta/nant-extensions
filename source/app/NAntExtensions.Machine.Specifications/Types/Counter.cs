@@ -6,12 +6,14 @@ namespace NAntExtensions.Machine.Specifications.Types
 {
 	internal class Counter
 	{
-		public const string Contexts = "mspec.contexts";
-		public const string FailedSpecifications = "mspec.failedspecs";
-		public const string Specifications = "mspec.specs";
-		public const string IgnoredSpecifications = "mspec.ignoredspecs";
-		public const string UnimplementedSpecifications = "mspec.unimplementedspecs";
-		public const string PassedSpecifications = "mspec.passedspecs";
+		internal const string Prefix = "mspec.";
+
+		public const string Contexts = Prefix + "contexts";
+		public const string FailedSpecifications = Prefix + "failedspecs";
+		public const string IgnoredSpecifications = Prefix + "ignoredspecs";
+		public const string PassedSpecifications = Prefix + "passedspecs";
+		public const string Specifications = Prefix + "specs";
+		public const string UnimplementedSpecifications = Prefix + "unimplementedspecs";
 
 		public static IEnumerable<string> All
 		{

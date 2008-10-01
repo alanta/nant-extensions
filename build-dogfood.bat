@@ -2,10 +2,11 @@
 setlocal EnableDelayedExpansion
 cls
 
-rem tools\NAnt\NAnt.exe -buildfile:default.build %1
+tools\NAnt\NAnt.exe -buildfile:default.build %1
 
 if %errorlevel% EQU 0 (
 	for /r deploy %%f in (*.zip) do (
+		rem Exclude files containing "doc".
 		echo %%~nf | find /i "doc"
 
 		if errorlevel 1 (

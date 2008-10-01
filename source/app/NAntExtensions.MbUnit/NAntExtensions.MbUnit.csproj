@@ -54,6 +54,7 @@
     <Compile Include="..\..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Functions\MbUnitFunctions.cs" />
     <Compile Include="Tasks\InitializeMbUnitCountersTask.cs" />
     <Compile Include="Tasks\MbUnitTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
