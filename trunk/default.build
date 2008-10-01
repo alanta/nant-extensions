@@ -572,7 +572,7 @@
 			 duplicate="Preserve">
 			<fileset refid="license" />
 			<fileset>
-				<include name="${basedir.license}\License-BlueWireTechnologies.txt" />				
+				<include name="${basedir.license}\License-BlueWireTechnologies.txt" />
 			</fileset>
 			<fileset basedir="${basedir.build}"
 					 prefix="extensions/common/2.0">
@@ -637,7 +637,7 @@
 		<fail message="Cannot upload deployment package to Google Code, property 'googlecode.username' and/or property 'googlecode.password' does not exist."
 			  if="${not property::exists('googlecode.username') or not property::exists('googlecode.password')}" />
 
-		<tc-progress message="Uploading to Google Code"
+		<tc-progress message="Uploading setup to Google Code"
 					 type="Start" />
 
 		<foreach item="File"
@@ -657,7 +657,50 @@
 			</do>
 		</foreach>
 
-		<tc-progress message="Uploading to Google Code"
+		<tc-progress message="Uploading setup to Google Code"
+					 type="End" />
+	</target>
+
+	<target name="upload-docs"
+			depends="build-setup"
+			description="Upload the documentation to Google Code's SVN.">
+
+		<tc-progress message="Uploading docs"
+					 type="Start" />
+
+		<unzip zipfile="${basedir.deployment.artifacts}/NAntExtensions-Documentation-${build.artifacts.suffix}.zip"
+			   todir="${basedir.temp}/docs" />
+
+		<!-- Create PSFTP batch. -->
+		<copy file="upload-docs.batch.template"
+			  tofile="${basedir.temp}\psftp.batch">
+			<filterchain>
+				<replacetokens>
+					<token key="sftp.server"
+						   value="${sftp.server}" />
+					<token key="sftp.remotedir"
+						   value="${sftp.remotedir}" />
+				</replacetokens>
+			</filterchain>
+		</copy>
+
+		<fail message="Cannot deploy, property 'sftp.password' is empty or does not exist."
+			  if="${not property::exists('sftp.password') or string::get-length(property::get-value('sftp.password')) == 0}" />
+
+		<!-- Upload using SFTP. -->
+		<exec basedir="${tools.psftp}"
+			  workingdir="${basedir.temp}"
+			  managed="false"
+			  program="psftp.exe">
+			<arg line="${sftp.username}@${sftp.server}" />
+			<arg line="-pw ${sftp.password}" />
+			<arg value="-C" />
+			<arg value="-batch" />
+			<arg value="-bc" />
+			<arg line="-b psftp.batch" />
+		</exec>
+
+		<tc-progress message="Uploading docs"
 					 type="End" />
 	</target>
 </project>
