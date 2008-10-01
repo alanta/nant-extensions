@@ -46,10 +46,6 @@ namespace NAntExtensions.Machine.Specifications.Example.Tests
 		It should_not_allow_the_transfer = () => exception.ShouldBeOfType<Exception>();
 	}
 
-	public class failure
-	{
-	}
-
 	public abstract class with_from_account_and_to_account
 	{
 		protected static Account fromAccount;
