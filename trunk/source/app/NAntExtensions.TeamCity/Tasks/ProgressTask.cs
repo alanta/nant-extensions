@@ -10,15 +10,29 @@ using NAntExtensions.TeamCity.Types;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	/// <summary>
-	/// TODO
+	/// Reports the build progress to TeamCity.
 	/// </summary>
 	/// <example>
 	/// <code>
 	/// <![CDATA[
 	/// <tc-progress message="Running tests"
 	///              type="Start" />
+	/// 
+	/// ... some build activity ...
+	/// 
+	/// <tc-progress message="Running tests"
+	///              type="End" />
 	/// ]]></code>
 	/// </example>
+	/// <example>
+	/// <code>
+	/// <![CDATA[
+	/// <tc-progress message="Something happened"
+	///              type="Message" />
+	/// ]]></code>
+	/// </example>
+	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-progressReporting">
+	/// Build Script Interaction with TeamCity</seealso>
 	[TaskName("tc-progress")]
 	public class ProgressTask : MessageTask
 	{
@@ -35,7 +49,7 @@ namespace NAntExtensions.TeamCity.Tasks
 		}
 
 		/// <summary>
-		/// The progress type to report to TeamCity.
+		/// The progress type to report to TeamCity. The default value is <see cref="NAntExtensions.TeamCity.Types.ProgressType.Message"/>.
 		/// </summary>
 		/// <value>The type of the progress.</value>
 		[TaskAttribute("type", Required = false)]
@@ -44,7 +58,7 @@ namespace NAntExtensions.TeamCity.Tasks
 			get;
 			set;
 		}
-		
+
 		/// <summary>
 		/// The message to show on the TeamCity dashboard.
 		/// </summary>

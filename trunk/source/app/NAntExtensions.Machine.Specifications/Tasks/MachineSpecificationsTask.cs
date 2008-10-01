@@ -71,7 +71,7 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 		}
 
 		/// <summary>
-		/// Gets or sets the assemblies to include in the test run.
+		/// The assemblies to include in the test run.
 		/// </summary>
 		/// <value>The assemblies.</value>
 		[BuildElementArray("assemblies", Required = true, ElementType = typeof(FileSet))]
@@ -104,7 +104,7 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 		}
 
 		/// <summary>
-		/// The directory in which the test run will be executed.
+		/// The directory in which the test run will be executed. If you do not specify this value, the current directory is used.
 		/// </summary>
 		/// <value>The working directory.</value>
 		[TaskAttribute("workingdir")]
@@ -122,7 +122,8 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 		}
 
 		/// <summary>
-		/// Gets or sets a value indicating whether to include the time when the report has been generated in the report.
+		/// <c>true</c>, if the time when the report has been generated should be included in the report; otherwise, <c>false</c>.
+		/// The default value is <c>false</c>.
 		/// </summary>
 		[TaskAttribute("include-time-info")]
 		[BooleanValidator]

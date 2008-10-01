@@ -25,6 +25,17 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
+	/// <summary>
+	/// Appends a status message to the TeamCity build status to teamcity-info.xml.
+	/// </summary>
+	/// <example>
+	/// <code>
+	/// <![CDATA[
+	/// <tc-appendstatustext value=" Code Coverage ${coverage.value}" />
+	/// ]]></code>
+	/// </example>
+	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ModifyingtheBuildStatus">
+	/// Build Script Interaction with TeamCity</seealso>
 	[TaskName("tc-appendstatustext")]
 	public class AppendStatusTextTask : BuildLogTask
 	{
@@ -39,8 +50,12 @@ namespace NAntExtensions.TeamCity.Tasks
 		{
 		}
 
-		[TaskAttribute("value")]
-		public string Value
+		/// <summary>
+		/// The message to append to the build status node.
+		/// </summary>
+		/// <value>The value.</value>
+		[TaskAttribute("message")]
+		public string Message
 		{
 			get;
 			set;
@@ -56,33 +71,34 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Info, "Writing '{0}' to '{1}'", Value ?? "(null)", TeamCityInfoPath);
+			Log(Level.Info, "Writing '{0}' to '{1}'", Message ?? "(null)", TeamCityInfoPath);
 
 			XmlDocument teamCityInfo = LoadTeamCityInfo();
 			XmlElement buildNode = GetBuildNode(teamCityInfo);
 			XmlElement statusInfoNode = GetStatusInfoNode(teamCityInfo, buildNode);
 
-			AppendStatusText(teamCityInfo, statusInfoNode, Value);
+			AppendStatusText(teamCityInfo, statusInfoNode, Message);
 			SaveTeamCityInfo(teamCityInfo);
 		}
 
 		static void AppendStatusText(XmlDocument doc, XmlElement statusInfoNode, string text)
 		{
-			XmlElement newChild = doc.CreateElement("text");
-			newChild.SetAttribute("action", "append");
-			newChild.InnerText = text;
-			statusInfoNode.AppendChild(newChild);
+			XmlElement statusTextNode = doc.CreateElement("text");
+			statusTextNode.SetAttribute("action", "append");
+			statusTextNode.InnerText = text;
+
+			statusInfoNode.AppendChild(statusTextNode);
 		}
 
 		static XmlElement GetStatusInfoNode(XmlDocument doc, XmlElement buildNode)
 		{
-			XmlElement newChild = buildNode.SelectSingleNode("statusInfo") as XmlElement;
-			if (newChild == null)
+			XmlElement statusInfoNode = buildNode.SelectSingleNode("statusInfo") as XmlElement;
+			if (statusInfoNode == null)
 			{
-				newChild = doc.CreateElement("statusInfo");
-				buildNode.AppendChild(newChild);
+				statusInfoNode = doc.CreateElement("statusInfo");
+				buildNode.AppendChild(statusInfoNode);
 			}
-			return newChild;
+			return statusInfoNode;
 		}
 	}
 }

@@ -25,7 +25,18 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
-	[TaskName("tc-addstatisticlist")]
+	/// <summary>
+	/// Adds TeamCity build statistics values to teamcity-info.xml.
+	/// </summary>
+	/// <example>
+	/// <code>
+	/// <![CDATA[
+	/// <tc-addstatistic-list key-value-pairs="key1=value1;key2=value2" />
+	/// ]]></code>
+	/// </example>
+	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingandDisplayingCustomStatistics">
+	/// Build Script Interaction with TeamCity</seealso>
+	[TaskName("tc-addstatistic-list")]
 	public class AddStatisticListTask : BuildLogTask
 	{
 		/// <summary>
@@ -39,7 +50,11 @@ namespace NAntExtensions.TeamCity.Tasks
 		{
 		}
 
-		[TaskAttribute("keyValuePairs")]
+		/// <summary>
+		/// A list of statistic keys and values separated by semicolon.
+		/// </summary>
+		/// <value>The key value pairs.</value>
+		[TaskAttribute("key-value-pairs")]
 		public string KeyValuePairs
 		{
 			get;

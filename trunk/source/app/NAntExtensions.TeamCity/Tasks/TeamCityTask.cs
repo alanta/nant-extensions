@@ -25,7 +25,7 @@ namespace NAntExtensions.TeamCity.Tasks
 		}
 
 		/// <summary>
-		/// Force task execution regardless of if this is a TeamCity build.
+		/// Force task execution regardless of if this is a TeamCity build. The default value is <c>false</c>.
 		/// </summary>
 		/// <value><c>true</c> if task execution is forced; otherwise, <c>false</c>.</value>
 		[TaskAttribute("force")]

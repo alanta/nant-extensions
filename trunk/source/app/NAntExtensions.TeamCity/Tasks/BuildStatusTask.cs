@@ -8,15 +8,27 @@ using NAntExtensions.TeamCity.Types;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	/// <summary>
-	/// TODO
+	/// Reports the build status to TeamCity.
 	/// </summary>
 	/// <example>
+	/// Sets the build status to "failed" and replaces the current message.
 	/// <code>
 	/// <![CDATA[
 	/// <tc-buildstatus message="The build has failed"
 	///                 type="Error" />
 	/// ]]></code>
 	/// </example>
+	/// <example>
+	/// Appends the code coverage value to the current build status message. {build.status.text} is an optional substitution
+	/// pattern which represents the status, calculated automatically by TeamCity using passed test count, compilation messages
+	/// and so on.
+	/// <code>
+	/// <![CDATA[
+	/// <tc-buildstatus message="{build.status.text}, Code coverage: ${math::round(double::parse(codecoverage))}%"/>
+	/// ]]></code>
+	/// </example>
+	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingBuildStatus">
+	/// Build Script Interaction with TeamCity</seealso>
 	[TaskName("tc-buildstatus")]
 	public class BuildStatusTask : MessageTask
 	{
@@ -33,7 +45,8 @@ namespace NAntExtensions.TeamCity.Tasks
 		}
 
 		/// <summary>
-		/// The status type to report to TeamCity.
+		/// The status type to report to TeamCity. The default value is 
+		/// <see cref="NAntExtensions.TeamCity.Types.StatusType.Normal"/>
 		/// </summary>
 		/// <value>The type of the status.</value>
 		[TaskAttribute("type", Required = false)]

@@ -22,11 +22,25 @@ namespace NAntExtensions.MbUnit.Tasks
 	/// <summary>
 	/// Runs MbUnit tests.
 	/// </summary>
+	/// <example>
+	/// <code>
+	/// <![CDATA[
+	/// <mbunit report-types="html"
+	///         report-filename-format="Assembly.Report"
+	///         report-directory="reports"
+	///         verbose="true"
+	///         workingdir="build-directory">
+	///         <assemblies>
+	///             <include name="build-directory/Assembly.dll" />
+	///         </assemblies>
+	/// </mbunit>
+	/// ]]></code>
+	/// </example>
 	[TaskName("mbunit")]
 	public class MbUnitTask : Task
 	{
 		IBuildEnvironment _buildEnvironment;
-		string _reportFileNameFormat = "mbunit-result-{0}{1}";
+		string _reportFileNameFormat = "mbunit-{0}{1}";
 		string _reportTypes = "Html";
 		ReportResult _result;
 		string _transformReportFileNameFormat;
@@ -62,7 +76,8 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// Gets or sets the report format to generate. Valid values are: text, xml, dox, html and transform. If you specify transform, you will also have to set the <see cref="Transform"/> attribute.
+		/// Gets or sets the report format to generate. Valid values are: text, xml, dox, html and transform. If you specify
+		/// transform, you will also have to set the <see cref="Transform"/> attribute.
 		/// </summary>
 		/// <value>The report types.</value>
 		[TaskAttribute("report-types")]
@@ -95,7 +110,8 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// Gets or sets the report file name format.
+		/// The report file name format for all reports except the 'transform' report. The default value is 'mbunit-result-{0}{1}'
+		/// where {0} is replaced by the date and {1} is replaced by the time.
 		/// </summary>
 		/// <value>The report file name format.</value>
 		[TaskAttribute("report-filename-format", Required = false)]
@@ -117,7 +133,7 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// Gets or sets the XSL transformation file to use for the 'transform' report type.
+		/// The XSL transformation file to use for the 'transform' report.
 		/// </summary>
 		/// <value>The transform.</value>
 		[TaskAttribute("transform", Required = false)]
@@ -128,7 +144,8 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// Gets or sets the XSL transform report file name format to use for the 'transform' report type.
+		/// The report file name format to use for the 'transform' report. If you do not specify this value, the value from 
+		/// <see cref="ReportFileNameFormat"/> is used.
 		/// </summary>
 		/// <value>The transform report file name format.</value>
 		[TaskAttribute("transform-report-filename-format", Required = false)]
@@ -146,7 +163,7 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// The directory in which the test run will be executed.
+		/// The directory in which the test run will be executed. If you do not specify this value, the current directory is used.
 		/// </summary>
 		/// <value>The working directory.</value>
 		[TaskAttribute("workingdir")]
@@ -219,8 +236,8 @@ namespace NAntExtensions.MbUnit.Tasks
 			Log(Level.Verbose, "Report types: {0}", ReportTypes);
 			Log(Level.Verbose, "Report directory: {0}", ReportDirectory);
 			Log(Level.Verbose, "Report file name format: {0}", ReportFileNameFormat);
-			Log(Level.Verbose, "Tranform: {0}", Transform == null ? String.Empty : Transform.FullName);
-			Log(Level.Verbose, "Tranform report file name format: {0}", TransformReportFileNameFormat);
+			Log(Level.Verbose, "Transform: {0}", Transform == null ? String.Empty : Transform.FullName);
+			Log(Level.Verbose, "Transform report file name format: {0}", TransformReportFileNameFormat);
 		}
 
 		void GenerateReports()
