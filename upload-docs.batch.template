@@ -1,0 +1,3 @@
+cd "@sftp.remotedir@"
+lcd docs
+mput -r *.*
