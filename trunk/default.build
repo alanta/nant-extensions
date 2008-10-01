@@ -187,14 +187,23 @@
 
 	<!-- Unit tests.
 	________________________________________________________________________________________________________________ -->
+	<fileset id="test-projects">
+		<include name="${basedir.test}/**/*.csproj" />
+		<exclude name="${basedir.test}/**/*.ForTesting.csproj"/>
+	</fileset>
+	
 	<fileset id="mbunit-test-projects">
 		<include name="${basedir.test}/**/*.csproj" />
 		<exclude name="${basedir.test}/**/*.ForTesting.csproj"/>
-		<exclude name="${basedir.test}/**/NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
+		<exclude name="${basedir.test}/**/*.Example.Tests.csproj" />
 	</fileset>
 
-	<fileset id="mspec-test-projects">
+	<fileset id="mspec-sample-test-projects">
 		<include name="${basedir.test}/**/NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
+	</fileset>
+
+	<fileset id="mbunit-sample-test-projects">
+		<include name="${basedir.test}/**/NAntExtensions.MbUnit.Example.Tests.csproj" />
 	</fileset>
 
 	<fileset id="coverage-assemblies"
@@ -209,27 +218,7 @@
 		<foreach item="File"
 				 property="testproject">
 			<in>
-				<items refid="mbunit-test-projects" />
-			</in>
-			<do>
-				<msbuild project="${testproject}"
-						 target="${build.msbuild.target}"
-						 verbosity="${build.msbuild.verbosity}">
-					<arg value="/p:Configuration=${build.msbuild.configuration}" />
-					<arg value="/p:SolutionDir=${build.msbuild.solutiondir}" />
-					<arg value="/p:OutDir=${basedir.build}" />
-					<arg value="/p:BuildRunner=${build.runner}" />
-					<arg value="/maxcpucount" />
-					<property name="teamcity_dotnet_use_msbuild_v35"
-							  value="true" />
-				</msbuild>
-			</do>
-		</foreach>
-
-		<foreach item="File"
-				 property="testproject">
-			<in>
-				<items refid="mspec-test-projects" />
+				<items refid="test-projects" />
 			</in>
 			<do>
 				<msbuild project="${testproject}"
@@ -278,17 +267,49 @@
 
 		<tc-addstatistic-fromprops starting-with="${mbunit::get-counter-prefix()}" />
 		
+		<tc-progress message="Running tests"
+					 type="End" />
+	</target>
+	
+	<target name="run-sample-tests"
+			depends="init-run-tests"
+			description="Runs the application's example unit tests.">
+		<tc-progress message="Running sample tests"
+					 type="Start" />
+
 		<foreach item="File"
 				 property="testproject">
 			<in>
-				<items refid="mspec-test-projects" />
+				<items refid="mbunit-sample-test-projects" />
+			</in>
+			<do>
+				<mbunit report-types="html"
+						report-filename-format="${path::get-file-name-without-extension(testproject)}"
+						report-directory="${basedir.test.results}"
+						verbose="true"
+						workingdir="${basedir.build}"
+						failonerror="false">
+					<assemblies>
+						<include name="${basedir.build}/${path::get-file-name-without-extension(testproject)}.dll" />
+					</assemblies>
+				</mbunit>
+			</do>
+		</foreach>
+
+		<tc-addstatistic-fromprops starting-with="${mbunit::get-counter-prefix()}" />
+		
+		<foreach item="File"
+				 property="testproject">
+			<in>
+				<items refid="mspec-sample-test-projects" />
 			</in>
 			<do>
 				<mspec report-directory="${basedir.test.results}"
 					   report-filename="${path::get-file-name-without-extension(testproject)}.html"
 					   workingdir="${basedir.build}"
 					   include-time-info="true"
-					   verbose="true">
+					   verbose="true"
+					   failonerror="false">
 					<assemblies>
 						<include name="${basedir.build}/${path::get-file-name-without-extension(testproject)}.dll" />
 					</assemblies>
@@ -298,7 +319,7 @@
 
 		<tc-addstatistic-fromprops starting-with="${mspec::get-counter-prefix()}" />
 
-		<tc-progress message="Running tests"
+		<tc-progress message="Running sample tests"
 					 type="End" />
 	</target>
 

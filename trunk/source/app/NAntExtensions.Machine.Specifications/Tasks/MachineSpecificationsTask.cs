@@ -68,7 +68,7 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 				_buildEnvironment = value;
 			}
 		}
-		
+
 		/// <summary>
 		/// Gets or sets the assemblies to include in the test run.
 		/// </summary>
@@ -101,7 +101,7 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 			get;
 			set;
 		}
-		
+
 		/// <summary>
 		/// The directory in which the test run will be executed.
 		/// </summary>
@@ -174,7 +174,10 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 
 				if (nantRunListener.FailureOccurred)
 				{
-					throw new BuildException("Specification run failed");
+					if (FailOnError)
+					{
+						throw new BuildException("Specification run failed");
+					}
 				}
 			}
 			finally
