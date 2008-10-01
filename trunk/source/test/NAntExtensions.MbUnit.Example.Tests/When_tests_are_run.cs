@@ -8,22 +8,10 @@ namespace NAntExtensions.MbUnit.Example.Tests
 	public class When_tests_are_run
 	{
 		[Test]
-		public void Should_write_some_messages_to_the_console_out_stream()
-		{
-			Console.Out.WriteLine("Some Console.Out message 1");
-			Console.Out.WriteLine("Some Console.Out message 2");
-		}
-
-		[Test]
-		public void Should_write_some_messages_to_the_console_error_stream()
-		{
-			Console.Error.WriteLine("Some Console.Error message 1");
-			Console.Error.WriteLine("Some Console.Error message 2");
-		}
-
-		[Test]
 		public void Should_fail()
 		{
+			Console.Out.WriteLine("Some Console.Out message");
+			Console.Error.WriteLine("Some Console.Error message");
 			throw new InvalidOperationException("Something bad happened");
 		}
 		
