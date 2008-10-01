@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 
 using Machine.Specifications;
 using Machine.Specifications.Runner;
@@ -11,10 +10,6 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 	internal class TeamCityRunListener : RunListener, ISpecificationRunListener
 	{
 		readonly ITeamCityMessageProvider _messageProvider;
-		TextWriter _defaultConsoleError;
-		TextWriter _defaultConsoleOut;
-		StringWriter _testConsoleError;
-		StringWriter _testConsoleOut;
 
 		public TeamCityRunListener(ITeamCityMessageProvider messageProvider)
 		{
@@ -48,70 +43,30 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 		public void OnSpecificationStart(SpecificationInfo specification)
 		{
 			_messageProvider.TestStarted(GetContextSpecName(_currentContext, specification));
-
-			_defaultConsoleOut = Console.Out;
-			_testConsoleOut = new StringWriter();
-			Console.SetOut(_testConsoleOut);
-
-			_defaultConsoleError = Console.Error;
-			_testConsoleError = new StringWriter();
-			Console.SetError(_testConsoleError);
 		}
 
 		public void OnSpecificationEnd(SpecificationInfo specification, Result result)
 		{
-			try
+			string specName = GetContextSpecName(_currentContext, specification);
+
+			switch (result.Status)
 			{
-				Console.SetOut(_defaultConsoleOut);
-				Console.SetError(_defaultConsoleError);
-				_testConsoleOut.Flush();
-				_testConsoleError.Flush();
-
-				string specName = GetContextSpecName(_currentContext, specification);
-
-				switch (result.Status)
-				{
-					case Status.Passing:
-						break;
-					case Status.Failing:
-						_messageProvider.TestFailed(specName, result.Exception);
-						break;
-					case Status.Ignored:
-						_messageProvider.TestIgnored(specName, null);
-						break;
-					case Status.NotImplemented:
-						_messageProvider.TestIgnored(specName, "Not implemented");
-						break;
-					default:
-						break;
-				}
-
-				string stdStream = _testConsoleOut.ToString();
-				if (!String.IsNullOrEmpty(stdStream))
-				{
-					_messageProvider.TestOutputStream(specName, stdStream);
-				}
-
-				string errorStream = _testConsoleError.ToString();
-				if (!String.IsNullOrEmpty(errorStream))
-				{
-					_messageProvider.TestErrorStream(specName, errorStream);
-				}
-
-				_messageProvider.TestFinished(specName);
+				case Status.Passing:
+					break;
+				case Status.Failing:
+					_messageProvider.TestFailed(specName, result.Exception);
+					break;
+				case Status.Ignored:
+					_messageProvider.TestIgnored(specName, null);
+					break;
+				case Status.NotImplemented:
+					_messageProvider.TestIgnored(specName, "Not implemented");
+					break;
+				default:
+					break;
 			}
-			finally
-			{
-				if (_testConsoleOut != null)
-				{
-					_testConsoleOut.Dispose();
-				}
 
-				if (_testConsoleError != null)
-				{
-					_testConsoleError.Dispose();
-				}
-			}
+			_messageProvider.TestFinished(specName);
 		}
 		#endregion
 	}

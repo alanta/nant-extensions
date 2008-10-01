@@ -33,6 +33,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		}
 
 		[Test]
+		[MbUnit.Framework.Ignore("Functionality is disabled for now")]
 		public void Should_report_the_Console_Out_stream_to_TeamCity()
 		{
 			using (Mocks.Record())
@@ -69,6 +70,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		}
 
 		[Test]
+		[MbUnit.Framework.Ignore("Functionality is disabled for now")]
 		public void Should_report_the_Console_Error_stream_to_TeamCity()
 		{
 			using (Mocks.Record())
