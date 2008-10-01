@@ -210,15 +210,17 @@ namespace NAntExtensions.MbUnit.Tasks
 			Log(Level.Verbose, "Test assemblies:");
 			foreach (FileSet assemblySet in Assemblies)
 			{
-				Log(Level.Verbose, "FileSet");
 				foreach (string fileName in assemblySet.FileNames)
 				{
 					Log(Level.Verbose, "\t{0}", fileName);
 				}
 			}
-			Log(Level.Verbose, "ReportTypes: {0}", ReportTypes);
-			Log(Level.Verbose, "ReportFileNameFormat: {0}", ReportFileNameFormat);
-			Log(Level.Verbose, "ReportDirectory: {0}", ReportDirectory);
+			Log(Level.Verbose, "Working directory: {0}", WorkingDirectory);
+			Log(Level.Verbose, "Report types: {0}", ReportTypes);
+			Log(Level.Verbose, "Report directory: {0}", ReportDirectory);
+			Log(Level.Verbose, "Report file name format: {0}", ReportFileNameFormat);
+			Log(Level.Verbose, "Tranform: {0}", Transform == null ? String.Empty : Transform.FullName);
+			Log(Level.Verbose, "Tranform report file name format: {0}", TransformReportFileNameFormat);
 		}
 
 		void GenerateReports()
@@ -253,10 +255,7 @@ namespace NAntExtensions.MbUnit.Tasks
 							throw new BuildException(String.Format("No transform specified for report type '{0}'", reportType));
 						}
 
-						reportName = HtmlReport.RenderToHtml(_result,
-						                                     ReportDirectory,
-						                                     Transform.FullName,
-						                                     TransformReportFileNameFormat);
+						reportName = HtmlReport.RenderToHtml(_result, ReportDirectory, Transform.FullName, TransformReportFileNameFormat);
 						break;
 					default:
 						Log(Level.Error, "Unknown report type {0}", reportType);
