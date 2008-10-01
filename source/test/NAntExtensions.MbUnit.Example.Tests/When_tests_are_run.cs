@@ -8,6 +8,11 @@ namespace NAntExtensions.MbUnit.Example.Tests
 	public class When_tests_are_run
 	{
 		[Test]
+		public void Should_succeed()
+		{
+		}
+
+		[Test]
 		public void Should_fail()
 		{
 			Console.Out.WriteLine("Some Console.Out message");

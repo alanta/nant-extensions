@@ -9,17 +9,16 @@ namespace NAntExtensions.Machine.Specifications.Example.Tests
 	{
 		It is_not_implemented;
 
-		It should_fail = () =>
-		{
-			Console.Out.WriteLine("Some Console.Out message");
-			Console.Error.WriteLine("Some Console.Error message");
-			throw new InvalidOperationException("Something bad happened");
-		};	
-		
 		[Ignore]
-		It should_be_ignored = () =>
-		{
-			
-		};
+		It should_be_ignored = () => { };
+
+		It should_fail = () =>
+			{
+				Console.Out.WriteLine("Some Console.Out message");
+				Console.Error.WriteLine("Some Console.Error message");
+				throw new InvalidOperationException("Something bad happened");
+			};
+
+		It should_succeed = () => { };
 	}
 }
