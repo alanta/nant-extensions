@@ -302,10 +302,10 @@
 			  if="${int::parse(mbunit.asserts) != 0}"/>
 		<fail message="MbUnit succcess count is incorrect, should be 1 but was ${mbunit.successes}"
 			  if="${int::parse(mbunit.successes) != 1}"/>
-		<fail message="MbUnit run count is incorrect, should be 4 but was ${mbunit.run}"
-			  if="${int::parse(mbunit.run) != 4}"/>
-		<fail message="MbUnit ignored count is incorrect, should be 2 but was ${mbunit.ignored}"
-			  if="${int::parse(mbunit.ignored) != 2}"/>
+		<fail message="MbUnit run count is incorrect, should be 6 but was ${mbunit.run}"
+			  if="${int::parse(mbunit.run) != 6}"/>
+		<fail message="MbUnit ignored count is incorrect, should be 4 but was ${mbunit.ignored}"
+			  if="${int::parse(mbunit.ignored) != 4}"/>
 		<fail message="MbUnit skipped count is incorrect, should be 0 but was ${mbunit.skipped}"
 			  if="${int::parse(mbunit.skipped) != 0}"/>
 		<fail message="MbUnit failure count is incorrect, should be 1 but was ${mbunit.failures}"
