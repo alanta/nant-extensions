@@ -16,8 +16,7 @@
 		<echo message="Loading default.properties" />
 		<include buildfile="default.properties" />
 	</if>
-
-
+	
 	<echo message="Build configuration:" />
 	<script language="C#">
 		<code>
