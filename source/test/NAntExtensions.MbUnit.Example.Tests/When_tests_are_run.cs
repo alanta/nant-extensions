@@ -31,5 +31,17 @@ namespace NAntExtensions.MbUnit.Example.Tests
 		public void Should_be_ignored()
 		{
 		}
+
+		[Test]
+		[Explicit("Some reason")]
+		public void Should_be_ignored_because_the_test_is_marked_as_explicit_with_message()
+		{
+		}
+
+		[Test]
+		[Ignore("Some reason")]
+		public void Should_be_ignored_with_message()
+		{
+		}
 	}
 }
