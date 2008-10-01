@@ -14,12 +14,14 @@ namespace NAntExtensions.MbUnit.Example.Tests
 			Console.Error.WriteLine("Some Console.Error message");
 			throw new InvalidOperationException("Something bad happened");
 		}
-		
+
+		[Test]
 		[Explicit]
 		public void Should_be_ignored_because_the_test_is_marked_as_explicit()
 		{
 		}
-		
+
+		[Test]
 		[Ignore]
 		public void Should_be_ignored()
 		{
