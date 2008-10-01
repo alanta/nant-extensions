@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <!-- Documenting IsTeamCityBuild-->
+  <head>
+    <meta http-equiv="Content-Language" content="en-ca" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../style.css" />
+    <title>teamcity::is-teamcity-build Function</title>
+  </head>
+  <body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="NavBar">
+      <tr>
+        <td class="NavBar-Cell">
+          <a href="http://code.google.com/p/nant-extensions/">
+            <b>NAnt-Extensions</b>
+          </a>
+          <img alt="-&gt;" src="../images/arrow.gif" />
+          <a href="../index.html">Help</a>
+          <img alt="-&gt;" src="../images/arrow.gif" />
+          <a href="index.html">Function Reference</a>
+          <img alt="-&gt;" src="../images/arrow.gif" /> teamcity::is-teamcity-build</td>
+        <td class="NavBar-Cell" align="right">
+                        v1.0.0.0</td>
+      </tr>
+    </table>
+    <h1>teamcity::is-teamcity-build</h1>
+    <p class="topicstatus">[This is preliminary documentation and subject to change.]</p>
+    <p> Determines if the build is run as part of a TeamCity build. </p>
+    <h3>Usage</h3>
+    <code>bool teamcity::is-teamcity-build()
+            </code>
+    <p />
+    <h3>Return Value</h3>
+    <code>true</code> if this is a TeamCity build; otherwise, <code>false</code>. <h3>Examples</h3><ul class="examples"><li><pre class="code">
+&lt;echo message="We are running inside of TeamCity: ${teamcity::is-teamcity-build()}" /&gt;
+</pre></li></ul><h3>Requirements</h3><div style="margin-left: 20px;"><b>Assembly:</b> NAntExtensions.TeamCity (1.0.0.0)
+            </div></body>
+</html>

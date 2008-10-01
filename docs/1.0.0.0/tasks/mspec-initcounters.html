@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <!-- Documenting T:NAntExtensions.Machine.Specifications.Tasks.InitializeMachineSpecificationsCountersTask-->
+  <head>
+    <meta http-equiv="Content-Language" content="en-ca" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../style.css" />
+    <title>&lt;mspec-initcounters&gt; Task</title>
+  </head>
+  <body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="2" class="NavBar">
+      <tr>
+        <td class="NavBar-Cell">
+          <a href="http://code.google.com/p/nant-extensions/">
+            <b>NAnt-Extensions</b>
+          </a>
+          <img alt="-&gt;" src="../images/arrow.gif" />
+          <a href="../index.html">Help</a>
+          <img alt="-&gt;" src="../images/arrow.gif" />
+          <a href="../tasks/index.html">Task Reference</a>
+          <img alt="-&gt;" src="../images/arrow.gif" /> &lt;mspec-initcounters&gt;</td>
+        <td class="NavBar-Cell" align="right">
+                        v1.0.0.0</td>
+      </tr>
+    </table>
+    <h1>&lt;mspec-initcounters&gt;</h1>
+    <p class="topicstatus">[This is preliminary documentation and subject to change.]</p>
+    <p> Initializes all Machine.Specifications counters with a value of 0. Existing property values will be overwritten. </p> The <a href="../tasks/mspec.html">&lt;mspec&gt;</a> task updates these NAnt properties when the test run has completed: <ul style="list-style-type: disc;"><li><b>mspec.contexts - </b>The number of contexts.</li><li><b>mspec.specs - </b>The number of specifications.</li><li><b>mspec.passedspecs - </b>The number of successful specifications.</li><li><b>mspec.failedspecs - </b>The number of failed specifications.</li><li><b>mspec.ignoredspecs - </b>The number of ignored specifications.</li><li><b>mspec.unimplementedspecs - </b>The number of unimplemented specifications.</li></ul><h3>Parameters</h3><div class="table"><table><tr><th>Attribute</th><th style="text-align: center;">Type</th><th>Description</th><th style="text-align: center;">Required</th></tr><tr><td valign="top">failonerror</td><td style="text-align: center;">bool</td><td></td><td style="text-align: center;">False</td></tr><tr><td valign="top">if</td><td style="text-align: center;">bool</td><td></td><td style="text-align: center;">False</td></tr><tr><td valign="top">unless</td><td style="text-align: center;">bool</td><td></td><td style="text-align: center;">False</td></tr><tr><td valign="top">verbose</td><td style="text-align: center;">bool</td><td></td><td style="text-align: center;">False</td></tr></table></div><h3>Examples</h3><ul class="examples"><li><pre class="code">
+&lt;mspec-initcounters /&gt;
+</pre></li></ul><h3>Requirements</h3><div style="margin-left: 20px;"><b>Assembly:</b> NAntExtensions.Machine.Specifications (1.0.0.0)
+            </div></body>
+</html>
