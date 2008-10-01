@@ -22,6 +22,8 @@ namespace NAntExtensions.MbUnit.Tasks
 	/// <summary>
 	/// Runs MbUnit tests.
 	/// </summary>
+	/// <remarks>Due to the way MbUnit logs its test results the timing information for the tests shown by TeamCity is not
+	/// valid.</remarks>
 	/// <example>
 	/// <code>
 	/// <![CDATA[
