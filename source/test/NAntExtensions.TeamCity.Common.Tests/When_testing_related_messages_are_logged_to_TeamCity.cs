@@ -17,13 +17,15 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		const string AssemblyName = "Assembly";
 		const string Stream = "Stream";
 		const string TestName = "Test";
+		IClock _clock;
 		ITeamCityMessageProvider _messageProvider;
 		TeamCityLogWriter _writer;
 
 		protected override void Before_each_spec()
 		{
 			_writer = Mocks.StrictMock<TeamCityLogWriter>();
-			_messageProvider = new TeamCityMessageProvider(_writer, Mocks.StrictMock<Task>());
+			_clock = Mocks.DynamicMock<IClock>();
+			_messageProvider = new TeamCityMessageProvider(_writer, Mocks.StrictMock<Task>(), _clock);
 
 			Mocks.BackToRecord(_writer);
 		}
@@ -35,6 +37,22 @@ namespace NAntExtensions.TeamCity.Common.Tests
 			{
 				_writer.WriteLine(String.Empty);
 				LastCall.Constraints(Text.StartsWith("##teamcity[testSuiteStarted") && Text.Contains(AssemblyName));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestSuiteStarted(AssemblyName);
+			}
+		}
+
+		[Test]
+		public void Should_log_TestSuiteStarted_with_timestamp()
+		{
+			using (Mocks.Record())
+			{
+				Expect.Call(_clock.Now).Return(DateTime.MaxValue);
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(" timestamp='"));
 			}
 
 			using (Mocks.Playback())
@@ -73,6 +91,22 @@ namespace NAntExtensions.TeamCity.Common.Tests
 			}
 		}
 
+		[Test]
+		public void Should_log_TestSuiteFinished_with_timestamp()
+		{
+			using (Mocks.Record())
+			{
+				Expect.Call(_clock.Now).Return(DateTime.MaxValue);
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(" timestamp='"));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestSuiteFinished(AssemblyName);
+			}
+		}
+
 		[RowTest]
 		[Row(SpecialValue.Null)]
 		[Row("")]
@@ -95,6 +129,22 @@ namespace NAntExtensions.TeamCity.Common.Tests
 			{
 				_writer.WriteLine(String.Empty);
 				LastCall.Constraints(Text.StartsWith("##teamcity[testStarted") && Text.Contains(TestName));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestStarted(TestName);
+			}
+		}
+
+		[Test]
+		public void Should_log_TestStarted_with_timestamp()
+		{
+			using (Mocks.Record())
+			{
+				Expect.Call(_clock.Now).Return(DateTime.MaxValue);
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(" timestamp='"));
 			}
 
 			using (Mocks.Playback())
@@ -133,6 +183,22 @@ namespace NAntExtensions.TeamCity.Common.Tests
 			}
 		}
 
+		[Test]
+		public void Should_log_TestFinished_with_timestamp()
+		{
+			using (Mocks.Record())
+			{
+				Expect.Call(_clock.Now).Return(DateTime.MaxValue);
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(" timestamp='"));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestFinished(TestName);
+			}
+		}
+
 		[RowTest]
 		[Row(SpecialValue.Null)]
 		[Row("")]
@@ -155,6 +221,22 @@ namespace NAntExtensions.TeamCity.Common.Tests
 			{
 				_writer.WriteLine(String.Empty);
 				LastCall.Constraints(Text.StartsWith("##teamcity[testIgnored") && Text.Contains(TestName));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestIgnored(TestName, null);
+			}
+		}
+
+		[Test]
+		public void Should_log_TestIgnored_with_timestamp()
+		{
+			using (Mocks.Record())
+			{
+				Expect.Call(_clock.Now).Return(DateTime.MaxValue);
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(" timestamp='"));
 			}
 
 			using (Mocks.Playback())
@@ -194,6 +276,22 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		}
 
 		[Test]
+		public void Should_log_TestFailed_without_exception_with_timestamp()
+		{
+			using (Mocks.Record())
+			{
+				Expect.Call(_clock.Now).Return(DateTime.MaxValue);
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(" timestamp='"));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestFailed(TestName, (Exception) null);
+			}
+		}
+
+		[Test]
 		public void Should_log_TestFailed_with_exception()
 		{
 			Exception exception = new Exception("Some error");
@@ -202,6 +300,22 @@ namespace NAntExtensions.TeamCity.Common.Tests
 			{
 				_writer.WriteLine(String.Empty);
 				LastCall.Constraints(Text.Contains(String.Format("type='{0}'", exception.GetType().FullName)));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestFailed(TestName, exception);
+			}
+		}[Test]
+		public void Should_log_TestFailed_with_exception_with_timestamp()
+		{
+			Exception exception = new Exception("Some error");
+
+			using (Mocks.Record())
+			{
+				Expect.Call(_clock.Now).Return(DateTime.MaxValue);
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(" timestamp='"));
 			}
 
 			using (Mocks.Playback())
@@ -240,6 +354,22 @@ namespace NAntExtensions.TeamCity.Common.Tests
 			}
 		}
 
+		[Test]
+		public void Should_log_TestStdOut_with_timestamp()
+		{
+			using (Mocks.Record())
+			{
+				Expect.Call(_clock.Now).Return(DateTime.MaxValue);
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(" timestamp='"));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestOutputStream(TestName, Stream);
+			}
+		}
+
 		[RowTest]
 		[Row(SpecialValue.Null)]
 		[Row("")]
@@ -262,6 +392,22 @@ namespace NAntExtensions.TeamCity.Common.Tests
 			{
 				_writer.WriteLine(String.Empty);
 				LastCall.Constraints(Text.StartsWith("##teamcity[testStdErr") && Text.Contains(TestName) && Text.Contains(Stream));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestErrorStream(TestName, Stream);
+			}
+		}
+
+		[Test]
+		public void Should_log_TestStdErr_with_timestamp()
+		{
+			using (Mocks.Record())
+			{
+				Expect.Call(_clock.Now).Return(DateTime.MaxValue);
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(" timestamp='"));
 			}
 
 			using (Mocks.Playback())

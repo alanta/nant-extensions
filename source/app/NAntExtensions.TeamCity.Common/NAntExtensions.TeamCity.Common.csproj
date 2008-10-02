@@ -69,8 +69,10 @@
     <Compile Include="BuildEnvironment\DebugNAntRunnerBuildEnvironment.cs" />
     <Compile Include="BuildEnvironment\IBuildEnvironment.cs" />
     <Compile Include="BuildEnvironment\IEnvironment.cs" />
+    <Compile Include="Messaging\SystemClock.cs" />
     <Compile Include="Messaging\ExceptionInfo.cs" />
     <Compile Include="Messaging\Formatter.cs" />
+    <Compile Include="Messaging\IClock.cs" />
     <Compile Include="Messaging\TeamCityLogWriter.cs" />
     <Compile Include="Messaging\ITeamCityMessageProvider.cs" />
     <Compile Include="Messaging\DefaultTeamCityLogWriter.cs" />
