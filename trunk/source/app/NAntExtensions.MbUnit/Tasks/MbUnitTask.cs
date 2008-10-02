@@ -22,8 +22,10 @@ namespace NAntExtensions.MbUnit.Tasks
 	/// <summary>
 	/// Runs MbUnit tests.
 	/// </summary>
-	/// <remarks>Due to the way MbUnit logs its test results the timing information for the tests shown by TeamCity is not
-	/// valid.</remarks>
+	/// <remarks>
+	/// If running within a TeamCity build, the test results are reported to TeamCity.
+	/// Note that due to the way MbUnit logs its test results the timing information for the 
+	/// tests shown by TeamCity is not valid.</remarks>
 	/// <example>
 	/// <code>
 	/// <![CDATA[
@@ -79,7 +81,7 @@ namespace NAntExtensions.MbUnit.Tasks
 
 		/// <summary>
 		/// Gets or sets the report format to generate. Valid values are: text, xml, dox, html and transform. If you specify
-		/// transform, you will also have to set the <see cref="Transform"/> attribute.
+		/// transform, you will also have to set the <see cref="Transform"/> attribute. You can set multiple values separated by a semicolon (;).
 		/// </summary>
 		/// <value>The report types.</value>
 		[TaskAttribute("report-types")]

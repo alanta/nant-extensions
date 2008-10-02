@@ -12,6 +12,7 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// <summary>
 	/// Reports the build progress to TeamCity.
 	/// </summary>
+	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
 	/// <code>
 	/// <![CDATA[
