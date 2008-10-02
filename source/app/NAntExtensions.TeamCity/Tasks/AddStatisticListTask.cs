@@ -28,6 +28,7 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// <summary>
 	/// Adds TeamCity build statistics values to teamcity-info.xml.
 	/// </summary>
+	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
 	/// <code>
 	/// <![CDATA[

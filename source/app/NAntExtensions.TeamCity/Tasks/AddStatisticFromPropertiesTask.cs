@@ -12,6 +12,7 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// <summary>
 	/// Adds TeamCity build statistics values to teamcity-info.xml based on NAnt properties matching the specified prefix.
 	/// </summary>
+	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
 	/// <code>
 	/// <![CDATA[

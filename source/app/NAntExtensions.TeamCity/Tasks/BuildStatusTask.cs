@@ -10,6 +10,7 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// <summary>
 	/// Reports the build status to TeamCity.
 	/// </summary>
+	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
 	/// Sets the build status to "failed" and replaces the current message.
 	/// <code>
