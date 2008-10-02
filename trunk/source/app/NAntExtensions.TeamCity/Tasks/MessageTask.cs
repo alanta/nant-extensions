@@ -1,5 +1,7 @@
 using System;
 
+using NAnt.Core.Attributes;
+
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
 using NAntExtensions.TeamCity.Common.Messaging;
