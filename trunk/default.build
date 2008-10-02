@@ -54,7 +54,7 @@
 
 	<target name="all"
 			depends="build-setup"
-			description="Compiles the theme and creates deployment packages.">
+			description="Compiles the application and creates deployment packages.">
 	</target>
 
 	<!-- Build number retrieval.
