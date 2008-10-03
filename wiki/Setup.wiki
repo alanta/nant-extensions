@@ -1,4 +1,5 @@
 #summary Configuring NAnt to use NAnt-Extensions.
+#labels Featured
 
 = Setup =
 
