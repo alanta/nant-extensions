@@ -23,9 +23,10 @@ namespace NAntExtensions.MbUnit.Tasks
 	/// Runs MbUnit tests.
 	/// </summary>
 	/// <remarks>
-	/// If running within a TeamCity build, the test results are reported to TeamCity.
+	/// If the task is run within a TeamCity build, the test results are reported to TeamCity.
 	/// Note that due to the way MbUnit logs its test results the timing information for the 
-	/// tests shown by TeamCity is not valid.</remarks>
+	/// tests shown by TeamCity 3.x are not valid. However, the durations shown by TeamCity 4.x
+	/// and above are correct.</remarks>
 	/// <example>
 	/// <code>
 	/// <![CDATA[

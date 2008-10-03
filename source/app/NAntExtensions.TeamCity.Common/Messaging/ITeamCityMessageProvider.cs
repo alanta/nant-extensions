@@ -13,6 +13,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		void TestOutputStream(string testName, string outputStream);
 		void TestErrorStream(string testName, string errorStream);
 		void TestFinished(string testName);
+		void TestFinished(string testName, TimeSpan duration);
 		void SendMessage(string message, params object[] parameters);
 	}
 }

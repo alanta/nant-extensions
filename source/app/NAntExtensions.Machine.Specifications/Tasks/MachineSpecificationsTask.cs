@@ -21,6 +21,8 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 	/// <summary>
 	/// Runs Machine.Specifications tests.
 	/// </summary>
+	/// <remarks>
+	/// If the task is run within a TeamCity build, the test results are reported to TeamCity.</remarks>
 	/// <example>
 	/// <code>
 	/// <![CDATA[

@@ -300,10 +300,10 @@
 
 		<fail message="MbUnit assert count is incorrect, should be 0 but was ${mbunit.asserts}"
 			  if="${int::parse(mbunit.asserts) != 0}"/>
-		<fail message="MbUnit succcess count is incorrect, should be 1 but was ${mbunit.successes}"
-			  if="${int::parse(mbunit.successes) != 1}"/>
-		<fail message="MbUnit run count is incorrect, should be 6 but was ${mbunit.run}"
-			  if="${int::parse(mbunit.run) != 6}"/>
+		<fail message="MbUnit succcess count is incorrect, should be 2 but was ${mbunit.successes}"
+			  if="${int::parse(mbunit.successes) != 2}"/>
+		<fail message="MbUnit run count is incorrect, should be 7 but was ${mbunit.run}"
+			  if="${int::parse(mbunit.run) != 7}"/>
 		<fail message="MbUnit ignored count is incorrect, should be 4 but was ${mbunit.ignored}"
 			  if="${int::parse(mbunit.ignored) != 4}"/>
 		<fail message="MbUnit skipped count is incorrect, should be 0 but was ${mbunit.skipped}"
@@ -334,10 +334,10 @@
 
 		<fail message="MSpec ignore count is incorrect, should be 0 but was ${mspec.ignoredspecs}"
 			  if="${int::parse(mspec.ignoredspecs) != 1}"/>
-		<fail message="MSpec passed count is incorrect, should be 1 but was ${mspec.passedspecs}"
-			  if="${int::parse(mspec.passedspecs) != 1}"/>
+		<fail message="MSpec passed count is incorrect, should be 2 but was ${mspec.passedspecs}"
+			  if="${int::parse(mspec.passedspecs) != 2}"/>
 		<fail message="MSpec spec count is incorrect, should be 4 but was ${mspec.specs}"
-			  if="${int::parse(mspec.specs) != 4}"/>
+			  if="${int::parse(mspec.specs) != 5}"/>
 		<fail message="MSpec failed count is incorrect, should be 2 but was ${mspec.failedspecs}"
 			  if="${int::parse(mspec.failedspecs) != 1}"/>
 		<fail message="MSpec context count is incorrect, should be 0 but was ${mspec.contexts}"
