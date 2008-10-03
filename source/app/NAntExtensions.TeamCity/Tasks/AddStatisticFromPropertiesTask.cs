@@ -10,7 +10,8 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	/// <summary>
-	/// Adds TeamCity build statistics values to teamcity-info.xml based on NAnt properties matching the specified prefix.
+	/// Adds TeamCity build statistics values to <c>teamcity-info.xml</c> based on NAnt properties matching the specified
+	/// prefix.
 	/// </summary>
 	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
@@ -49,7 +50,7 @@ namespace NAntExtensions.TeamCity.Tasks
 		}
 
 		/// <summary>
-		/// Compare property names with a case insensitive comparison. The default value is <c>true</c>.
+		/// Compare property names with a case insensitive comparison. The default value is <see langword="true" />.
 		/// </summary>
 		[TaskAttribute("ignore-case")]
 		public bool IgnoreCase

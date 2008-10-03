@@ -7,7 +7,8 @@ using NAntExtensions.TeamCity.Common.Helper;
 namespace NAntExtensions.MbUnit.Tasks
 {
 	/// <summary>
-	/// Initializes all MbUnit counters with a value of 0. Existing property values will be overwritten.
+	/// Initializes all <see href="http://www.mbunit.com/">MbUnit</see> counters with a value of 0. Existing property values
+	/// will be overwritten.
 	/// </summary>
 	/// <remarks>
 	/// The <see cref="MbUnitTask"/> updates these NAnt properties when the test run has completed:

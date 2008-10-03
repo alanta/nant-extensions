@@ -419,7 +419,7 @@
 		<ndoc>
 			<assemblies basedir="${basedir.build}">
 				<include name="NAntExtensions.*.dll" />
-            <include name="NAnt.Core.dll" />
+				<include name="NAnt.Core.dll" />
 				<exclude name="NAntExtensions.TeamCity.Common.dll" />
 			</assemblies>
 			<documenters>
@@ -428,8 +428,8 @@
 							  value="${basedir.build}/docs" />
 					<property name="SdkLinksOnWeb"
 							  value="true" />
-               <property name="NAntBaseUri"
-                         value="http://nant.sourceforge.net/release/0.86-beta1/help/" />
+					<property name="NAntBaseUri"
+							  value="http://nant.sourceforge.net/release/0.86-beta1/help/" />
 					<!-- Only document classes in NAntExtensions. namespace -->
 					<property name="NamespaceFilter"
 							  value="NAntExtensions" />

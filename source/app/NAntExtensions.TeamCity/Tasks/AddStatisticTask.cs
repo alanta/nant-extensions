@@ -26,7 +26,7 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	/// <summary>
-	/// Adds a single TeamCity build statistics value to teamcity-info.xml.
+	/// Adds a single TeamCity build statistics value to <c>teamcity-info.xml</c>.
 	/// </summary>
 	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>

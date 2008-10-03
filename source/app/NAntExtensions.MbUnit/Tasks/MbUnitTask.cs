@@ -20,7 +20,7 @@ using NAntExtensions.TeamCity.Common.Helper;
 namespace NAntExtensions.MbUnit.Tasks
 {
 	/// <summary>
-	/// Runs MbUnit tests.
+	/// Runs <see href="http://www.mbunit.com/">MbUnit</see> tests.
 	/// </summary>
 	/// <remarks>
 	/// If the task is run within a TeamCity build, the test results are reported to TeamCity.
@@ -81,8 +81,10 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// Gets or sets the report format to generate. Valid values are: text, xml, dox, html and transform. If you specify
-		/// transform, you will also have to set the <see cref="Transform"/> attribute. You can set multiple values separated by a semicolon (;).
+		/// Gets or sets the report format to generate. Valid values are: <see langword="text" />, <see langword="xml" />, 
+		/// <see langword="dox" />, <see langword="html" /> and <see langword="transform" />. If you specify 
+		/// <see langword="transform" />, you will also have to set the <see cref="Transform"/> attribute. You can set multiple
+		/// values separated by a semicolon (<see langword=";" />).
 		/// </summary>
 		/// <value>The report types.</value>
 		[TaskAttribute("report-types")]
@@ -115,8 +117,8 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// The report file name format for all reports except the 'transform' report. The default value is 'mbunit-result-{0}{1}'
-		/// where {0} is replaced by the date and {1} is replaced by the time.
+		/// The report file name format for all reports except the <see langword="transform" /> report. The default value is <c>mbunit-result-{0}{1}</c>
+		/// where <c>{0}</c> is replaced by the date and <c>{1}</c> is replaced by the time.
 		/// </summary>
 		/// <value>The report file name format.</value>
 		[TaskAttribute("report-filename-format", Required = false)]
@@ -138,7 +140,7 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// The XSL transformation file to use for the 'transform' report.
+		/// The XSL transformation file to use for the <see langword="transform" /> report.
 		/// </summary>
 		/// <value>The transform.</value>
 		[TaskAttribute("transform", Required = false)]
@@ -149,7 +151,8 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// The report file name format to use for the 'transform' report. If you do not specify this value, the value from 
+		/// The report file name format to use for the <see langword="transform" /> report. If you do not specify this value, the
+		/// value from 
 		/// <see cref="ReportFileNameFormat"/> is used.
 		/// </summary>
 		/// <value>The transform report file name format.</value>

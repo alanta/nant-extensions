@@ -20,9 +20,9 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// ]]></code>
 	/// </example>
 	/// <example>
-	/// Appends the code coverage value to the current build status message. {build.status.text} is an optional substitution
-	/// pattern which represents the status, calculated automatically by TeamCity using passed test count, compilation messages
-	/// and so on.
+	/// Appends the code coverage value to the current build status message. <c>{build.status.text}</c> is an optional
+	/// substitution pattern which represents the status, calculated automatically by TeamCity using passed test count,
+	/// compilation messages and so on.
 	/// <code>
 	/// <![CDATA[
 	/// <tc-buildstatus message="{build.status.text}, Code coverage: ${math::round(double::parse(codecoverage))}%"/>
@@ -47,7 +47,7 @@ namespace NAntExtensions.TeamCity.Tasks
 
 		/// <summary>
 		/// The status type to report to TeamCity. The default value is 
-		/// <see cref="NAntExtensions.TeamCity.Types.StatusType.Normal"/>
+		/// <see cref="NAntExtensions.TeamCity.Types.StatusType.Normal"/>.
 		/// </summary>
 		/// <value>The type of the status.</value>
 		[TaskAttribute("type", Required = false)]
