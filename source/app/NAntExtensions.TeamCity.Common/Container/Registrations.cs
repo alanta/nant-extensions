@@ -15,7 +15,6 @@ namespace NAntExtensions.TeamCity.Common.Container
 			yield return Component.For<ITeamCityMessageProvider>().ImplementedBy<TeamCityMessageProvider>();
 			yield return Component.For<IEnvironment>().ImplementedBy<SystemEnvironment>();
 			yield return Component.For<TeamCityLogWriter>().ImplementedBy<DefaultTeamCityLogWriter>().LifeStyle.Is(LifestyleType.Transient);
-			yield return Component.For<IClock>().ImplementedBy<SystemClock>();
 
 			// Uncomment these if you want to debug certain TeamCity environments.
 			//yield return Component.For<IBuildEnvironment>().ImplementedBy<DebugConsoleRunnerBuildEnvironment>();
