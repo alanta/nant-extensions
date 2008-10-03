@@ -43,7 +43,7 @@ namespace NAntExtensions.TeamCity.Tasks
 		}
 
 		/// <summary>
-		/// Allows you to override the path to the teamcity-info.xml file. By default, the path to the file is detected
+		/// Allows you to override the path to the <c>teamcity-info.xml</c> file. By default, the path to the file is detected
 		/// automatically.
 		/// </summary>
 		[TaskAttribute("teamcity-info-path")]

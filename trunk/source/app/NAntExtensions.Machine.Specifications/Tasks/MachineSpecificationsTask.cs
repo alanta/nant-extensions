@@ -19,7 +19,7 @@ using NAntExtensions.TeamCity.Common.Messaging;
 namespace NAntExtensions.Machine.Specifications.Tasks
 {
 	/// <summary>
-	/// Runs Machine.Specifications tests.
+	/// Runs <see href="http://www.assembla.com/wiki/show/machine">Machine.Specifications</see> tests.
 	/// </summary>
 	/// <remarks>
 	/// If the task is run within a TeamCity build, the test results are reported to TeamCity.</remarks>
@@ -124,8 +124,8 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 		}
 
 		/// <summary>
-		/// <c>true</c>, if the time when the report has been generated should be included in the report; otherwise, <c>false</c>.
-		/// The default value is <c>false</c>.
+		///  <see langword="true" />, if the time when the report has been generated should be included in the report; otherwise, <see langword="false" />.
+		/// The default value is <see langword="false" />.
 		/// </summary>
 		[TaskAttribute("include-time-info")]
 		[BooleanValidator]

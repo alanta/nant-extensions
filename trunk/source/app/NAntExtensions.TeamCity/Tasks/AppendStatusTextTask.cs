@@ -26,7 +26,7 @@ using NAntExtensions.TeamCity.Common.BuildEnvironment;
 namespace NAntExtensions.TeamCity.Tasks
 {
 	/// <summary>
-	/// Appends a status message to the TeamCity build status to teamcity-info.xml.
+	/// Appends a status message to the TeamCity build status to <c>teamcity-info.xml</c>.
 	/// </summary>
 	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>

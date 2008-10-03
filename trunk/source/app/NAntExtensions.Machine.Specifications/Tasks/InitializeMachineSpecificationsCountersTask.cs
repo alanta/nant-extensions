@@ -7,7 +7,8 @@ using NAntExtensions.TeamCity.Common.Helper;
 namespace NAntExtensions.Machine.Specifications.Tasks
 {
 	/// <summary>
-	/// Initializes all Machine.Specifications counters with a value of 0. Existing property values will be overwritten.
+	/// Initializes all <see href="http://www.assembla.com/wiki/show/machine">Machine.Specifications</see> counters with a
+	/// value of 0. Existing property values will be overwritten.
 	/// </summary>
 	/// <remarks>
 	/// The <see cref="MachineSpecificationsTask"/> updates these NAnt properties when the test run has completed:
@@ -18,7 +19,8 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 	/// <item><term>mspec.passedspecs</term><description>The number of successful specifications.</description></item>
 	/// <item><term>mspec.failedspecs</term><description>The number of failed specifications.</description></item>
 	/// <item><term>mspec.ignoredspecs</term><description>The number of ignored specifications.</description></item>
-	/// <item><term>mspec.unimplementedspecs</term><description>The number of unimplemented specifications.</description></item>
+	/// <item><term>mspec.unimplementedspecs</term><description>The number of unimplemented specifications.</description>
+	/// </item>
 	/// </list>
 	/// </remarks>
 	/// <example>
