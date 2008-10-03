@@ -8,10 +8,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	internal class TeamCityMessageProvider : ITeamCityMessageProvider
 	{
-		readonly IClock _clock;
 		readonly TeamCityLogWriter _writer;
 
-		public TeamCityMessageProvider(TeamCityLogWriter writer, Task taskToUseForLogging, IClock clock)
+		public TeamCityMessageProvider(TeamCityLogWriter writer, Task taskToUseForLogging)
 		{
 			if (writer == null)
 			{
@@ -23,15 +22,8 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				throw new ArgumentNullException("taskToUseForLogging");
 			}
 
-			if (clock == null)
-			{
-				throw new ArgumentNullException("clock");
-			}
-
 			_writer = writer;
 			_writer.TaskToUseForLogging = taskToUseForLogging;
-
-			_clock = clock;
 		}
 
 		#region ITeamCityMessageProvider Members
@@ -42,7 +34,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				return;
 			}
 
-			_writer.WriteLine(FormatWithTimestamp("##teamcity[testSuiteStarted name='{0}']", assemblyName));
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+			                                "##teamcity[testSuiteStarted name='{0}']",
+			                                Formatter.FormatValue(assemblyName)));
 		}
 
 		public void TestSuiteFinished(string assemblyName)
@@ -52,7 +46,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				return;
 			}
 
-			_writer.WriteLine(FormatWithTimestamp("##teamcity[testSuiteFinished name='{0}']", assemblyName));
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+			                                "##teamcity[testSuiteFinished name='{0}']",
+			                                Formatter.FormatValue(assemblyName)));
 		}
 
 		public void TestStarted(string testName)
@@ -62,7 +58,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				return;
 			}
 
-			_writer.WriteLine(FormatWithTimestamp("##teamcity[testStarted name='{0}']", testName));
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+			                                "##teamcity[testStarted name='{0}']",
+			                                Formatter.FormatValue(testName)));
 		}
 
 		public void TestIgnored(string testName, string message)
@@ -72,7 +70,10 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				return;
 			}
 
-			_writer.WriteLine(FormatWithTimestamp("##teamcity[testIgnored name='{0}' message='{1}']", testName, message));
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+			                                "##teamcity[testIgnored name='{0}' message='{1}']",
+			                                Formatter.FormatValue(testName),
+			                                Formatter.FormatValue(message)));
 		}
 
 		public void TestFailed(string testName, Exception exception)
@@ -88,7 +89,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			}
 
 			StringBuilder message = new StringBuilder();
-			message.Append(FormatWithTimestamp("##teamcity[testFailed name='{0}'", testName));
+			message.AppendFormat(CultureInfo.InvariantCulture,
+								 "##teamcity[testFailed name='{0}'",
+								 Formatter.FormatValue(testName));
 
 			if (exceptionInfo != null)
 			{
@@ -97,10 +100,10 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				Formatter.FormatValue(formattedException);
 
 				message.AppendFormat(CultureInfo.InvariantCulture,
-				                     " message='{0}' details='{1}' type='{2}'",
-				                     Formatter.FormatValue(exceptionInfo.Message),
-				                     formattedException,
-				                     Formatter.FormatValue(exceptionInfo.Type));
+									 " message='{0}' details='{1}' type='{2}'",
+									 Formatter.FormatValue(exceptionInfo.Message),
+									 formattedException,
+									 Formatter.FormatValue(exceptionInfo.Type));
 			}
 
 			message.Append("]");
@@ -115,7 +118,10 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				return;
 			}
 
-			_writer.WriteLine(FormatWithTimestamp("##teamcity[testStdOut name='{0}' out='{1}']", testName, outputStream));
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+			                                "##teamcity[testStdOut name='{0}' out='{1}']",
+			                                Formatter.FormatValue(testName),
+			                                Formatter.FormatValue(outputStream)));
 		}
 
 		public void TestErrorStream(string testName, string errorStream)
@@ -125,7 +131,10 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				return;
 			}
 
-			_writer.WriteLine(FormatWithTimestamp("##teamcity[testStdErr name='{0}' out='{1}']", testName, errorStream));
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+			                                "##teamcity[testStdErr name='{0}' out='{1}']",
+			                                Formatter.FormatValue(testName),
+			                                Formatter.FormatValue(errorStream)));
 		}
 
 		public void TestFinished(string testName)
@@ -135,7 +144,9 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				return;
 			}
 
-			_writer.WriteLine(FormatWithTimestamp("##teamcity[testFinished name='{0}']", testName));
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+			                                "##teamcity[testFinished name='{0}']",
+			                                Formatter.FormatValue(testName)));
 		}
 
 		public void SendMessage(string message, params object[] parameters)
@@ -145,32 +156,8 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				return;
 			}
 
-			_writer.WriteLine(FormatWithTimestamp(message, parameters));
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture, message, Formatter.FormatValues(parameters)));
 		}
 		#endregion
-
-		string FormatWithTimestamp(string message, params object[] parameters)
-		{
-			StringBuilder builder = new StringBuilder();
-			builder.AppendFormat(CultureInfo.InvariantCulture, message, Formatter.FormatValues(parameters));
-
-			string formattedResult = builder.ToString();
-			if (formattedResult.StartsWith("##teamcity["))
-			{
-				builder = builder.Insert(builder.Length - 1, " ");
-				builder = builder.Insert(builder.Length - 1, CreateTimestamp());
-			}
-
-			return builder.ToString();
-		}
-
-		/// <summary>
-		/// Creates the timestamp for a message.
-		/// </summary>
-		/// <remarks>Supported by TeamCity 4.0 or greater.</remarks>
-		string CreateTimestamp()
-		{
-			return String.Format("timestamp='{0}'", _clock.Now.ToString("o"));
-		}
 	}
 }

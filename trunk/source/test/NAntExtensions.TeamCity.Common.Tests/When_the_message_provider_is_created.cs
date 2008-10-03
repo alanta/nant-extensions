@@ -15,21 +15,14 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void Requires_an_instance_of_TeamCityLogWriter()
 		{
-			new TeamCityMessageProvider(null, Mocks.StrictMock<Task>(), Mocks.StrictMock<IClock>());
+			new TeamCityMessageProvider(null, Mocks.StrictMock<Task>());
 		}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentNullException))]
 		public void Requires_an_instance_of_Task()
 		{
-			new TeamCityMessageProvider(Mocks.StrictMock<TeamCityLogWriter>(), null, Mocks.StrictMock<IClock>());
-		}
-		
-		[Test]
-		[ExpectedException(typeof(ArgumentNullException))]
-		public void Requires_an_instance_of_IClock()
-		{
-			new TeamCityMessageProvider(Mocks.StrictMock<TeamCityLogWriter>(), Mocks.StrictMock<Task>(), null);
+			new TeamCityMessageProvider(Mocks.StrictMock<TeamCityLogWriter>(), null);
 		}
 
 		[Test]
@@ -37,7 +30,6 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		{
 			TeamCityLogWriter teamCityLogWriter = Mocks.StrictMock<TeamCityLogWriter>();
 			Task task = Mocks.StrictMock<Task>();
-			IClock clock = Mocks.DynamicMock<IClock>();
 
 			using (Mocks.Record())
 			{
@@ -46,7 +38,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 
 			using (Mocks.Playback())
 			{
-				new TeamCityMessageProvider(teamCityLogWriter, task, clock);
+				new TeamCityMessageProvider(teamCityLogWriter, task);
 			}
 		}
 	}
