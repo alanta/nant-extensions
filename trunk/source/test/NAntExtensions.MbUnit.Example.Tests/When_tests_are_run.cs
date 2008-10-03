@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 using MbUnit.Framework;
 
@@ -10,6 +11,12 @@ namespace NAntExtensions.MbUnit.Example.Tests
 		[Test]
 		public void Should_succeed()
 		{
+		}
+		
+		[Test]
+		public void Should_run_very_long()
+		{
+			Thread.Sleep(1500);
 		}
 
 		[Test]

@@ -139,14 +139,31 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public void TestFinished(string testName)
 		{
+			TestFinished(testName, TimeSpan.MinValue);
+		}
+
+		public void TestFinished(string testName, TimeSpan duration)
+		{
 			if (String.IsNullOrEmpty(testName))
 			{
 				return;
 			}
 
-			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-			                                "##teamcity[testFinished name='{0}']",
-			                                Formatter.FormatValue(testName)));
+			StringBuilder message = new StringBuilder();
+			message.AppendFormat(CultureInfo.InvariantCulture,
+											"##teamcity[testFinished name='{0}'",
+											Formatter.FormatValue(testName));
+
+			if (duration.TotalMilliseconds >= 0)
+			{
+				message.AppendFormat(CultureInfo.InvariantCulture,
+											" duration='{0}'",
+											duration.TotalMilliseconds);
+			}
+
+			message.Append("]");
+
+			_writer.WriteLine(message.ToString());
 		}
 
 		public void SendMessage(string message, params object[] parameters)

@@ -54,7 +54,7 @@ namespace NAntExtensions.MbUnit.Reporting
 						messageProvider.TestErrorStream(run.Name, run.ConsoleError);
 					}
 
-					messageProvider.TestFinished(run.Name);
+					messageProvider.TestFinished(run.Name, TimeSpan.FromSeconds(run.Duration));
 				}
 			}
 

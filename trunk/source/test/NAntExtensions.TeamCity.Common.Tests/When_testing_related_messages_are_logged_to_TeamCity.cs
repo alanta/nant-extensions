@@ -132,6 +132,40 @@ namespace NAntExtensions.TeamCity.Common.Tests
 				_messageProvider.TestFinished(TestName);
 			}
 		}
+		
+		[Test]
+		public void Should_log_TestFinished_with_duration()
+		{
+			TimeSpan duration = TimeSpan.FromMinutes(1).Add(TimeSpan.FromMilliseconds(42));
+
+			using (Mocks.Record())
+			{
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(Text.Contains(String.Format(" duration='{0}'", duration.TotalMilliseconds)));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestFinished(TestName, duration);
+			}
+		}
+		
+		[Test]
+		public void Should_log_TestFinished_without_duration_if_duration_is_negative()
+		{
+			TimeSpan duration = TimeSpan.FromMilliseconds(42).Negate();
+
+			using (Mocks.Record())
+			{
+				_writer.WriteLine(String.Empty);
+				LastCall.Constraints(!Text.Contains("duration='"));
+			}
+
+			using (Mocks.Playback())
+			{
+				_messageProvider.TestFinished(TestName, duration);
+			}
+		}
 
 		[RowTest]
 		[Row(SpecialValue.Null)]
