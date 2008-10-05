@@ -11,7 +11,7 @@ The easiest way is to extract the downloaded zip files into the same folder as t
 == 2. Use <loadtasks> ==
 NAnt also supports loading tasks from the build script directly. For the MbUnit tasks that would look something like this:
 {{{
-  <loadtasks assembly="path-to-custom-tasks/NAntExtensions.MbUnit.dll">
+  <loadtasks assembly="path-to-custom-tasks/NAntExtensions.MbUnit.dll" />
 }}}
 
 In order for this to work NAnt needs to be able to find all dependencies for the tasks. To accomplish this you should extract all the files from the downloaded zip file into the same folder and load the task from there.
