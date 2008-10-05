@@ -41,8 +41,7 @@ namespace NAntExtensions.TeamCity.Tests
 
 			using (Mocks.Record())
 			{
-				_messageProvider.SendMessage("##teamcity[buildStatus status='{0}' text='{1}']",
-				                             status.ToString().ToUpperInvariant(),
+				_messageProvider.BuildStatus(status.ToString().ToUpperInvariant(),
 				                             Message);
 				LastCall.Repeat.Once();
 			}

@@ -80,8 +80,7 @@ namespace NAntExtensions.TeamCity.Tasks
 
 			Log(Level.Verbose, "Reporting build status. Type={0}, Message={1}", StatusType, Message ?? "(null)");
 
-			MessageProvider.SendMessage("##teamcity[buildStatus status='{0}' text='{1}']",
-			                            StatusType.ToString().ToUpperInvariant(),
+			MessageProvider.BuildStatus(StatusType.ToString().ToUpperInvariant(),
 			                            Message);
 		}
 	}
