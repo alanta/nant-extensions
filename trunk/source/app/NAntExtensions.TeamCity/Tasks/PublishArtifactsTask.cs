@@ -9,7 +9,8 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// <summary>
 	/// Publishes build artifacts while the build is still running.
 	/// </summary>
-	/// <remarks>This task will only be executed within a TeamCity build. Artifacts that are specified in the build configuration setting will be published as usual.</remarks>
+	/// <remarks>This task will only be executed within a TeamCity build. Artifacts that are specified in the build
+	/// configuration setting will be published as usual.</remarks>
 	/// <example>
 	/// <code>
 	/// <![CDATA[
@@ -53,7 +54,7 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Verbose, "Publishing build artifacts at '{0}'", PathToArtifacts);
+			Log(Level.Verbose, "Publishing build artifacts. Path={0}", PathToArtifacts);
 
 			MessageProvider.PublishBuildArtifacts(PathToArtifacts);
 		}

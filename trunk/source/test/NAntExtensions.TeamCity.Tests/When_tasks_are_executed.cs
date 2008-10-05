@@ -40,6 +40,7 @@ namespace NAntExtensions.TeamCity.Tests
 					return task;
 				}
 			}
+
 			[Factory]
 			public TeamCityTask AddStatisticFromProperties
 			{
@@ -95,6 +96,12 @@ namespace NAntExtensions.TeamCity.Tests
 			public TeamCityTask PublishArtifacts
 			{
 				get { return InternalMocks.PartialMock<PublishArtifactsTask>(_buildEnvironment, _messageProvider); }
+			}
+
+			[Factory]
+			public TeamCityTask ImportData
+			{
+				get { return InternalMocks.PartialMock<ImportDataTask>(_buildEnvironment, _messageProvider); }
 			}
 		}
 		#endregion

@@ -11,8 +11,8 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// </summary>
 	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
-	/// In the <c>build-number</c> attribute, you can use the <c>{build.number}</c> attribute to show the current build number
-	/// provided by TeamCity.
+	/// In the <c>build-number</c> attribute, you can use the <c>{build.number}</c> placeholder to include the current build
+	/// number provided by TeamCity.
 	/// <code>
 	/// <![CDATA[
 	/// <tc-buildnumber build-number="{build.number}-internal" />
@@ -55,7 +55,7 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Verbose, "Setting new build number '{0}'", BuildNumber);
+			Log(Level.Verbose, "Reporting build number. Number={0}", BuildNumber);
 
 			MessageProvider.BuildNumber(BuildNumber);
 		}
