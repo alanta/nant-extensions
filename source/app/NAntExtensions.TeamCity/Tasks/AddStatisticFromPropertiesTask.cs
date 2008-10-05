@@ -90,6 +90,11 @@ namespace NAntExtensions.TeamCity.Tasks
 			XmlDocument teamCityInfo = LoadTeamCityInfo();
 			XmlElement buildNode = GetBuildNode(teamCityInfo);
 
+			if (Properties == null)
+			{
+				return;
+			}
+
 			foreach (DictionaryEntry property in Properties)
 			{
 				if (!property.Key.ToString().StartsWith(PropertiesStartingWith, PropertyKeyComparison))
