@@ -34,7 +34,7 @@ namespace NAntExtensions.TeamCity.Tests
 			{
 				get
 				{
-					AddStatisticListTask task = InternalMocks.PartialMock<AddStatisticListTask>(_buildEnvironment);
+					AddStatisticListTask task = InternalMocks.PartialMock<AddStatisticListTask>(_buildEnvironment, _messageProvider);
 					SetupResult.For(task.Properties).Return(null);
 					task.KeyValuePairs = "foo=bar";
 					return task;
@@ -46,7 +46,7 @@ namespace NAntExtensions.TeamCity.Tests
 			{
 				get
 				{
-					TeamCityTask task = InternalMocks.PartialMock<AddStatisticFromPropertiesTask>(_buildEnvironment);
+					TeamCityTask task = InternalMocks.PartialMock<AddStatisticFromPropertiesTask>(_buildEnvironment, _messageProvider);
 					SetupResult.For(task.Properties).Return(null);
 					return task;
 				}
@@ -57,7 +57,7 @@ namespace NAntExtensions.TeamCity.Tests
 			{
 				get
 				{
-					TeamCityTask task = InternalMocks.PartialMock<AddStatisticTask>(_buildEnvironment);
+					TeamCityTask task = InternalMocks.PartialMock<AddStatisticTask>(_buildEnvironment, _messageProvider);
 					SetupResult.For(task.Properties).Return(null);
 					return task;
 				}

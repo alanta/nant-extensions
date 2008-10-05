@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="NAntExtensions.TeamCity.Tasks.AddStatisticTask" Collapsed="true">
-    <Position X="0.5" Y="6" Width="1.5" />
+    <Position X="2.75" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAEAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
       <FileName>Tasks\AddStatisticTask.cs</FileName>
@@ -17,12 +17,12 @@
   <Class Name="NAntExtensions.TeamCity.Tasks.AddStatisticListTask" Collapsed="true">
     <Position X="7.25" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAEAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <HashCode>AAAAAAEAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Tasks\AddStatisticListTask.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NAntExtensions.TeamCity.Tasks.BuildLogTask" Collapsed="true">
-    <Position X="3.75" Y="4.5" Width="1.5" />
+    <Position X="0.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAEAAAAAAAAQQAAACAAQAACAAAAAAAAAEAIEA=</HashCode>
       <FileName>Tasks\BuildLogTask.cs</FileName>
@@ -36,7 +36,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="NAntExtensions.TeamCity.Tasks.MessageTask" Collapsed="true">
-    <Position X="12.75" Y="4.5" Width="1.5" />
+    <Position X="9.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAQACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Tasks\MessageTask.cs</FileName>
@@ -50,14 +50,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="NAntExtensions.TeamCity.Tasks.AddStatisticFromPropertiesTask" Collapsed="true">
-    <Position X="2.75" Y="6" Width="1.5" />
+    <Position X="5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAAAAEAAAAAAABAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Tasks\AddStatisticFromPropertiesTask.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="NAntExtensions.TeamCity.Tasks.AppendStatusTextTask" Collapsed="true">
-    <Position X="5" Y="6" Width="1.5" />
+    <Position X="0.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAgAAAAAAgAAIAAAAAA=</HashCode>
       <FileName>Tasks\AppendStatusTextTask.cs</FileName>

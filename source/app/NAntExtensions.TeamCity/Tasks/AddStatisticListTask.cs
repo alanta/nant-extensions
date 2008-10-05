@@ -16,17 +16,16 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Xml;
-
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
+using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
 	/// <summary>
-	/// Adds TeamCity build statistics values to <c>teamcity-info.xml</c>.
+	/// Reports build statistic values to TeamCity.
 	/// </summary>
 	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
@@ -35,19 +34,20 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// <tc-addstatistic-list key-value-pairs="key1=value1;key2=value2" />
 	/// ]]></code>
 	/// </example>
-	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingandDisplayingCustomStatistics">
+	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingBuildStatistics">
 	/// Build Script Interaction with TeamCity</seealso>
 	[TaskName("tc-addstatistic-list")]
-	public class AddStatisticListTask : BuildLogTask
+	public class AddStatisticListTask : MessageTask
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AddStatisticListTask"/> class.
 		/// </summary>
-		public AddStatisticListTask() : this(null)
+		public AddStatisticListTask() : this(null, null)
 		{
 		}
 
-		internal AddStatisticListTask(IBuildEnvironment environment) : base(environment)
+		internal AddStatisticListTask(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
+			: base(environment, messageProvider)
 		{
 		}
 
@@ -55,24 +55,11 @@ namespace NAntExtensions.TeamCity.Tasks
 		/// A list of statistic keys and values separated by semicolon.
 		/// </summary>
 		/// <value>The key value pairs.</value>
-		[TaskAttribute("key-value-pairs")]
+		[TaskAttribute("key-value-pairs", Required = true)]
 		public string KeyValuePairs
 		{
 			get;
 			set;
-		}
-
-		void AddKeyValuePairsToXml(XmlDocument teamCityInfoXml, XmlNode buildNode)
-		{
-			foreach (string str in KeyValuePairs.Split(new[] { ';' }))
-			{
-				string[] strArray = str.Split(new[] { '=' });
-				if (strArray.Length > 1)
-				{
-					XmlElement newChild = CreateStatisticValueNode(teamCityInfoXml, strArray[0], strArray[1]);
-					buildNode.AppendChild(newChild);
-				}
-			}
 		}
 
 		/// <summary>
@@ -85,13 +72,16 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Info, "Writing '{0}' to '{1}'", KeyValuePairs ?? "(null)", TeamCityInfoPath);
+			Log(Level.Info, "Reporting build statistic values. Keys and values={0}", KeyValuePairs);
 
-			XmlDocument teamCityInfo = LoadTeamCityInfo();
-			XmlElement buildNode = GetBuildNode(teamCityInfo);
-
-			AddKeyValuePairsToXml(teamCityInfo, buildNode);
-			SaveTeamCityInfo(teamCityInfo);
+			foreach (string kvp in KeyValuePairs.Split(new[] { ';' }))
+			{
+				string[] keyAndValue = kvp.Split(new[] { '=' });
+				if (keyAndValue.Length > 1)
+				{
+					MessageProvider.BuildStatisticValue(keyAndValue[0], keyAndValue[1]);
+				}
+			}
 		}
 	}
 }

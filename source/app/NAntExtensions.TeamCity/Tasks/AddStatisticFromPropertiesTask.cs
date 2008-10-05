@@ -1,17 +1,16 @@
 using System;
 using System.Collections;
-using System.Xml;
 
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
+using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
 	/// <summary>
-	/// Adds TeamCity build statistics values to <c>teamcity-info.xml</c> based on NAnt properties matching the specified
-	/// prefix.
+	/// Reports build statistic values to TeamCity, based on NAnt properties matching the specified prefix.
 	/// </summary>
 	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
@@ -24,16 +23,17 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingandDisplayingCustomStatistics">
 	/// Build Script Interaction with TeamCity</seealso>
 	[TaskName("tc-addstatistic-fromprops")]
-	public class AddStatisticFromPropertiesTask : BuildLogTask
+	public class AddStatisticFromPropertiesTask : MessageTask
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AddStatisticFromPropertiesTask"/> class.
 		/// </summary>
-		public AddStatisticFromPropertiesTask() : this(null)
+		public AddStatisticFromPropertiesTask() : this(null, null)
 		{
 		}
 
-		internal AddStatisticFromPropertiesTask(IBuildEnvironment environment) : base(environment)
+		internal AddStatisticFromPropertiesTask(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
+			: base(environment, messageProvider)
 		{
 			IgnoreCase = true;
 		}
@@ -83,12 +83,9 @@ namespace NAntExtensions.TeamCity.Tasks
 			}
 
 			Log(Level.Info,
-			    "Creating statistic values from properties starting with '{0}' (case {1}sensitive)",
+			    "Reporting statistic values from properties starting with '{0}' (case {1}sensitive)",
 			    PropertiesStartingWith,
 			    IgnoreCase ? "in" : String.Empty);
-
-			XmlDocument teamCityInfo = LoadTeamCityInfo();
-			XmlElement buildNode = GetBuildNode(teamCityInfo);
 
 			if (Properties == null)
 			{
@@ -102,12 +99,8 @@ namespace NAntExtensions.TeamCity.Tasks
 					continue;
 				}
 
-				Log(Level.Info, "Writing '{0}={1}' to '{2}'", property.Key, property.Value, TeamCityInfoPath);
-
-				XmlElement newChild = CreateStatisticValueNode(teamCityInfo, property.Key.ToString(), property.Value.ToString());
-				buildNode.AppendChild(newChild);
-
-				SaveTeamCityInfo(teamCityInfo);
+				Log(Level.Info, "Reporting build statistic value. Key={0} Value={1}", property.Key, property.Value);
+				MessageProvider.BuildStatisticValue(property.Key.ToString(), property.Value.ToString());
 			}
 		}
 	}

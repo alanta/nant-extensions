@@ -90,8 +90,8 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 			StringBuilder message = new StringBuilder();
 			message.AppendFormat(CultureInfo.InvariantCulture,
-								 "##teamcity[testFailed name='{0}'",
-								 Formatter.FormatValue(testName));
+			                     "##teamcity[testFailed name='{0}'",
+			                     Formatter.FormatValue(testName));
 
 			if (exceptionInfo != null)
 			{
@@ -100,10 +100,10 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				Formatter.FormatValue(formattedException);
 
 				message.AppendFormat(CultureInfo.InvariantCulture,
-									 " message='{0}' details='{1}' type='{2}'",
-									 Formatter.FormatValue(exceptionInfo.Message),
-									 formattedException,
-									 Formatter.FormatValue(exceptionInfo.Type));
+				                     " message='{0}' details='{1}' type='{2}'",
+				                     Formatter.FormatValue(exceptionInfo.Message),
+				                     formattedException,
+				                     Formatter.FormatValue(exceptionInfo.Type));
 			}
 
 			message.Append("]");
@@ -151,14 +151,12 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 			StringBuilder message = new StringBuilder();
 			message.AppendFormat(CultureInfo.InvariantCulture,
-											"##teamcity[testFinished name='{0}'",
-											Formatter.FormatValue(testName));
+			                     "##teamcity[testFinished name='{0}'",
+			                     Formatter.FormatValue(testName));
 
 			if (duration.TotalMilliseconds >= 0)
 			{
-				message.AppendFormat(CultureInfo.InvariantCulture,
-											" duration='{0}'",
-											duration.TotalMilliseconds);
+				message.AppendFormat(CultureInfo.InvariantCulture, " duration='{0}'", duration.TotalMilliseconds);
 			}
 
 			message.Append("]");
@@ -169,52 +167,60 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		public void BuildNumber(string newBuildNumber)
 		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-											"##teamcity[buildNumber '{0}']",
-											Formatter.FormatValue(newBuildNumber)));
+			                                "##teamcity[buildNumber '{0}']",
+			                                Formatter.FormatValue(newBuildNumber)));
 		}
 
 		public void BuildStatus(string status, string message)
 		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-											"##teamcity[buildStatus status='{0}' text='{1}']",
-											Formatter.FormatValue(status),
-											Formatter.FormatValue(message)));
+			                                "##teamcity[buildStatus status='{0}' text='{1}']",
+			                                Formatter.FormatValue(status),
+			                                Formatter.FormatValue(message)));
 		}
 
 		public void PublishBuildArtifacts(string pathToArtifacts)
 		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-											"##teamcity[publishArtifacts '{0}']",
-											Formatter.FormatValue(pathToArtifacts)));
+			                                "##teamcity[publishArtifacts '{0}']",
+			                                Formatter.FormatValue(pathToArtifacts)));
 		}
 
 		public void ProgressStart(string message)
-		{		
+		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-											"##teamcity[progressStart '{0}']",
-											Formatter.FormatValue(message)));
+			                                "##teamcity[progressStart '{0}']",
+			                                Formatter.FormatValue(message)));
 		}
 
 		public void ProgressMessage(string message)
 		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-											"##teamcity[progressMessage '{0}']",
-											Formatter.FormatValue(message)));
+			                                "##teamcity[progressMessage '{0}']",
+			                                Formatter.FormatValue(message)));
 		}
 
 		public void ProgressFinished(string message)
 		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-											"##teamcity[progressFinish '{0}']",
-											Formatter.FormatValue(message)));
+			                                "##teamcity[progressFinish '{0}']",
+			                                Formatter.FormatValue(message)));
 		}
 
 		public void ImportData(string type, string pathToFile)
 		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
-											"##teamcity[importData id='{0}' file='{1}']",
-											Formatter.FormatValue(type),
-											Formatter.FormatValue(pathToFile)));
+			                                "##teamcity[importData id='{0}' file='{1}']",
+			                                Formatter.FormatValue(type),
+			                                Formatter.FormatValue(pathToFile)));
+		}
+
+		public void BuildStatisticValue(string key, string value)
+		{
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+			                                "##teamcity[buildStatisticValue key='{0}' value='{1}']",
+			                                Formatter.FormatValue(key),
+			                                Formatter.FormatValue(value)));
 		}
 
 		public void SendMessage(string message, params object[] parameters)

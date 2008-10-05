@@ -26,5 +26,6 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		void ImportData(string type, string pathToFile);
 
 		void SendMessage(string message, params object[] parameters);
+		void BuildStatisticValue(string key, string value);
 	}
 }
