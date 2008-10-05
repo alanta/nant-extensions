@@ -57,6 +57,7 @@
     <Compile Include="Tasks\BuildLogTask.cs" />
     <Compile Include="Tasks\BuildNumberTask.cs" />
     <Compile Include="Tasks\BuildStatusTask.cs" />
+    <Compile Include="Tasks\ImportDataTask.cs" />
     <Compile Include="Tasks\ProgressTask.cs" />
     <Compile Include="Tasks\MessageTask.cs" />
     <Compile Include="Tasks\PublishArtifactsTask.cs" />
