@@ -16,17 +16,16 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-using System.Xml;
-
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
+using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
 	/// <summary>
-	/// Adds a single TeamCity build statistics value to <c>teamcity-info.xml</c>.
+	/// Reports a single build statistic value to TeamCity.
 	/// </summary>
 	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
@@ -36,19 +35,20 @@ namespace NAntExtensions.TeamCity.Tasks
 	///                  value="value1" />
 	/// ]]></code>
 	/// </example>
-	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingandDisplayingCustomStatistics">
+	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ReportingBuildStatistics">
 	/// Build Script Interaction with TeamCity</seealso>
 	[TaskName("tc-addstatistic")]
-	public class AddStatisticTask : BuildLogTask
+	public class AddStatisticTask : MessageTask
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="AddStatisticTask"/> class.
 		/// </summary>
-		public AddStatisticTask() : this(null)
+		public AddStatisticTask() : this(null, null)
 		{
 		}
 
-		internal AddStatisticTask(IBuildEnvironment environment) : base(environment)
+		internal AddStatisticTask(IBuildEnvironment environment, ITeamCityMessageProvider messageProvider)
+			: base(environment, messageProvider)
 		{
 		}
 
@@ -84,15 +84,9 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Info, "Writing '{0}={1}' to '{2}'", Key, Value, TeamCityInfoPath);
+			Log(Level.Info, "Reporting build statistic value. Key={0} Value={1}", Key, Value);
 
-			XmlDocument teamCityInfo = LoadTeamCityInfo();
-			XmlElement buildNode = GetBuildNode(teamCityInfo);
-			
-			XmlElement newChild = CreateStatisticValueNode(teamCityInfo, Key, Value);
-			buildNode.AppendChild(newChild);
-
-			SaveTeamCityInfo(teamCityInfo);
+			MessageProvider.BuildStatisticValue(Key, Value);
 		}
 	}
 }
