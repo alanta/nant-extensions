@@ -9,7 +9,7 @@ There are two ways to deploy the NAnt-Extension tasks.
 The easiest way is to extract the downloaded zip files into the same folder as the NAnt executable. The zip file's directory structure matches the the directory structure expected by NAnt.
 
 == 2. Use <loadtasks> ==
-NAnt also supports loading tasks from a the build script directly. For the MbUnit tasks that would look something like this:
+NAnt also supports loading tasks from the build script directly. For the MbUnit tasks that would look something like this:
 {{{
   <loadtasks assembly="path-to-custom-tasks/NAntExtensions.MbUnit.dll">
 }}}
