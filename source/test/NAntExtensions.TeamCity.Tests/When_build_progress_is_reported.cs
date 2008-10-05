@@ -57,7 +57,7 @@ namespace NAntExtensions.TeamCity.Tests
 
 			using (Mocks.Record())
 			{
-				_messageProvider.SendMessage("##teamcity[progressStart '{0}']", Message);
+				_messageProvider.ProgressStart(Message);
 				LastCall.Repeat.Once();
 			}
 
@@ -75,7 +75,7 @@ namespace NAntExtensions.TeamCity.Tests
 
 			using (Mocks.Record())
 			{
-				_messageProvider.SendMessage("##teamcity[progressFinish '{0}']", Message);
+				_messageProvider.ProgressFinished(Message);
 				LastCall.Repeat.Once();
 			}
 
@@ -93,7 +93,7 @@ namespace NAntExtensions.TeamCity.Tests
 
 			using (Mocks.Record())
 			{
-				_messageProvider.SendMessage("##teamcity[progressMessage '{0}']", Message);
+				_messageProvider.ProgressMessage(Message);
 				LastCall.Repeat.Once();
 			}
 

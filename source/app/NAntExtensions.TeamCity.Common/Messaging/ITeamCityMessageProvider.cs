@@ -16,14 +16,14 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		void TestFinished(string testName, TimeSpan duration);
 
 		void BuildNumber(string newBuildNumber);
-		void BuildStatus(string newBuildNumber);
+		void BuildStatus(string status, string message);
 		void PublishBuildArtifacts(string pathToArtifacts);
 		
 		void ProgressStart(string message);
 		void ProgressMessage(string message);
 		void ProgressFinished(string message);
 		
-		void ImportData(string type, string pathToDataFile);
+		void ImportData(string type, string pathToFile);
 
 		void SendMessage(string message, params object[] parameters);
 	}

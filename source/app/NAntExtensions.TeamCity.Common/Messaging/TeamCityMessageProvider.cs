@@ -166,6 +166,57 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			_writer.WriteLine(message.ToString());
 		}
 
+		public void BuildNumber(string newBuildNumber)
+		{
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+											"##teamcity[buildNumber '{0}']",
+											Formatter.FormatValue(newBuildNumber)));
+		}
+
+		public void BuildStatus(string status, string message)
+		{
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+											"##teamcity[buildStatus status='{0}' text='{1}']",
+											Formatter.FormatValue(status),
+											Formatter.FormatValue(message)));
+		}
+
+		public void PublishBuildArtifacts(string pathToArtifacts)
+		{
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+											"##teamcity[publishArtifacts '{0}']",
+											Formatter.FormatValue(pathToArtifacts)));
+		}
+
+		public void ProgressStart(string message)
+		{		
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+											"##teamcity[progressStart '{0}']",
+											Formatter.FormatValue(message)));
+		}
+
+		public void ProgressMessage(string message)
+		{
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+											"##teamcity[progressMessage '{0}']",
+											Formatter.FormatValue(message)));
+		}
+
+		public void ProgressFinished(string message)
+		{
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+											"##teamcity[progressFinish '{0}']",
+											Formatter.FormatValue(message)));
+		}
+
+		public void ImportData(string type, string pathToFile)
+		{
+			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
+											"##teamcity[importData id='{0}' file='{1}']",
+											Formatter.FormatValue(type),
+											Formatter.FormatValue(pathToFile)));
+		}
+
 		public void SendMessage(string message, params object[] parameters)
 		{
 			if (String.IsNullOrEmpty(message))

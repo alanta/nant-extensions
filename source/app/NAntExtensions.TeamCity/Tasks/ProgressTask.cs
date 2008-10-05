@@ -85,13 +85,13 @@ namespace NAntExtensions.TeamCity.Tasks
 			switch (ProgressType)
 			{
 				case ProgressType.Message:
-					MessageProvider.SendMessage("##teamcity[progressMessage '{0}']", Message);
+					MessageProvider.ProgressMessage(Message);
 					break;
 				case ProgressType.Start:
-					MessageProvider.SendMessage("##teamcity[progressStart '{0}']", Message);
+					MessageProvider.ProgressStart(Message);
 					break;
 				case ProgressType.End:
-					MessageProvider.SendMessage("##teamcity[progressFinish '{0}']", Message);
+					MessageProvider.ProgressFinished(Message);
 					break;
 				default:
 					throw new BuildException(String.Format("Unknown progress type: '{0}'", ProgressType));

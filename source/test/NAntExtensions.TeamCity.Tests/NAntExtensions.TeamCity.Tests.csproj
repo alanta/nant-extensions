@@ -69,6 +69,8 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="When_a_build_statistics_value_is_added.cs" />
+    <Compile Include="When_build_artifacts_are_published.cs" />
+    <Compile Include="When_build_number_is_reported.cs" />
     <Compile Include="When_build_progress_is_reported.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="When_build_status_is_reported.cs" />

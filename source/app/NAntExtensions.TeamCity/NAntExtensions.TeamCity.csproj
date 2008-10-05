@@ -55,9 +55,11 @@
     <Compile Include="Tasks\AddStatisticListTask.cs" />
     <Compile Include="Tasks\AppendStatusTextTask.cs" />
     <Compile Include="Tasks\BuildLogTask.cs" />
+    <Compile Include="Tasks\BuildNumberTask.cs" />
     <Compile Include="Tasks\BuildStatusTask.cs" />
     <Compile Include="Tasks\ProgressTask.cs" />
     <Compile Include="Tasks\MessageTask.cs" />
+    <Compile Include="Tasks\PublishArtifactsTask.cs" />
     <Compile Include="Tasks\TeamCityTask.cs" />
     <Compile Include="Types\ProgressType.cs" />
     <Compile Include="Types\StatusType.cs" />
