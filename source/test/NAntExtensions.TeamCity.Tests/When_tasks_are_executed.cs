@@ -64,11 +64,11 @@ namespace NAntExtensions.TeamCity.Tests
 			}
 
 			[Factory]
-			public TeamCityTask AppendStatusText
+			public TeamCityTask StatusText
 			{
 				get
 				{
-					TeamCityTask task = InternalMocks.PartialMock<AppendStatusTextTask>(_buildEnvironment);
+					TeamCityTask task = InternalMocks.PartialMock<StatusTextTask>(_buildEnvironment);
 					SetupResult.For(task.Properties).Return(null);
 					return task;
 				}

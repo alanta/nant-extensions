@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 using MbUnit.Framework;
@@ -8,23 +9,24 @@ using NAnt.Core;
 using NAntExtensions.ForTesting;
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Tasks;
+using NAntExtensions.TeamCity.Types;
 
 using Rhino.Mocks;
 
 namespace NAntExtensions.TeamCity.Tests
 {
-	public class When_build_status_text_is_appended : Spec
+	public class When_build_status_text_is_set : Spec
 	{
 		const string SecondValue = "bar";
 		const string Value = "foo";
 		IBuildEnvironment _buildEnvironment;
-		AppendStatusTextTask _task;
+		StatusTextTask _task;
 
 		protected override void Before_each_spec()
 		{
 			_buildEnvironment = Mocks.StrictMock<IBuildEnvironment>();
 
-			_task = Mocks.PartialMock<AppendStatusTextTask>(_buildEnvironment);
+			_task = Mocks.PartialMock<StatusTextTask>(_buildEnvironment);
 			_task.ForceTaskExecution = true;
 
 			// Logging is allowed at any time.
@@ -82,6 +84,22 @@ namespace NAntExtensions.TeamCity.Tests
 
 			string xml = File.ReadAllText(_task.TeamCityInfoPath);
 			XmlAssert.XPathEvaluatesTo("/build/statusInfo/text[@action='append']", xml, Value + SecondValue);
+		}
+
+		[CombinatorialTest]
+		public void Uses_action_from_task_to_create_text_element([UsingEnum(typeof(ActionType))] ActionType action)
+		{
+			_task.Action = action;
+			_task.Message = Value;
+
+			using (Mocks.Playback())
+			{
+				Reflector.InvokeMethod(_task, "ExecuteTask");
+			}
+
+			string xml = File.ReadAllText(_task.TeamCityInfoPath);
+			XmlAssert.XPathEvaluatesTo(
+				String.Format("/build/statusInfo/text[@action='{0}']", action.ToString().ToLowerInvariant()), xml, Value);
 		}
 	}
 }
