@@ -22,37 +22,55 @@ using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
+using NAntExtensions.TeamCity.Types;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
 	/// <summary>
-	/// Appends a status message to the TeamCity build status to <c>teamcity-info.xml</c>.
+	/// Adds a status message to the TeamCity build status element of <c>teamcity-info.xml</c>.
 	/// </summary>
 	/// <remarks>This task will only be executed within a TeamCity build.</remarks>
 	/// <example>
+	/// Appends the code coverage value to the current build status message. The resulting message will be 
+	/// <c><![CDATA[<current status text>, Code Coverage <x>% ]]></c>.
 	/// <code>
 	/// <![CDATA[
-	/// <tc-appendstatustext value=" Code Coverage ${coverage.value}" />
+	/// <tc-statustext action="Append"
+	///                message=" Code Coverage ${coverage.value}%" />
 	/// ]]></code>
 	/// </example>
 	/// <seealso href="http://www.jetbrains.net/confluence/display/TCD3/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-ModifyingtheBuildStatus">
 	/// Build Script Interaction with TeamCity</seealso>
-	[TaskName("tc-appendstatustext")]
-	public class AppendStatusTextTask : BuildLogTask
+	[TaskName("tc-statustext")]
+	public class StatusTextTask : BuildLogTask
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="AppendStatusTextTask"/> class.
+		/// Initializes a new instance of the <see cref="StatusTextTask"/> class.
 		/// </summary>
-		public AppendStatusTextTask() : this(null)
+		public StatusTextTask() : this(null)
 		{
 		}
 
-		internal AppendStatusTextTask(IBuildEnvironment environment) : base(environment)
+		internal StatusTextTask(IBuildEnvironment environment) : base(environment)
 		{
 		}
 
 		/// <summary>
-		/// The message to append to the build status node.
+		/// Defines how the <see cref="Message"/> should affect the current build status message. The default value is 
+		/// <see cref="ActionType.Append"/>. If the <see cref="Action"/> is <see cref="ActionType.Append"/> or 
+		/// <see cref="ActionType.Prepend"/>, a comma will be placed between the <see cref="Message"/> and the current build status
+		/// message.
+		/// </summary>
+		/// <value>The action.</value>
+		[TaskAttribute("action")]
+		public ActionType Action
+		{
+			get;
+			set;
+		}
+		
+		/// <summary>
+		/// The message to add to the build status node.
 		/// </summary>
 		/// <value>The value.</value>
 		[TaskAttribute("message")]
@@ -72,7 +90,7 @@ namespace NAntExtensions.TeamCity.Tasks
 				return;
 			}
 
-			Log(Level.Info, "Writing '{0}' to '{1}'", Message ?? "(null)", TeamCityInfoPath);
+			Log(Level.Info, "Writing '{0}' with '{1}' to '{2}'", Message ?? "(null)", Action, TeamCityInfoPath);
 
 			XmlDocument teamCityInfo = LoadTeamCityInfo();
 			XmlElement buildNode = GetBuildNode(teamCityInfo);
@@ -82,16 +100,16 @@ namespace NAntExtensions.TeamCity.Tasks
 			SaveTeamCityInfo(teamCityInfo);
 		}
 
-		static void AppendStatusText(XmlDocument doc, XmlElement statusInfoNode, string text)
+		void AppendStatusText(XmlDocument doc, XmlNode statusInfoNode, string text)
 		{
 			XmlElement statusTextNode = doc.CreateElement("text");
-			statusTextNode.SetAttribute("action", "append");
+			statusTextNode.SetAttribute("action", Action.ToString().ToLowerInvariant());
 			statusTextNode.InnerText = text;
 
 			statusInfoNode.AppendChild(statusTextNode);
 		}
 
-		static XmlElement GetStatusInfoNode(XmlDocument doc, XmlElement buildNode)
+		static XmlElement GetStatusInfoNode(XmlDocument doc, XmlNode buildNode)
 		{
 			XmlElement statusInfoNode = buildNode.SelectSingleNode("statusInfo") as XmlElement;
 			if (statusInfoNode == null)

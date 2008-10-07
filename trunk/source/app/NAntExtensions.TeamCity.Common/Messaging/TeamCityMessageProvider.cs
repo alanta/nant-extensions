@@ -175,7 +175,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 		{
 			_writer.WriteLine(String.Format(CultureInfo.InvariantCulture,
 			                                "##teamcity[buildStatus status='{0}' text='{1}']",
-			                                Formatter.FormatValue(status),
+			                                Formatter.FormatValue(status).ToUpperInvariant(),
 			                                Formatter.FormatValue(message)));
 		}
 

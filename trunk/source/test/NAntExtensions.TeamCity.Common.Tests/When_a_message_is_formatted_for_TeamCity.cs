@@ -25,6 +25,12 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		}
 
 		[Test]
+		public void Should_encode_null_values_to_empty_strings()
+		{
+			Assert.IsEmpty(Formatter.FormatValue((string) null));
+		}
+
+		[Test]
 		public void Should_encode_the_pipe_character()
 		{
 			_builder.Append("|");

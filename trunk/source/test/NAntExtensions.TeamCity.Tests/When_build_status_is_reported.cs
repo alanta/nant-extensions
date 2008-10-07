@@ -34,15 +34,31 @@ namespace NAntExtensions.TeamCity.Tests
 		}
 
 		[CombinatorialTest]
-		public void Reports_build_status([UsingEnum(typeof(StatusType))] StatusType status)
+		public void Should_report_build_status([UsingEnum(typeof(StatusType))] StatusType status)
 		{
 			_task.StatusType = status;
 			_task.Message = Message;
 
 			using (Mocks.Record())
 			{
-				_messageProvider.BuildStatus(status.ToString().ToUpperInvariant(),
-				                             Message);
+				_messageProvider.BuildStatus(status.ToString(), Message);
+				LastCall.Repeat.Once();
+			}
+
+			using (Mocks.Playback())
+			{
+				Reflector.InvokeMethod(_task, "ExecuteTask");
+			}
+		}
+
+		[Test]
+		public void Should_report_message_with_an_unset_status_type()
+		{
+			_task.Message = Message;
+
+			using (Mocks.Record())
+			{
+				_messageProvider.BuildStatus(null, Message);
 				LastCall.Repeat.Once();
 			}
 
