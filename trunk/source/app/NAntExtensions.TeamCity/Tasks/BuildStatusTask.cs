@@ -20,10 +20,12 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// ]]></code>
 	/// </example>
 	/// <example>
-	/// Appends the code coverage value to the current build status message. <c>{build.status.text}</c> is an optional
-	/// substitution pattern which represents the status, calculated automatically by TeamCity using passed test count,
-	/// compilation messages and so on. The resulting message will be 
-	/// <c><![CDATA[<current status text>, Code Coverage <x>% ]]></c>.
+	/// Appends the code coverage value to the current build status message.<para><c>{build.status.text}</c> is an optional
+	/// substitution pattern which represents the default status message, calculated automatically by TeamCity using passed
+	/// test count, compilation messages and so on. Note that it is not possible to append multiple messages to the build
+	/// status, as <c>{build.status.text}</c> resolves to the default build status text as calculated by TeamCity. To append
+	/// multiple messages, use the <see cref="StatusTextTask"/>.</para><para>The resulting message will be 
+	/// <c><![CDATA[<default status text>, Code Coverage <x>% ]]></c>.</para>
 	/// <code>
 	/// <![CDATA[
 	/// <tc-buildstatus message="{build.status.text}, Code coverage: ${math::round(double::parse(codecoverage))}%" />
@@ -35,7 +37,7 @@ namespace NAntExtensions.TeamCity.Tasks
 	public class BuildStatusTask : MessageTask
 	{
 		StatusType _statusType;
-		bool _statusTypeHasExplicitlyBeenSet;
+		bool _statusTypeHasBeenSetExplicitly;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="BuildStatusTask"/> class.
@@ -60,7 +62,7 @@ namespace NAntExtensions.TeamCity.Tasks
 			set
 			{
 				_statusType = value;
-				_statusTypeHasExplicitlyBeenSet = true;
+				_statusTypeHasBeenSetExplicitly = true;
 			}
 		}
 
@@ -86,7 +88,7 @@ namespace NAntExtensions.TeamCity.Tasks
 			}
 
 			string statusType = null;
-			if (_statusTypeHasExplicitlyBeenSet)
+			if (_statusTypeHasBeenSetExplicitly)
 			{
 				statusType = StatusType.ToString();
 			}
