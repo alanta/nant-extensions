@@ -20,11 +20,11 @@ namespace NAntExtensions.TeamCity.Tasks
 	/// ]]></code>
 	/// </example>
 	/// <example>
-	/// Appends the code coverage value to the current build status message.<para><c>{build.status.text}</c> is an optional
+	/// Appends the code coverage value to the default build status message.<para><c>{build.status.text}</c> is an optional
 	/// substitution pattern which represents the default status message, calculated automatically by TeamCity using passed
 	/// test count, compilation messages and so on. Note that it is not possible to append multiple messages to the build
 	/// status, as <c>{build.status.text}</c> resolves to the default build status text as calculated by TeamCity. To append
-	/// multiple messages, use the <see cref="StatusTextTask"/>.</para><para>The resulting message will be 
+	/// multiple messages, use the <see cref="StatusTextTask"/>.</para><para>The resulting message will be
 	/// <c><![CDATA[<default status text>, Code Coverage <x>% ]]></c>.</para>
 	/// <code>
 	/// <![CDATA[
