@@ -16,7 +16,7 @@ namespace NAntExtensions.MbUnit.Tests
 		}
 
 		[Test]
-		public void All_counters_are_prefixed_with_mspec()
+		public void All_counters_are_prefixed_with_mbunit()
 		{
 			foreach (string counter in Counter.All)
 			{
