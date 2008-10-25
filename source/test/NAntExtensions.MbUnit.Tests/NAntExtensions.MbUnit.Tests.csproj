@@ -36,6 +36,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\MbUnit\MbUnit.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="MbUnit.Framework.2.0, Version=2.4.2.130, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\tools\MbUnit\MbUnit.Framework.2.0.dll</HintPath>
+    </Reference>
+    <Reference Include="NAnt.Core, Version=0.86.2898.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\NAnt\NAnt.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\tools\Rhino Mocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -58,11 +70,16 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="When_counters_are_enumerated.cs" />
+    <Compile Include="When_filters_are_evaluated.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\NAntExtensions.MbUnit\NAntExtensions.MbUnit.csproj">
       <Project>{3275BAF0-0A16-465B-89E1-E60D66565B24}</Project>
       <Name>NAntExtensions.MbUnit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\app\NAntExtensions.TeamCity.Common\NAntExtensions.TeamCity.Common.csproj">
+      <Project>{F123CB57-9979-4558-BB1E-38CF9F20B3AD}</Project>
+      <Name>NAntExtensions.TeamCity.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\NAntExtensions.ForTesting\NAntExtensions.ForTesting.csproj">
       <Project>{5D9B5A98-E50A-4C91-9B99-91512720E985}</Project>
