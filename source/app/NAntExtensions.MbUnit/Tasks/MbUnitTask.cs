@@ -46,7 +46,6 @@ namespace NAntExtensions.MbUnit.Tasks
 	{
 		IBuildEnvironment _buildEnvironment;
 		string _reportFileNameFormat = "mbunit-{0}{1}";
-		string _reportTypes = "Html";
 		ReportResult _result;
 		string _transformReportFileNameFormat;
 		DirectoryInfo _workingDirectory;
@@ -90,8 +89,8 @@ namespace NAntExtensions.MbUnit.Tasks
 		[TaskAttribute("report-types")]
 		public string ReportTypes
 		{
-			get { return _reportTypes; }
-			set { _reportTypes = value; }
+			get;
+			set;
 		}
 
 		/// <summary>
@@ -255,47 +254,50 @@ namespace NAntExtensions.MbUnit.Tasks
 				throw new InvalidOperationException("Report object is a null reference.");
 			}
 
-			Log(Level.Info, "Generating reports");
-			foreach (string reportType in ReportTypes.Split(';'))
+			if (!String.IsNullOrEmpty(ReportTypes))
 			{
-				string reportName = null;
-				Log(Level.Verbose, "Report type: {0}", reportType);
-				switch (reportType.ToLower())
+				Log(Level.Info, "Generating reports");
+				foreach (string reportType in ReportTypes.Split(';'))
 				{
-					case "text":
-						reportName = TextReport.RenderToText(_result, ReportDirectory, ReportFileNameFormat);
-						break;
-					case "xml":
-						reportName = XmlReport.RenderToXml(_result, ReportDirectory, ReportFileNameFormat);
-						break;
-					case "html":
-						reportName = HtmlReport.RenderToHtml(_result, ReportDirectory, ReportFileNameFormat);
-						break;
-					case "dox":
-						reportName = DoxReport.RenderToDox(_result, ReportDirectory, ReportFileNameFormat);
-						break;
-					case "transform":
-						if (Transform == null)
-						{
-							throw new BuildException(String.Format("No transform specified for report type '{0}'", reportType));
-						}
+					string reportFileName = null;
+					Log(Level.Verbose, "Report type: {0}", reportType);
+					switch (reportType.ToLower())
+					{
+						case "text":
+							reportFileName = TextReport.RenderToText(_result, ReportDirectory, ReportFileNameFormat);
+							break;
+						case "xml":
+							reportFileName = XmlReport.RenderToXml(_result, ReportDirectory, ReportFileNameFormat);
+							break;
+						case "html":
+							reportFileName = HtmlReport.RenderToHtml(_result, ReportDirectory, ReportFileNameFormat);
+							break;
+						case "dox":
+							reportFileName = DoxReport.RenderToDox(_result, ReportDirectory, ReportFileNameFormat);
+							break;
+						case "transform":
+							if (Transform == null)
+							{
+								throw new BuildException(String.Format("No transform specified for report type '{0}'", reportType));
+							}
 
-						reportName = HtmlReport.RenderToHtml(_result, ReportDirectory, Transform.FullName, TransformReportFileNameFormat);
-						break;
-					default:
-						Log(Level.Error, "Unknown report type {0}", reportType);
-						break;
-				}
+							reportFileName = HtmlReport.RenderToHtml(_result, ReportDirectory, Transform.FullName, TransformReportFileNameFormat);
+							break;
+						default:
+							Log(Level.Error, "Unknown report type {0}", reportType);
+							break;
+					}
 
-				if (BuildEnvironment.IsTeamCityBuild)
-				{
-					TeamCityReportGenerator.RenderReport(_result, this);
+					if (reportFileName != null)
+					{
+						Log(Level.Info, "Created report at {0}", reportFileName);
+					}
 				}
+			}
 
-				if (reportName != null)
-				{
-					Log(Level.Info, "Created report at {0}", reportName);
-				}
+			if (BuildEnvironment.IsTeamCityBuild)
+			{
+				TeamCityReportGenerator.RenderReport(_result, this);
 			}
 		}
 
