@@ -6,6 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scri
 		..\default.build = ..\default.build
 		..\default.properties = ..\default.properties
 		..\ilmerge.internalize = ..\ilmerge.internalize
+		..\sample-tests.build = ..\sample-tests.build
 		..\upload-docs.batch.template = ..\upload-docs.batch.template
 	EndProjectSection
 EndProject
@@ -44,6 +45,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example Tests", "Example Tests", "{808FFCA4-53F4-4C96-B03A-1530F8FEE210}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.MbUnit.Example.Tests", "test\NAntExtensions.MbUnit.Example.Tests\NAntExtensions.MbUnit.Example.Tests.csproj", "{EBE98C3E-7B7B-4E45-9E49-895C73F72EF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NAntExtensions.MbUnit.Filtered.Example.Tests", "test\NAntExtensions.MbUnit.Filtered.Example.Tests\NAntExtensions.MbUnit.Filtered.Example.Tests.csproj", "{73528207-423D-4567-91AF-6C1C9E4B2DFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +98,10 @@ Global
 		{EBE98C3E-7B7B-4E45-9E49-895C73F72EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBE98C3E-7B7B-4E45-9E49-895C73F72EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBE98C3E-7B7B-4E45-9E49-895C73F72EF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73528207-423D-4567-91AF-6C1C9E4B2DFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73528207-423D-4567-91AF-6C1C9E4B2DFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73528207-423D-4567-91AF-6C1C9E4B2DFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73528207-423D-4567-91AF-6C1C9E4B2DFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,5 +118,6 @@ Global
 		{1304223F-9F3E-46C6-ADDC-39AF8251F7F4} = {2B9CD454-32DF-4F1E-993F-52786A507A6A}
 		{55BD0722-C03A-406D-BAB4-F3BF86DBF5CD} = {808FFCA4-53F4-4C96-B03A-1530F8FEE210}
 		{EBE98C3E-7B7B-4E45-9E49-895C73F72EF0} = {808FFCA4-53F4-4C96-B03A-1530F8FEE210}
+		{73528207-423D-4567-91AF-6C1C9E4B2DFF} = {808FFCA4-53F4-4C96-B03A-1530F8FEE210}
 	EndGlobalSection
 EndGlobal

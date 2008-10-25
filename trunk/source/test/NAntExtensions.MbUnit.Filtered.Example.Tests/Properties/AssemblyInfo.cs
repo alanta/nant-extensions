@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("NAntExtensions.MbUnit.Example.Tests")]
+[assembly: AssemblyTitle("NAntExtensions.MbUnit.Filtered.Example.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyTrademark("")]
@@ -19,4 +19,4 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("4983fdf7-6cb3-4ca5-861d-3050509f67b1")]
+[assembly: Guid("b0b21cdc-03da-4659-82c2-70f96bc6f87b")]

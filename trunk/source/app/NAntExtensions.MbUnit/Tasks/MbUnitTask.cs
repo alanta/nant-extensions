@@ -6,6 +6,7 @@ using MbUnit.Core.Filters;
 using MbUnit.Core.Graph;
 using MbUnit.Core.Reports;
 using MbUnit.Core.Reports.Serialization;
+using MbUnit.Framework;
 
 using NAnt.Core;
 using NAnt.Core.Attributes;
@@ -53,7 +54,8 @@ namespace NAntExtensions.MbUnit.Tasks
 		/// <summary>
 		/// Initializes a new instance of the <see cref="MbUnitTask"/> class.
 		/// </summary>
-		public MbUnitTask() : this(IoC.Resolve<IBuildEnvironment>())
+		public MbUnitTask()
+			: this(IoC.Resolve<IBuildEnvironment>())
 		{
 		}
 
@@ -64,6 +66,11 @@ namespace NAntExtensions.MbUnit.Tasks
 		public MbUnitTask(IBuildEnvironment buildEnvironment)
 		{
 			BuildEnvironment = buildEnvironment;
+
+			FilterAuthors = new IncludeSet();
+			FilterCategories = new FilterSet();
+			FilterNamespaces = new IncludeSet();
+			FilterTypes = new IncludeSet();
 		}
 
 		IBuildEnvironment BuildEnvironment
@@ -188,6 +195,46 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
+		/// The categories to include in and exclude from the test run (<see cref="FixtureCategoryAttribute"/>).
+		/// </summary>
+		[BuildElement("categories", Required = false)]
+		public FilterSet FilterCategories
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Test fixtures by these authors will be included in the test run (<see cref="AuthorAttribute"/>).
+		/// </summary>
+		[BuildElement("authors", Required = false)]
+		public IncludeSet FilterAuthors
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Test fixtures with in namespaces starting with these values will be included in the test run.
+		/// </summary>
+		[BuildElement("namespaces", Required = false)]
+		public IncludeSet FilterNamespaces
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Test fixtures with these names (full names, that is, namespace and type name) will be included in the test run.
+		/// </summary>
+		[BuildElement("types", Required = false)]
+		public IncludeSet FilterTypes
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
 		/// Executes the task.
 		/// </summary>
 		protected override void ExecuteTask()
@@ -200,10 +247,11 @@ namespace NAntExtensions.MbUnit.Tasks
 				Log(Level.Warning, "No test assemblies, aborting task");
 				return;
 			}
+
 			int count = 0;
-			foreach (FileSet files in Assemblies)
+			foreach (FileSet assemblies in Assemblies)
 			{
-				count += files.FileNames.Count;
+				count += assemblies.FileNames.Count;
 			}
 			if (count == 0)
 			{
@@ -331,7 +379,7 @@ namespace NAntExtensions.MbUnit.Tasks
 				using (
 					TestDomainDependencyGraph graph = TestDomainDependencyGraph.BuildGraph(assemblyNames,
 					                                                                       dirNames,
-					                                                                       FixtureFilters.Any,
+					                                                                       CreateFilter(),
 					                                                                       Verbose))
 				{
 					graph.Log += Graph_Log;
@@ -359,6 +407,50 @@ namespace NAntExtensions.MbUnit.Tasks
 			{
 				throw new BuildException("Unexpected engine error while running tests", ex);
 			}
+		}
+
+		IFixtureFilter CreateFilter()
+		{
+			FixtureFilterBase filter = FixtureFilters.Any;
+
+			if (FilterAuthors != null)
+			{
+				foreach (string include in FilterAuthors.GetIncludePatterns())
+				{
+					filter = FixtureFilters.And(filter, FixtureFilters.Author(include));
+				}
+			}
+
+			if (FilterCategories != null)
+			{
+				foreach (string include in FilterCategories.GetIncludePatterns())
+				{
+					filter = FixtureFilters.And(filter, FixtureFilters.Category(include));
+				}
+
+				foreach (string exclude in FilterCategories.GetExcludePatterns())
+				{
+					filter = FixtureFilters.And(filter, FixtureFilters.Category(exclude, true));
+				}
+			}
+
+			if (FilterNamespaces != null)
+			{
+				foreach (string include in FilterNamespaces.GetIncludePatterns())
+				{
+					filter = FixtureFilters.And(filter, FixtureFilters.Namespace(include));
+				}
+			}
+
+			if (FilterTypes != null)
+			{
+				foreach (string include in FilterTypes.GetIncludePatterns())
+				{
+					filter = FixtureFilters.And(filter, FixtureFilters.Type(include));
+				}
+			}
+
+			return filter;
 		}
 
 		static void UpdateNAntProperties(PropertyDictionary properties, ReportResult reportResult)
