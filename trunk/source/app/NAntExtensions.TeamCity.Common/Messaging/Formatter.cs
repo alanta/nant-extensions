@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using NAntExtensions.TeamCity.Common.Helper;
+
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	internal class Formatter
@@ -67,10 +69,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		internal static void FormatValue(StringBuilder builder)
 		{
-			if (builder == null)
-			{
-				throw new ArgumentNullException("builder");
-			}
+			Ensure.ArgumentIsNotNull(builder, "builder");
 
 			builder.Replace("|", "||");
 			builder.Replace("'", "|'");

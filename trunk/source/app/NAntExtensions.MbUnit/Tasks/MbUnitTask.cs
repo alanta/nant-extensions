@@ -94,10 +94,7 @@ namespace NAntExtensions.MbUnit.Tasks
 			get { return _buildEnvironment; }
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
+				Ensure.ArgumentIsNotNull(value, "value");
 				_buildEnvironment = value;
 			}
 		}
@@ -345,7 +342,10 @@ namespace NAntExtensions.MbUnit.Tasks
 								throw new BuildException(String.Format("No transform specified for report type '{0}'", reportType));
 							}
 
-							reportFileName = HtmlReport.RenderToHtml(_result, ReportDirectory, Transform.FullName, TransformReportFileNameFormat);
+							reportFileName = HtmlReport.RenderToHtml(_result,
+							                                         ReportDirectory,
+							                                         Transform.FullName,
+							                                         TransformReportFileNameFormat);
 							break;
 						default:
 							Log(Level.Error, "Unknown report type {0}", reportType);

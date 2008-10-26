@@ -1,7 +1,6 @@
-using System;
-
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
+using NAntExtensions.TeamCity.Common.Helper;
 using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.TeamCity.Tasks
@@ -33,11 +32,7 @@ namespace NAntExtensions.TeamCity.Tasks
 			get { return _messageProvider; }
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-
+				Ensure.ArgumentIsNotNull(value, "value");
 				_messageProvider = value;
 			}
 		}

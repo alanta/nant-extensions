@@ -23,11 +23,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 
 		public NAntRunListener(Task task)
 		{
-			if (task == null)
-			{
-				throw new ArgumentNullException("task");
-			}
-
+			Ensure.ArgumentIsNotNull(task, "task");
 			_task = task;
 
 			UpdateNAntProperties(_task.Properties, 0, 0, 0, 0, 0, 0);

@@ -4,6 +4,8 @@ using System.IO;
 
 using NAnt.Core;
 
+using NAntExtensions.TeamCity.Common.Helper;
+
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	public abstract class TeamCityLogWriter : TextWriter
@@ -29,11 +31,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			}
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-
+				Ensure.ArgumentIsNotNull(value, "value");
 				_taskToUseForLogging = value;
 			}
 		}

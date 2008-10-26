@@ -4,6 +4,7 @@ using System.Text;
 using NAnt.Core;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
+using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
@@ -43,10 +44,7 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			get { return _buildEnvironment; }
 			set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
+				Ensure.ArgumentIsNotNull(value, "value");
 				_buildEnvironment = value;
 			}
 		}
@@ -79,19 +77,15 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public override void Write(char value)
 		{
-			if (!_isOpen)
-			{
-				throw new ObjectDisposedException(null, "Writer is closed.");
-			}
+			CheckWriterIsOpened();
+
 			_builder.Append(value);
 		}
 
 		public override void Write(string value)
 		{
-			if (!_isOpen)
-			{
-				throw new ObjectDisposedException(null, "Writer is closed.");
-			}
+			CheckWriterIsOpened();
+
 			if (value != null)
 			{
 				_builder.Append(value);
@@ -100,35 +94,19 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public override void Write(char[] buffer, int index, int count)
 		{
-			if (!_isOpen)
-			{
-				throw new ObjectDisposedException(null, "Writer is closed.");
-			}
-			if (buffer == null)
-			{
-				throw new ArgumentNullException("buffer");
-			}
-			if (index < 0)
-			{
-				throw new ArgumentOutOfRangeException("index");
-			}
-			if (count < 0)
-			{
-				throw new ArgumentOutOfRangeException("count");
-			}
-			if (buffer.Length - index < count)
-			{
-				throw new ArgumentException("Invalid combination of offset and length.");
-			}
+			CheckWriterIsOpened();
+
+			Ensure.ArgumentIsNotNull(buffer, "buffer");
+			Ensure.That<ArgumentOutOfRangeException>(index>=0, "The index must be greater or equal to 0");
+			Ensure.That<ArgumentOutOfRangeException>(count>=0, "The count must be greater or equal to 0");
+			Ensure.That<ArgumentException>(buffer.Length - index >= count, "Invalid combination of offset and length");
+
 			_builder.Append(buffer, index, count);
 		}
 
 		public override void Flush()
 		{
-			if (!_isOpen)
-			{
-				throw new ObjectDisposedException(null, "Writer is closed.");
-			}
+			CheckWriterIsOpened();
 
 			if (_builder.Length > 0)
 			{
@@ -142,6 +120,14 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 				}
 
 				_builder.Length = 0;
+			}
+		}
+
+		void CheckWriterIsOpened()
+		{
+			if (!_isOpen)
+			{
+				throw new ObjectDisposedException(null, "Writer is closed");
 			}
 		}
 	}

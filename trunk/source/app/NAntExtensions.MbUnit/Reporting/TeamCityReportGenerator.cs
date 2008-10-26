@@ -5,6 +5,7 @@ using MbUnit.Core.Reports.Serialization;
 using NAnt.Core;
 
 using NAntExtensions.TeamCity.Common.Container;
+using NAntExtensions.TeamCity.Common.Helper;
 using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.MbUnit.Reporting
@@ -87,15 +88,8 @@ namespace NAntExtensions.MbUnit.Reporting
 
 		public static void RenderReport(ReportResult result, Task task)
 		{
-			if (null == result)
-			{
-				throw new ArgumentNullException("result");
-			}
-
-			if (null == task)
-			{
-				throw new ArgumentNullException("task");
-			}
+			Ensure.ArgumentIsNotNull(result, "result");
+			Ensure.ArgumentIsNotNull(task, "task");
 
 			ITeamCityMessageProvider messageProvider = IoC.Resolve<ITeamCityMessageProvider>(new { taskToUseForLogging = task });
 
