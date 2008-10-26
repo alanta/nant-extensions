@@ -1,8 +1,7 @@
-using System;
-
 using Machine.Specifications;
 using Machine.Specifications.Runner;
 
+using NAntExtensions.TeamCity.Common.Helper;
 using NAntExtensions.TeamCity.Common.Messaging;
 
 namespace NAntExtensions.Machine.Specifications.RunListeners
@@ -13,11 +12,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 
 		public TeamCityRunListener(ITeamCityMessageProvider messageProvider)
 		{
-			if (messageProvider == null)
-			{
-				throw new ArgumentNullException("messageProvider");
-			}
-
+			Ensure.ArgumentIsNotNull(messageProvider, "messageProvider");
 			_messageProvider = messageProvider;
 		}
 

@@ -1,10 +1,9 @@
-using System;
-
 using NAnt.Core;
 using NAnt.Core.Attributes;
 
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
 using NAntExtensions.TeamCity.Common.Container;
+using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.TeamCity.Tasks
 {
@@ -45,11 +44,7 @@ namespace NAntExtensions.TeamCity.Tasks
 			get { return _buildEnvironment; }
 			private set
 			{
-				if (value == null)
-				{
-					throw new ArgumentNullException("value");
-				}
-
+				Ensure.ArgumentIsNotNull(value, "value");
 				_buildEnvironment = value;
 			}
 		}

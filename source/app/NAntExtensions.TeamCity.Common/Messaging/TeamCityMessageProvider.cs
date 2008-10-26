@@ -4,6 +4,8 @@ using System.Text;
 
 using NAnt.Core;
 
+using NAntExtensions.TeamCity.Common.Helper;
+
 namespace NAntExtensions.TeamCity.Common.Messaging
 {
 	internal class TeamCityMessageProvider : ITeamCityMessageProvider
@@ -12,15 +14,8 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 
 		public TeamCityMessageProvider(TeamCityLogWriter writer, Task taskToUseForLogging)
 		{
-			if (writer == null)
-			{
-				throw new ArgumentNullException("writer");
-			}
-
-			if (taskToUseForLogging == null)
-			{
-				throw new ArgumentNullException("taskToUseForLogging");
-			}
+			Ensure.ArgumentIsNotNull(writer, "writer");
+			Ensure.ArgumentIsNotNull(taskToUseForLogging, "taskToUseForLogging");
 
 			_writer = writer;
 			_writer.TaskToUseForLogging = taskToUseForLogging;

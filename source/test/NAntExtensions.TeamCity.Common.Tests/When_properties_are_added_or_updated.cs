@@ -19,8 +19,8 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		}
 
 		[RowTest]
-		[Row(SpecialValue.Null, ExpectedException = typeof(ArgumentOutOfRangeException))]
-		[Row("", ExpectedException = typeof(ArgumentOutOfRangeException))]
+		[Row(SpecialValue.Null, ExpectedException = typeof(ArgumentException))]
+		[Row("", ExpectedException = typeof(ArgumentException))]
 		public void Throws_exception_if_key_is_null_or_empty(string key)
 		{
 			PropertyDictionaryHelper.AddOrUpdateInt(new PropertyDictionary(null), key, Value);

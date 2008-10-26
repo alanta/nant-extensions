@@ -1,4 +1,4 @@
-using System;
+using NAntExtensions.TeamCity.Common.Helper;
 
 namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 {
@@ -8,11 +8,7 @@ namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 
 		public DefaultBuildEnvironment(IEnvironment environment)
 		{
-			if (environment == null)
-			{
-				throw new ArgumentNullException("environment");
-			}
-
+			Ensure.ArgumentIsNotNull(environment, "environment");
 			_environment = environment;
 		}
 

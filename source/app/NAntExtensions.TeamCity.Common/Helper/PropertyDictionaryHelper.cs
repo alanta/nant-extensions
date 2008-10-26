@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 
 using NAnt.Core;
@@ -9,15 +8,8 @@ namespace NAntExtensions.TeamCity.Common.Helper
 	{
 		public static void AddOrUpdateInt(PropertyDictionary instance, string key, int value)
 		{
-			if (instance == null)
-			{
-				throw new ArgumentNullException("instance");
-			}
-
-			if (String.IsNullOrEmpty(key))
-			{
-				throw new ArgumentOutOfRangeException("key");
-			}
+			Ensure.ArgumentIsNotNull(instance, "instance");
+			Ensure.ArgumentIsNotNullOrEmptyString(key, "key");
 
 			int parsedValue;
 			if (!int.TryParse(instance[key], out parsedValue))
@@ -31,15 +23,8 @@ namespace NAntExtensions.TeamCity.Common.Helper
 
 		public static void SetInt(PropertyDictionary instance, string key, int value)
 		{
-			if (instance == null)
-			{
-				throw new ArgumentNullException("instance");
-			}
-
-			if (String.IsNullOrEmpty(key))
-			{
-				throw new ArgumentOutOfRangeException("key");
-			}
+			Ensure.ArgumentIsNotNull(instance, "instance");
+			Ensure.ArgumentIsNotNullOrEmptyString(key, "key");
 
 			string valueToSet = value.ToString(CultureInfo.InvariantCulture);
 			if (instance.Contains(key))
