@@ -24,14 +24,15 @@ namespace NAntExtensions.MbUnit.Tasks
 	/// Runs <see href="http://www.mbunit.com/">MbUnit</see> tests.
 	/// </summary>
 	/// <remarks>
-	/// If the task is run within a TeamCity build, the test results are reported to TeamCity.
-	/// Note that due to the way MbUnit logs its test results the timing information for the 
-	/// tests shown by TeamCity 3.x are not valid. However, the durations shown by TeamCity 4.x
-	/// and above are correct.</remarks>
+	/// If the task is run within a TeamCity build, the test results are reported to TeamCity. Note that due to the way MbUnit
+	/// logs its test results the timing information for the  tests shown by TeamCity 3.x are not valid. However, the durations
+	/// shown by TeamCity 4.x and above are correct.</remarks>
 	/// <example>
+	/// Runs all tests in <c>Assembly.dll</c> and generates one HTML (<c>Assembly.Report.html</c>) and one XML 
+	/// (<c>Assembly.Report.xml</c>) report in the <c>reports</c> directory. Test progress is reported (<c>verbose="true"</c>).
 	/// <code>
 	/// <![CDATA[
-	/// <mbunit report-types="html"
+	/// <mbunit report-types="html;xml"
 	///         report-filename-format="Assembly.Report"
 	///         report-directory="reports"
 	///         verbose="true"
@@ -40,6 +41,21 @@ namespace NAntExtensions.MbUnit.Tasks
 	///             <include name="build-directory/Assembly.dll" />
 	///         </assemblies>
 	/// </mbunit>
+	/// ]]></code>
+	/// </example>
+	/// <example>
+	/// Runs all tests in <c>Assembly.dll</c> except those marked with <c>FixtureCategoryAttribute("Integration")</c>. Does not
+	/// generate test reports and does not report progress.
+	/// <code>
+	/// <![CDATA[
+	/// <mbunit workingdir="build-directory">
+	///         <assemblies>
+	///             <include name="build-directory/Assembly.dll" />
+	///         </assemblies>
+	///	        <categories>
+	///	            <exclude name="Integration" />
+	///	        </categories>
+	///	</mbunit>
 	/// ]]></code>
 	/// </example>
 	[TaskName("mbunit")]
@@ -195,7 +211,7 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// The categories to include in and exclude from the test run (<see cref="FixtureCategoryAttribute"/>).
+		/// The categories to include in and exclude from the test run (see MbUnit's <see cref="FixtureCategoryAttribute"/>).
 		/// </summary>
 		[BuildElement("categories", Required = false)]
 		public FilterSet FilterCategories
@@ -205,7 +221,7 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// Test fixtures by these authors will be included in the test run (<see cref="AuthorAttribute"/>).
+		/// Test fixtures by these authors will be included in the test run (see MbUnit's <see cref="AuthorAttribute"/>).
 		/// </summary>
 		[BuildElement("authors", Required = false)]
 		public IncludeSet FilterAuthors
@@ -215,7 +231,7 @@ namespace NAntExtensions.MbUnit.Tasks
 		}
 
 		/// <summary>
-		/// Test fixtures with in namespaces starting with these values will be included in the test run.
+		/// Test fixtures in namespaces starting with these values will be included in the test run.
 		/// </summary>
 		[BuildElement("namespaces", Required = false)]
 		public IncludeSet FilterNamespaces
