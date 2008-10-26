@@ -138,55 +138,81 @@ namespace NAntExtensions.Machine.Specifications.Tasks
 		/// </summary>
 		protected override void ExecuteTask()
 		{
+			DisplayTaskConfiguration();
+
+			if (FileSetHelper.Count(Assemblies) == 0)
+			{
+				Log(Level.Warning, "No specification assemblies, aborting task");
+				return;
+			}
+
+			List<ISpecificationRunListener> listeners = SetUpListeners();
+			NAntRunListener nantRunListener = new NAntRunListener(this);
+			listeners.Add(nantRunListener);
+
+			AggregateRunListener rootListener = new AggregateRunListener(listeners);
+			ISpecificationRunner runner = new AppDomainRunner(rootListener, RunOptions.Default);
+
+			RunSpecifications(Assemblies, runner);
+
+			Log(Level.Info, "Finished running specs");
+
+			if (nantRunListener.FailureOccurred)
+			{
+				throw new BuildException("There were failing specifications. Please see the build log.");
+			}
+		}
+
+		void DisplayTaskConfiguration()
+		{
 			Log(Level.Info, "Machine.Specifications {0} test runner", typeof(Subject).Assembly.GetName().Version);
 
-			string originalWorkingDirectory = Environment.CurrentDirectory;
+			Log(Level.Verbose, "Assemblies:");
+			foreach (string fileName in FileSetHelper.Flatten(Assemblies))
+			{
+				Log(Level.Verbose, "\t{0}", fileName);
+			}
+
+			Log(Level.Verbose, "Working directory: {0}", WorkingDirectory);
+			Log(Level.Verbose, "Report directory: {0}", ReportDirectory);
+			Log(Level.Verbose, "Report file name: {0}", ReportFilename);
+		}
+
+		void RunSpecifications(FileSet[] assemblies, ISpecificationRunner runner)
+		{
+			Ensure.ArgumentIsNotNull(assemblies, "assemblies");
+			Ensure.ArgumentIsNotNull(runner, "runner");
+
+			foreach (string fileName in FileSetHelper.Flatten(assemblies))
+			{
+				RunSpecificationAssembly(fileName, runner);
+			}
+		}
+
+		void RunSpecificationAssembly(string fileName, ISpecificationRunner runner)
+		{
+			Ensure.ArgumentIsNotNullOrEmptyString(fileName, "fileName");
+
 			try
 			{
-				Environment.CurrentDirectory = WorkingDirectory.FullName;
-
-				NAntRunListener nantRunListener = new NAntRunListener(this);
-
+				string originalWorkingDirectory = Environment.CurrentDirectory;
 				try
 				{
-					List<ISpecificationRunListener> listeners = SetUpListeners();
-					listeners.Add(nantRunListener);
+					Environment.CurrentDirectory = WorkingDirectory.FullName;
 
-					AggregateRunListener rootListener = new AggregateRunListener(listeners);
-					ISpecificationRunner runner = new AppDomainRunner(rootListener, RunOptions.Default);
+					Log(Level.Info, "Loading assembly {0}", fileName);
+					Assembly assembly = Assembly.LoadFrom(fileName);
 
-					foreach (FileSet assemblySet in Assemblies)
-					{
-						Log(Level.Info, "Loading {0} assemblies", assemblySet.FileNames.Count);
-
-						foreach (string assemblyName in assemblySet.FileNames)
-						{
-							Log(Level.Info, "\tAssemblyName: {0}", assemblyName);
-
-							Assembly assembly = Assembly.LoadFrom(assemblyName);
-							runner.RunAssembly(assembly);
-						}
-					}
-
-					Log(Level.Info, "Finished running specs");
+					runner.RunAssembly(assembly);
 				}
-				catch (Exception exception)
+				finally
 				{
-					Log(Level.Error, exception.ToString());
-					throw new BuildException("Specification run failed", exception);
-				}
-
-				if (nantRunListener.FailureOccurred)
-				{
-					if (FailOnError)
-					{
-						throw new BuildException("Specification run failed");
-					}
+					Environment.CurrentDirectory = originalWorkingDirectory;
 				}
 			}
-			finally
+			catch (Exception ex)
 			{
-				Environment.CurrentDirectory = originalWorkingDirectory;
+				throw new BuildException("Unexpected error while running specs", ex);
 			}
 		}
 

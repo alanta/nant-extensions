@@ -63,7 +63,6 @@ namespace NAntExtensions.MbUnit.Tasks
 	{
 		IBuildEnvironment _buildEnvironment;
 		string _reportFileNameFormat = "mbunit-{0}{1}";
-		ReportResult _result;
 		string _transformReportFileNameFormat;
 		DirectoryInfo _workingDirectory;
 
@@ -252,54 +251,33 @@ namespace NAntExtensions.MbUnit.Tasks
 		/// </summary>
 		protected override void ExecuteTask()
 		{
-			Log(Level.Info, "MbUnit {0} test runner", typeof(Fixture).Assembly.GetName().Version);
 			DisplayTaskConfiguration();
 
-			if (Assemblies.Length == 0)
+			if (FileSetHelper.Count(Assemblies) == 0)
 			{
 				Log(Level.Warning, "No test assemblies, aborting task");
 				return;
 			}
 
-			int count = 0;
-			foreach (FileSet assemblies in Assemblies)
-			{
-				count += assemblies.FileNames.Count;
-			}
-			if (count == 0)
-			{
-				Log(Level.Warning, "No test assemblies found in test");
-				return;
-			}
+			ReportResult result = RunTests(Assemblies);
+			GenerateReports(result, ReportTypes);
 
-			_result = new ReportResult();
-			foreach (FileSet assemblySet in Assemblies)
+			if (result.Counter.FailureCount > 0)
 			{
-				bool failureCount = ExecuteTests(assemblySet);
-				if (failureCount)
-				{
-					break;
-				}
-			}
-
-			GenerateReports();
-
-			if (_result.Counter.FailureCount > 0)
-			{
-				throw new BuildException("There were failing tests. Please see build log.");
+				throw new BuildException("There were failing tests. Please see the build log.");
 			}
 		}
 
 		void DisplayTaskConfiguration()
 		{
-			Log(Level.Verbose, "Test assemblies:");
-			foreach (FileSet assemblySet in Assemblies)
+			Log(Level.Info, "MbUnit {0} test runner", typeof(Fixture).Assembly.GetName().Version);
+
+			Log(Level.Verbose, "Assemblies:");
+			foreach (string fileName in FileSetHelper.Flatten(Assemblies))
 			{
-				foreach (string fileName in assemblySet.FileNames)
-				{
-					Log(Level.Verbose, "\t{0}", fileName);
-				}
+				Log(Level.Verbose, "\t{0}", fileName);
 			}
+
 			Log(Level.Verbose, "Working directory: {0}", WorkingDirectory);
 			Log(Level.Verbose, "Report types: {0}", ReportTypes);
 			Log(Level.Verbose, "Report directory: {0}", ReportDirectory);
@@ -308,81 +286,28 @@ namespace NAntExtensions.MbUnit.Tasks
 			Log(Level.Verbose, "Transform report file name format: {0}", TransformReportFileNameFormat);
 		}
 
-		void GenerateReports()
+		ReportResult RunTests(FileSet[] assemblies)
 		{
-			if (_result == null)
-			{
-				throw new InvalidOperationException("Report object is a null reference.");
-			}
+			Ensure.ArgumentIsNotNull(assemblies, "assemblies");
 
-			if (!String.IsNullOrEmpty(ReportTypes))
+			ReportResult result = new ReportResult();
+			foreach (string fileName in FileSetHelper.Flatten(assemblies))
 			{
-				Log(Level.Info, "Generating reports");
-				foreach (string reportType in ReportTypes.Split(';'))
+				bool testsFailed = RunTestAssembly(fileName, result);
+				if (testsFailed)
 				{
-					string reportFileName = null;
-					Log(Level.Verbose, "Report type: {0}", reportType);
-					switch (reportType.ToLower())
-					{
-						case "text":
-							reportFileName = TextReport.RenderToText(_result, ReportDirectory, ReportFileNameFormat);
-							break;
-						case "xml":
-							reportFileName = XmlReport.RenderToXml(_result, ReportDirectory, ReportFileNameFormat);
-							break;
-						case "html":
-							reportFileName = HtmlReport.RenderToHtml(_result, ReportDirectory, ReportFileNameFormat);
-							break;
-						case "dox":
-							reportFileName = DoxReport.RenderToDox(_result, ReportDirectory, ReportFileNameFormat);
-							break;
-						case "transform":
-							if (Transform == null)
-							{
-								throw new BuildException(String.Format("No transform specified for report type '{0}'", reportType));
-							}
-
-							reportFileName = HtmlReport.RenderToHtml(_result,
-							                                         ReportDirectory,
-							                                         Transform.FullName,
-							                                         TransformReportFileNameFormat);
-							break;
-						default:
-							Log(Level.Error, "Unknown report type {0}", reportType);
-							break;
-					}
-
-					if (reportFileName != null)
-					{
-						Log(Level.Info, "Created report at {0}", reportFileName);
-					}
+					break;
 				}
 			}
 
-			if (BuildEnvironment.IsTeamCityBuild)
-			{
-				TeamCityReportGenerator.RenderReport(_result, this);
-			}
+			return result;
 		}
 
-		bool ExecuteTests(FileSet assemblySet)
+		bool RunTestAssembly(string fileName, ReportResult reportResult)
 		{
-			if (assemblySet.FileNames.Count == 0)
-			{
-				Log(Level.Warning, "No tests in assembly set");
-				return true;
-			}
-			// execute
-			string[] assemblyNames = new string[assemblySet.FileNames.Count];
-			assemblySet.FileNames.CopyTo(assemblyNames, 0);
+			Ensure.ArgumentIsNotNullOrEmptyString(fileName, "fileName");
 
-			// display information
-			Log(Level.Info, "Loading {0} assemblies", assemblySet.FileNames.Count);
-			foreach (string an in assemblyNames)
-			{
-				Log(Level.Info, "\tAssemblyName: {0}", an);
-			}
-
+			string[] assemblyNames = new[] { fileName };
 			string[] dirNames = null;
 			if (AssemblyPaths != null)
 			{
@@ -392,36 +317,96 @@ namespace NAntExtensions.MbUnit.Tasks
 
 			try
 			{
+				Log(Level.Info, "Loading assembly {0}", fileName);
 				using (
 					TestDomainDependencyGraph graph = TestDomainDependencyGraph.BuildGraph(assemblyNames,
 					                                                                       dirNames,
 					                                                                       CreateFilter(),
 					                                                                       Verbose))
 				{
-					graph.Log += Graph_Log;
+					graph.Log += TestRunInfo_Log;
+					string originalWorkingDirectory = Environment.CurrentDirectory;
+
 					try
 					{
-						string originalWorkingDirectory = Environment.CurrentDirectory;
 						Environment.CurrentDirectory = WorkingDirectory.FullName;
 
-						ReportResult r = graph.RunTests();
+						ReportResult runResult = graph.RunTests();
 						Log(Level.Info, "Finished running tests");
-						Log(Level.Info, "Merging results");
-						_result.Merge(r);
-						UpdateNAntProperties(Properties, r);
 
-						Environment.CurrentDirectory = originalWorkingDirectory;
-						return r.Counter.FailureCount == 0;
+						Log(Level.Info, "Merging results");
+						reportResult.Merge(runResult);
+
+						UpdateNAntProperties(Properties, runResult);
+
+						return runResult.Counter.FailureCount == 0;
 					}
 					finally
 					{
-						graph.Log -= Graph_Log;
+						Environment.CurrentDirectory = originalWorkingDirectory;
+						graph.Log -= TestRunInfo_Log;
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				throw new BuildException("Unexpected engine error while running tests", ex);
+				throw new BuildException("Unexpected error while running tests", ex);
+			}
+		}
+
+		void GenerateReports(ReportResult reportResult, string reportTypes)
+		{
+			Ensure.ArgumentIsNotNull(reportResult, "reportResult");
+
+			if (BuildEnvironment.IsTeamCityBuild)
+			{
+				TeamCityReportGenerator.RenderReport(reportResult, this);
+			}
+
+			if (String.IsNullOrEmpty(reportTypes))
+			{
+				return; 
+			}
+			
+			Log(Level.Info, "Generating reports");
+			foreach (string reportType in reportTypes.Split(';'))
+			{
+				string reportFileName = null;
+				Log(Level.Verbose, "Report type: {0}", reportType);
+				switch (reportType.ToLower())
+				{
+					case "text":
+						reportFileName = TextReport.RenderToText(reportResult, ReportDirectory, ReportFileNameFormat);
+						break;
+					case "xml":
+						reportFileName = XmlReport.RenderToXml(reportResult, ReportDirectory, ReportFileNameFormat);
+						break;
+					case "html":
+						reportFileName = HtmlReport.RenderToHtml(reportResult, ReportDirectory, ReportFileNameFormat);
+						break;
+					case "dox":
+						reportFileName = DoxReport.RenderToDox(reportResult, ReportDirectory, ReportFileNameFormat);
+						break;
+					case "transform":
+						if (Transform == null)
+						{
+							throw new BuildException(String.Format("No transform specified for report type '{0}'", reportType));
+						}
+
+						reportFileName = HtmlReport.RenderToHtml(reportResult,
+						                                         ReportDirectory,
+						                                         Transform.FullName,
+						                                         TransformReportFileNameFormat);
+						break;
+					default:
+						Log(Level.Error, "Unknown report type {0}", reportType);
+						break;
+				}
+
+				if (reportFileName != null)
+				{
+					Log(Level.Info, "Created report at {0}", reportFileName);
+				}
 			}
 		}
 
@@ -479,7 +464,7 @@ namespace NAntExtensions.MbUnit.Tasks
 			PropertyDictionaryHelper.AddOrUpdateInt(properties, Counter.Successes, reportResult.Counter.SuccessCount);
 		}
 
-		void Graph_Log(string message)
+		void TestRunInfo_Log(string message)
 		{
 			Log(Level.Info, message);
 		}
