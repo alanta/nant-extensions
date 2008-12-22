@@ -33,7 +33,7 @@ Check the documentation for [http://www.therightstuff.de/projects/nant-extension
 Note that TeamCity 3.x supports only one series per graph. TeamCity 4.x allows multiple series in a single chart.
 
 = Known issues =
-Due to the way MbUnit logs it's test results the timing information for the tests shown by TeamCity 3.x is not valid. TeamCity 4.x (not released yet) will support timing information.
+Due to the way MbUnit logs it's test results the timing information for the tests shown by TeamCity 3.x is not valid. TeamCity 4.x fully supports timing information.
 
 = Reference =
  * [http://www.therightstuff.de/projects/nant-extensions/tasks/mbunit.html MbUnit Task Reference]
