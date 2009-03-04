@@ -480,6 +480,7 @@
 			<fileset basedir="${basedir.build}"
 					 prefix="lib/net/2.0">
 				<include name="nunit.framework.dll" />
+				<include name="xunit.dll" />
 			</fileset>
 		</zip>
 

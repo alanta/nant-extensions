@@ -175,15 +175,15 @@
 
 		<tc-addstatistic-fromprops starting-with="${mspec::get-counter-prefix()}" />
 
-		<fail message="MSpec ignore count is incorrect, should be 0 but was ${mspec.ignoredspecs}"
+		<fail message="MSpec ignore count is incorrect, should be 1 but was ${mspec.ignoredspecs}"
 			  if="${int::parse(mspec.ignoredspecs) != 1}"/>
-		<fail message="MSpec passed count is incorrect, should be 2 but was ${mspec.passedspecs}"
-			  if="${int::parse(mspec.passedspecs) != 2}"/>
-		<fail message="MSpec spec count is incorrect, should be 4 but was ${mspec.specs}"
-			  if="${int::parse(mspec.specs) != 5}"/>
-		<fail message="MSpec failed count is incorrect, should be 2 but was ${mspec.failedspecs}"
+		<fail message="MSpec passed count is incorrect, should be 3 but was ${mspec.passedspecs}"
+			  if="${int::parse(mspec.passedspecs) != 3}"/>
+		<fail message="MSpec spec count is incorrect, should be 6 but was ${mspec.specs}"
+			  if="${int::parse(mspec.specs) != 6}"/>
+		<fail message="MSpec failed count is incorrect, should be 1 but was ${mspec.failedspecs}"
 			  if="${int::parse(mspec.failedspecs) != 1}"/>
-		<fail message="MSpec context count is incorrect, should be 0 but was ${mspec.contexts}"
+		<fail message="MSpec context count is incorrect, should be 1 but was ${mspec.contexts}"
 			  if="${int::parse(mspec.contexts) != 1}"/>
 		<fail message="MSpec unimplemented count is incorrect, should be 1 but was ${mspec.unimplementedspecs}"
 			  if="${int::parse(mspec.unimplementedspecs) != 1}"/>
