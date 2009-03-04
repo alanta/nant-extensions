@@ -59,7 +59,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				_messageProvider.TestStarted(null);
 				LastCall.IgnoreArguments();
 
-				_messageProvider.TestFailed(null, (Exception) null);
+				_messageProvider.TestFailed(null, null, null, null);
 				LastCall.IgnoreArguments();
 
 				_messageProvider.TestFinished(null);
@@ -85,8 +85,8 @@ namespace NAntExtensions.Machine.Specifications.Tests
 				_messageProvider.TestStarted(null);
 				LastCall.IgnoreArguments();
 
-				_messageProvider.TestFailed(null, (Exception) null);
-				LastCall.Constraints(Is.Anything(), Is.Equal(exception));
+				_messageProvider.TestFailed(null, null, null, null);
+				LastCall.Constraints(Is.Anything(), Is.Equal(exception.Message), Is.Null(), Is.Equal(exception.GetType().FullName));
 
 				_messageProvider.TestFinished(null);
 				LastCall.IgnoreArguments();

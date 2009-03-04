@@ -49,7 +49,10 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 				case Status.Passing:
 					break;
 				case Status.Failing:
-					_messageProvider.TestFailed(specName, result.Exception);
+					_messageProvider.TestFailed(specName,
+					                            result.Exception.Message,
+					                            result.Exception.StackTrace,
+					                            result.Exception.FullTypeName);
 					break;
 				case Status.Ignored:
 					_messageProvider.TestIgnored(specName, null);
@@ -62,6 +65,11 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 			}
 
 			_messageProvider.TestFinished(specName);
+		}
+
+		public void OnFatalError(ExceptionResult exception)
+		{
+			_messageProvider.TestFailed("Fatal error", exception.Message, exception.StackTrace, exception.FullTypeName);
 		}
 		#endregion
 	}

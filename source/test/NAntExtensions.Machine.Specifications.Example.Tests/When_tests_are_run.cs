@@ -10,8 +10,6 @@ namespace NAntExtensions.Machine.Specifications.Example.Tests
 	{
 		It should_run_very_long = () => Thread.Sleep(1500);
 
-		It is_not_implemented;
-
 		[Ignore]
 		It should_be_ignored = () => { };
 
@@ -22,6 +20,8 @@ namespace NAntExtensions.Machine.Specifications.Example.Tests
 				throw new InvalidOperationException("Something bad happened");
 			};
 
-		It should_succeed = () => { };
+		It should_succeed_with_NUnit = () => NUnitShouldExtensionMethods.ShouldBeTrue(true);
+		It should_succeed_with_xUnit = () => XUnitShouldExtensionMethods.ShouldBeTrue(true);
+		It is_not_implemented;
 	}
 }
