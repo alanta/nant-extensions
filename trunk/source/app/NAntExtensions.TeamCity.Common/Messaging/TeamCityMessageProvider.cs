@@ -106,6 +106,29 @@ namespace NAntExtensions.TeamCity.Common.Messaging
 			_writer.WriteLine(message.ToString());
 		}
 
+		public void TestFailed(string testName, string message, string stackTrace, string typeName)
+		{
+			if (String.IsNullOrEmpty(testName))
+			{
+				return;
+			}
+
+			StringBuilder line = new StringBuilder();
+			line.AppendFormat(CultureInfo.InvariantCulture,
+			                  "##teamcity[testFailed name='{0}'",
+			                  Formatter.FormatValue(testName));
+
+			line.AppendFormat(CultureInfo.InvariantCulture,
+			                  " message='{0}' details='{1}' type='{2}'",
+			                  Formatter.FormatValue(message),
+			                  Formatter.FormatValue(stackTrace),
+			                  Formatter.FormatValue(typeName));
+
+			line.Append("]");
+
+			_writer.WriteLine(line.ToString());
+		}
+
 		public void TestOutputStream(string testName, string outputStream)
 		{
 			if (String.IsNullOrEmpty(testName))

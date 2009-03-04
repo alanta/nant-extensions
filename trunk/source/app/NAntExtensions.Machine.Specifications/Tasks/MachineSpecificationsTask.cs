@@ -6,6 +6,7 @@ using System.Reflection;
 using Machine.Specifications.Model;
 using Machine.Specifications.Reporting;
 using Machine.Specifications.Runner;
+using Machine.Specifications.Runner.Impl;
 
 using NAnt.Core;
 using NAnt.Core.Attributes;

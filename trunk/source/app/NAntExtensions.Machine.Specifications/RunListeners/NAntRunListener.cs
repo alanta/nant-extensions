@@ -144,6 +144,11 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 					break;
 			}
 		}
+
+		public void OnFatalError(ExceptionResult exception)
+		{
+			_task.Log(Level.Error, String.Format("Fatal error: {0}", exception));
+		}
 		#endregion
 
 		static void UpdateNAntProperties(PropertyDictionary properties,
