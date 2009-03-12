@@ -1,3 +1,7 @@
+using System;
+
+using Machine.Specifications;
+
 using MbUnit.Framework;
 using MbUnit.Framework.Reflection;
 
@@ -117,6 +121,25 @@ namespace NAntExtensions.Machine.Specifications.Tests
 		}
 		
 		[Test]
+		public void Should_log_fatal_errors()
+		{
+			Mocks.BackToRecord(_task);
+
+			using (Mocks.Record())
+			{
+				_task.Log(Level.Info, null);
+				LastCall.Constraints(Is.Equal(Level.Error), Text.Contains("Fatal error:"));
+			}
+
+			using (Mocks.Playback())
+			{
+				_sut.OnFatalError(new ExceptionResult(new InvalidOperationException()));
+			}
+
+			Assert.IsTrue(_sut.FailureOccurred);
+		}
+		
+		[Test]
 		public void Should_log_run_summary_with_ignored_specs()
 		{
 			Mocks.BackToRecord(_task);
@@ -138,7 +161,9 @@ namespace NAntExtensions.Machine.Specifications.Tests
 			{
 				_sut.OnRunEnd();
 			}
-		}[Test]
+		}
+		
+		[Test]
 		public void Should_log_run_summary_with_unimplemented_specs()
 		{
 			Mocks.BackToRecord(_task);
