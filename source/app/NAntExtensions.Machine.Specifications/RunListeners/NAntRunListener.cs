@@ -123,11 +123,11 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 					break;
 
 				case Status.Ignored:
-					_ignoredSpecificationCount ++;
+					_ignoredSpecificationCount++;
 					_task.Log(Level.Verbose, "      (IGNORED)");
 					break;
 				default:
-					_failedSpecificationCount ++;
+					_failedSpecificationCount++;
 
 					StringBuilder line = new StringBuilder();
 
@@ -147,6 +147,7 @@ namespace NAntExtensions.Machine.Specifications.RunListeners
 
 		public void OnFatalError(ExceptionResult exception)
 		{
+			_failedSpecificationCount++;
 			_task.Log(Level.Error, String.Format("Fatal error: {0}", exception));
 		}
 		#endregion
