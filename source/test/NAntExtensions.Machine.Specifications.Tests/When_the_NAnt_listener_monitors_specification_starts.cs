@@ -20,7 +20,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 
 		protected override void Before_each_spec()
 		{
-			_specificationInfo = new SpecificationInfo("Spec");
+			_specificationInfo = new SpecificationInfo("Spec", "Type");
 
 			PropertyDictionary propertyDictionary = Mocks.Stub<PropertyDictionary>((Project) null);
 

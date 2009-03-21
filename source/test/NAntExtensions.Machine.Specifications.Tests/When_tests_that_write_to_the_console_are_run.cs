@@ -24,7 +24,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 
 		protected override void Before_each_spec()
 		{
-			_specificationInfo = new SpecificationInfo("Spec");
+			_specificationInfo = new SpecificationInfo("Spec", "Type");
 
 			_messageProvider = Mocks.DynamicMock<ITeamCityMessageProvider>();
 			_listener = new TeamCityRunListener(_messageProvider);
