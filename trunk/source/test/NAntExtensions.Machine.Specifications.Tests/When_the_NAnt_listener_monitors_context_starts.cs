@@ -20,7 +20,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 
 		protected override void Before_each_spec()
 		{
-			_contextInfo = new ContextInfo("Context", "Concern");
+      _contextInfo = new ContextInfo("Context", "Concern", "TypeName", "Namespace", "AssemblyName");
 
 			PropertyDictionary propertyDictionary = Mocks.Stub<PropertyDictionary>((Project) null);
 

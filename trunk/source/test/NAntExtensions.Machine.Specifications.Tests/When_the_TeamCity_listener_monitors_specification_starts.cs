@@ -22,8 +22,8 @@ namespace NAntExtensions.Machine.Specifications.Tests
 			_messageProvider = Mocks.StrictMock<ITeamCityMessageProvider>();
 			_sut = new TeamCityRunListener(_messageProvider);
 
-			_contextInfo = new ContextInfo("Context", "Concern");
-			_specificationInfo = new SpecificationInfo("Spec");
+			_contextInfo = new ContextInfo("Context", "Concern", "TypeName", "Namespace", "AssemblyName");
+			_specificationInfo = new SpecificationInfo("Spec", "Type");
 		}
 
 		[Test]

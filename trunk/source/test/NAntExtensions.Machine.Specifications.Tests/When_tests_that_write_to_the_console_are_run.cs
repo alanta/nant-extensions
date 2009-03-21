@@ -29,7 +29,7 @@ namespace NAntExtensions.Machine.Specifications.Tests
 			_messageProvider = Mocks.DynamicMock<ITeamCityMessageProvider>();
 			_listener = new TeamCityRunListener(_messageProvider);
 
-			_listener.OnContextStart(new ContextInfo("Context", "Concern"));
+			_listener.OnContextStart(new ContextInfo("Context", "Concern", "TypeName", "Namespace", "AssemblyName"));
 		}
 
 		[Test]
