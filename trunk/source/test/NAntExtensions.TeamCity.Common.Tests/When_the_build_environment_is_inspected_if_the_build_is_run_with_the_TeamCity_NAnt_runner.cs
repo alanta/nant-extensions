@@ -1,8 +1,4 @@
-using System;
-
 using MbUnit.Framework;
-
-using NAnt.Core;
 
 using NAntExtensions.ForTesting;
 using NAntExtensions.TeamCity.Common.BuildEnvironment;
@@ -13,9 +9,10 @@ namespace NAntExtensions.TeamCity.Common.Tests
 {
 	public class When_the_build_environment_is_inspected_if_the_build_is_run_with_the_TeamCity_NAnt_runner : Spec
 	{
-		const string TeamCityEnvironmentVariable = "teamcity-dotnet-log-file";
-		DefaultBuildEnvironment _sut;
+		const string TeamCityEnvironmentVariable1 = "teamcity-dotnet-log-file";
+		const string TeamCityEnvironmentVariable2 = "BUILD_NUMBER_FORMAT";
 		IEnvironment _environment;
+		DefaultBuildEnvironment _sut;
 
 		protected override void Before_each_spec()
 		{
@@ -28,7 +25,8 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		{
 			using (Mocks.Record())
 			{
-				Expect.Call(_environment.GetEnvironmentVariable(TeamCityEnvironmentVariable)).Return(null);
+				Expect.Call(_environment.GetEnvironmentVariable(TeamCityEnvironmentVariable1)).Return(null);
+				Expect.Call(_environment.GetEnvironmentVariable(TeamCityEnvironmentVariable2)).Return(null);
 			}
 
 			using (Mocks.Playback())
@@ -42,7 +40,7 @@ namespace NAntExtensions.TeamCity.Common.Tests
 		{
 			using (Mocks.Record())
 			{
-				Expect.Call(_environment.GetEnvironmentVariable(TeamCityEnvironmentVariable)).Return("foo");
+				Expect.Call(_environment.GetEnvironmentVariable(TeamCityEnvironmentVariable1)).Return("foo");
 			}
 
 			using (Mocks.Playback())
