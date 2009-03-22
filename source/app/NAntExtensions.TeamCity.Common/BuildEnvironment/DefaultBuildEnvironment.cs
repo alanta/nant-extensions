@@ -22,9 +22,13 @@ namespace NAntExtensions.TeamCity.Common.BuildEnvironment
 		{
 			get
 			{
-				// HACK: This relies on an implementation detail. The NAnt runner sets this environment
+				// HACK: This relies on an implementation detail. The NAnt runner sets these environment
 				// variable whereas the Command Line runner does not.
-				return _environment.GetEnvironmentVariable("teamcity-dotnet-log-file") != null;
+				return
+					// TeamCity < 4.1 EAP
+					_environment.GetEnvironmentVariable("teamcity-dotnet-log-file") != null ||
+					// TeamCity >= 4.1 EAP
+					_environment.GetEnvironmentVariable("BUILD_NUMBER_FORMAT") != null;
 			}
 		}
 		#endregion
