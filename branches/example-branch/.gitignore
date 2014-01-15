@@ -1,0 +1,25 @@
+# Lines that start with '#' are comments.
+
+bin
+obj
+TestResults
+*.bak
+*.*scc
+*.suo
+Ankh.Load
+*.xsx
+*.xss
+*.xsc
+*.resharper
+*.user
+*.log
+*.Publish.xml
+.gitmodules
+teamcity-info.xml
+local.properties
+
+# /
+/build
+/deploy
+/temp
+/test-results
