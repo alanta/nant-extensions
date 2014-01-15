@@ -1,0 +1,194 @@
+﻿<?xml version="1.0"?>
+<project name="NAnt-Extensions"
+		 default="run-sample-tests"
+		 xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd">
+
+	<!-- Load sample tests-specific configuration. -->
+	<if test="${file::exists('sample-tests.properties')}">
+		<echo message="Loading sample-tests.properties" />
+		<include buildfile="sample-tests.properties" />
+	</if>
+
+	<include buildfile="default.build" />
+
+	<!-- Unit tests.
+	________________________________________________________________________________________________________________ -->
+	<fileset id="mspec-sample-test-projects">
+		<include name="${basedir.test}/**/NAntExtensions.Machine.Specifications.Example.Tests.csproj" />
+	</fileset>
+
+	<target name="run-sample-tests"
+			depends="init-run-tests"
+			description="Runs the application's example unit tests.">
+		<tc-progress message="Running sample tests"
+					 type="Start" />
+
+		<!-- MbUnit: Standard tests. -->
+		<mbunit report-types="html"
+				report-filename-format="NAntExtensions.MbUnit.Example.Tests"
+				report-directory="${basedir.test.results}"
+				verbose="true"
+				workingdir="${basedir.build}"
+				failonerror="false">
+			<assemblies>
+				<include name="${basedir.build}/NAntExtensions.MbUnit.Example.Tests.dll" />
+			</assemblies>
+		</mbunit>
+
+		<tc-addstatistic-fromprops starting-with="${mbunit::get-counter-prefix()}" />
+
+		<fail message="MbUnit assert count is incorrect, should be 0 but was ${mbunit.asserts}"
+			  if="${int::parse(mbunit.asserts) != 0}"/>
+		<fail message="MbUnit succcess count is incorrect, should be 2 but was ${mbunit.successes}"
+			  if="${int::parse(mbunit.successes) != 2}"/>
+		<fail message="MbUnit run count is incorrect, should be 7 but was ${mbunit.run}"
+			  if="${int::parse(mbunit.run) != 7}"/>
+		<fail message="MbUnit ignored count is incorrect, should be 4 but was ${mbunit.ignored}"
+			  if="${int::parse(mbunit.ignored) != 4}"/>
+		<fail message="MbUnit skipped count is incorrect, should be 0 but was ${mbunit.skipped}"
+			  if="${int::parse(mbunit.skipped) != 0}"/>
+		<fail message="MbUnit failure count is incorrect, should be 1 but was ${mbunit.failures}"
+			  if="${int::parse(mbunit.failures) != 1}"/>
+
+		<echo message="MbUnit: Filtered tests by author"/>
+		<mbunit-initcounters />
+		<mbunit report-types="html"
+				report-filename-format="NAntExtensions.MbUnit.Filtered.Example.Tests-ByAuthor"
+				report-directory="${basedir.test.results}"
+				verbose="true"
+				workingdir="${basedir.build}">
+			<assemblies>
+				<include name="${basedir.build}/NAntExtensions.MbUnit.Filtered.Example.Tests.dll" />
+			</assemblies>
+			<authors>
+				<include name="Tony Tester" />
+			</authors>
+		</mbunit>
+		<fail message="MbUnit succcess count is incorrect, should be 1 but was ${mbunit.successes}"
+			  if="${int::parse(mbunit.successes) != 1}"/>
+
+		<echo message="MbUnit: Filtered tests by category"/>
+		<mbunit-initcounters />
+		<mbunit report-types="html"
+				report-filename-format="NAntExtensions.MbUnit.Filtered.Example.Tests-ByCategory"
+				report-directory="${basedir.test.results}"
+				verbose="true"
+				workingdir="${basedir.build}">
+			<assemblies>
+				<include name="${basedir.build}/NAntExtensions.MbUnit.Filtered.Example.Tests.dll" />
+			</assemblies>
+			<categories>
+				<include name="Include" />
+				<exclude name="Exclude" />
+			</categories>
+		</mbunit>
+		<fail message="MbUnit succcess count is incorrect, should be 1 but was ${mbunit.successes}"
+			  if="${int::parse(mbunit.successes) != 1}"/>
+
+		<echo message="MbUnit: Filtered tests by category, include only"/>
+		<mbunit-initcounters />
+		<mbunit report-types="html"
+				report-filename-format="NAntExtensions.MbUnit.Filtered.Example.Tests-ByCategory-IncludeOnly"
+				report-directory="${basedir.test.results}"
+				verbose="true"
+				workingdir="${basedir.build}">
+			<assemblies>
+				<include name="${basedir.build}/NAntExtensions.MbUnit.Filtered.Example.Tests.dll" />
+			</assemblies>
+			<categories>
+				<include name="Include" />
+			</categories>
+		</mbunit>
+		<fail message="MbUnit succcess count is incorrect, should be 1 but was ${mbunit.successes}"
+			  if="${int::parse(mbunit.successes) != 1}"/>
+		
+		<echo message="MbUnit: Filtered tests by category, exclude only"/>
+		<mbunit-initcounters />
+		<mbunit report-types="html"
+				report-filename-format="NAntExtensions.MbUnit.Filtered.Example.Tests-ByCategory-ExcludeOnly"
+				report-directory="${basedir.test.results}"
+				verbose="true"
+				workingdir="${basedir.build}">
+			<assemblies>
+				<include name="${basedir.build}/NAntExtensions.MbUnit.Filtered.Example.Tests.dll" />
+			</assemblies>
+			<categories>
+				<exclude name="Exclude" />
+			</categories>
+		</mbunit>
+		<fail message="MbUnit succcess count is incorrect, should be 4 but was ${mbunit.successes}"
+			  if="${int::parse(mbunit.successes) != 4}"/>
+
+		<echo message="MbUnit: Filtered tests by namespace"/>
+		<mbunit-initcounters />
+		<mbunit report-types="html"
+				report-filename-format="NAntExtensions.MbUnit.Filtered.Example.Tests-ByNamespace"
+				report-directory="${basedir.test.results}"
+				verbose="true"
+				workingdir="${basedir.build}">
+			<assemblies>
+				<include name="${basedir.build}/NAntExtensions.MbUnit.Filtered.Example.Tests.dll" />
+			</assemblies>
+			<namespaces>
+				<include name="NAntExtensions.MbUnit.Filtered.Example.Tests.Namespace" />
+			</namespaces>
+		</mbunit>
+		<fail message="MbUnit succcess count is incorrect, should be 1 but was ${mbunit.successes}"
+			  if="${int::parse(mbunit.successes) != 1}"/>
+
+		<echo message="MbUnit: Filtered tests by type"/>
+		<mbunit-initcounters />
+		<mbunit report-types="html"
+				report-filename-format="NAntExtensions.MbUnit.Filtered.Example.Tests-ByType"
+				report-directory="${basedir.test.results}"
+				verbose="true"
+				workingdir="${basedir.build}">
+			<assemblies>
+				<include name="${basedir.build}/NAntExtensions.MbUnit.Filtered.Example.Tests.dll" />
+			</assemblies>
+			<types>
+				<include name="NAntExtensions.MbUnit.Filtered.Example.Tests.Type.When_tests_included_by_type_are_run" />
+			</types>
+		</mbunit>
+		<fail message="MbUnit succcess count is incorrect, should be 1 but was ${mbunit.successes}"
+			  if="${int::parse(mbunit.successes) != 1}"/>
+
+		<!-- Machine.Specifications: Standard tests. -->
+		<foreach item="File"
+				 property="testproject">
+			<in>
+				<items refid="mspec-sample-test-projects" />
+			</in>
+			<do>
+				<mspec report-directory="${basedir.test.results}"
+					   report-filename="${path::get-file-name-without-extension(testproject)}.html"
+					   workingdir="${basedir.build}"
+					   include-time-info="true"
+					   verbose="true"
+					   failonerror="false">
+					<assemblies>
+						<include name="${basedir.build}/${path::get-file-name-without-extension(testproject)}.dll" />
+					</assemblies>
+				</mspec>
+			</do>
+		</foreach>
+
+		<tc-addstatistic-fromprops starting-with="${mspec::get-counter-prefix()}" />
+
+		<fail message="MSpec ignore count is incorrect, should be 1 but was ${mspec.ignoredspecs}"
+			  if="${int::parse(mspec.ignoredspecs) != 1}"/>
+		<fail message="MSpec passed count is incorrect, should be 3 but was ${mspec.passedspecs}"
+			  if="${int::parse(mspec.passedspecs) != 3}"/>
+		<fail message="MSpec spec count is incorrect, should be 6 but was ${mspec.specs}"
+			  if="${int::parse(mspec.specs) != 6}"/>
+		<fail message="MSpec failed count is incorrect, should be 1 but was ${mspec.failedspecs}"
+			  if="${int::parse(mspec.failedspecs) != 1}"/>
+		<fail message="MSpec context count is incorrect, should be 1 but was ${mspec.contexts}"
+			  if="${int::parse(mspec.contexts) != 1}"/>
+		<fail message="MSpec unimplemented count is incorrect, should be 1 but was ${mspec.unimplementedspecs}"
+			  if="${int::parse(mspec.unimplementedspecs) != 1}"/>
+
+		<tc-progress message="Running sample tests"
+					 type="End" />
+	</target>
+</project>

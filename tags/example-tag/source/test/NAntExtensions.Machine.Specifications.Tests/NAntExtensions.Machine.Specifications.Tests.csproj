@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{27C24491-AAFE-4BA5-992D-9FA4CCE22104}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NAntExtensions.Machine.Specifications.Tests</RootNamespace>
+    <AssemblyName>NAntExtensions.Machine.Specifications.Tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Machine.Specifications, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Machine.Specifications\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit.Framework, Version=2.4.2.130, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\MbUnit\MbUnit.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="MbUnit.Framework.2.0, Version=2.4.2.130, Culture=neutral, PublicKeyToken=5e72ecd30bc408d5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\tools\MbUnit\MbUnit.Framework.2.0.dll</HintPath>
+    </Reference>
+    <Reference Include="NAnt.Core, Version=0.86.2898.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\NAnt\NAnt.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Mocks, Version=3.5.0.2, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\tools\Rhino Mocks\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="When_counters_are_enumerated.cs" />
+    <Compile Include="When_the_NAnt_listener_is_created.cs" />
+    <Compile Include="When_the_NAnt_listener_monitors_assembly_ends.cs" />
+    <Compile Include="When_the_NAnt_listener_monitors_assembly_starts.cs" />
+    <Compile Include="When_the_NAnt_listener_monitors_context_ends.cs" />
+    <Compile Include="When_the_NAnt_listener_monitors_context_starts.cs" />
+    <Compile Include="When_the_NAnt_listener_monitors_run_ends.cs" />
+    <Compile Include="When_the_NAnt_listener_monitors_run_starts.cs" />
+    <Compile Include="When_the_NAnt_listener_monitors_specification_ends.cs" />
+    <Compile Include="When_the_TeamCity_listener_is_created.cs" />
+    <Compile Include="When_the_TeamCity_listener_monitors_assembly_ends.cs" />
+    <Compile Include="When_the_TeamCity_listener_monitors_assembly_starts.cs" />
+    <Compile Include="When_the_TeamCity_listener_monitors_context_ends.cs" />
+    <Compile Include="When_the_TeamCity_listener_monitors_context_starts.cs" />
+    <Compile Include="When_the_TeamCity_listener_monitors_run_ends.cs" />
+    <Compile Include="When_the_TeamCity_listener_monitors_specification_starts.cs" />
+    <Compile Include="When_the_TeamCity_listener_monitors_specification_ends.cs" />
+    <Compile Include="When_the_TeamCity_listener_monitors_run_starts.cs" />
+    <Compile Include="When_tests_that_write_to_the_console_are_run.cs" />
+    <Compile Include="When_the_NAnt_listener_monitors_specification_starts.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\app\NAntExtensions.Machine.Specifications\NAntExtensions.Machine.Specifications.csproj">
+      <Project>{352A3C1B-1372-45A4-8B0C-FA7D536AA5B4}</Project>
+      <Name>NAntExtensions.Machine.Specifications</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\app\NAntExtensions.TeamCity.Common\NAntExtensions.TeamCity.Common.csproj">
+      <Project>{F123CB57-9979-4558-BB1E-38CF9F20B3AD}</Project>
+      <Name>NAntExtensions.TeamCity.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NAntExtensions.ForTesting\NAntExtensions.ForTesting.csproj">
+      <Project>{5D9B5A98-E50A-4C91-9B99-91512720E985}</Project>
+      <Name>NAntExtensions.ForTesting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
